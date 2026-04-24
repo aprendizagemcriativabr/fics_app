@@ -1,0 +1,29 @@
+name: fics_app_new
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.5+1
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.3.0  # 👈 ADICIONADO
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo_fic.png
+    
+flutter_native_splash:
+  color: "#F5F5F5"
