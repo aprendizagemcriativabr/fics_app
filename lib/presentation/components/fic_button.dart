@@ -22,8 +22,9 @@ class FicButton extends StatelessWidget {
       height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor:
-              isLoading ? backgroundColor.withValues(alpha: 0.7) : backgroundColor,
+          backgroundColor: isLoading
+              ? backgroundColor.withValues(alpha: 0.7)
+              : backgroundColor,
           foregroundColor: AppColors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
