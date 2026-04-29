@@ -62,7 +62,7 @@ class _ListaPageState extends State<ListaPage> {
                       ? _buildEmptyState()
                       : ListView.separated(
                           itemCount: pessoasFiltradas.length,
-                          separatorBuilder: (_, _) => const SizedBox(height: 5),
+                          separatorBuilder: (context, index) => const SizedBox(height: 5),
                           itemBuilder: (_, i) {
                             final p = pessoasFiltradas[i];
 
