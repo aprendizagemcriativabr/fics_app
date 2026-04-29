@@ -9,6 +9,7 @@ import 'data/repositories/pessoa_repository_impl.dart';
 // DOMAIN
 import 'domain/usecases/get_pessoas.dart';
 import 'domain/usecases/atualizar_acompanhantes.dart';
+import 'domain/usecases/importar_pessoas.dart';
 
 // PRESENTATION
 import 'presentation/viewmodels/pessoa_view_model.dart';
@@ -23,21 +24,25 @@ void main() {
 
   final getPessoas = GetPessoas(repository);
   final atualizar = AtualizarAcompanhantes(repository);
+  final importar = ImportarPessoas(repository);
 
   runApp(MyApp(
     getPessoas: getPessoas,
     atualizar: atualizar,
+    importar: importar,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final GetPessoas getPessoas;
   final AtualizarAcompanhantes atualizar;
+  final ImportarPessoas importar;
 
   const MyApp({
     super.key,
     required this.getPessoas,
     required this.atualizar,
+    required this.importar,
   });
 
   @override
@@ -45,7 +50,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PessoaViewModel(getPessoas, atualizar)..carregar(),
+          create: (_) => PessoaViewModel(getPessoas, atualizar, importar)..carregar(),
         ),
       ],
       child: MaterialApp(

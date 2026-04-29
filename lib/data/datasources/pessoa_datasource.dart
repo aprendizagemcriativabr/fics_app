@@ -1,30 +1,38 @@
-class PessoaDataSource {
-  List<Map<String, dynamic>> data = [
-    {"nome": "Maria Silva", "acomp": 10},
-    {"nome": "Joana Santos", "acomp": 40},
-    {"nome": "João Vitor", "acomp": 2},
-    {"nome": "Alana Rodrigues da Silva", "acomp": 4},
-    {"nome": "Guilherme Paredes Bonifacio da Silva Torres", "acomp": 12},
-    {"nome": "Daniel Deuner", "acomp": 67},
-    {"nome": "Rafael Mota", "acomp": 22},
-    {"nome": "Gabrielle Fernandes", "acomp": 11},
-    {"nome": "Cesar Cielo", "acomp": 90},
-    {"nome": "Ana Júlia Bastos", "acomp": 7},
-  ];
+import '../../domain/entities/pessoa.dart';
 
+class PessoaDataSource {
+  // Agora a lista começa VAZIA. 
+  // Ela só será preenchida quando você clicar em "Receber Dados".
+  List<Map<String, dynamic>> data = [];
+
+  /// Retorna os dados atuais (seja vazio ou populado pelo Excel)
   Future<List<Map<String, dynamic>>> getData() async {
+    // Simulando um pequeno delay de rede/leitura
+    await Future.delayed(const Duration(milliseconds: 300));
     return data;
   }
 
-  // No seu data/datasources/pessoa_datasource.dart
+  /// Atualiza o status de uma pessoa após a validação no check-in
   Future<void> update(String nome, int novaQtd) async {
     final index = data.indexWhere((p) => p['nome'] == nome);
     if (index != -1) {
       data[index]['acomp'] = novaQtd;
-      data[index]['confirmado'] = true; // Marca como feito
-      
-      // DICA: Aqui é onde futuramente você chamará a API do Google Sheets
-      print("LOG: $nome confirmado com $novaQtd pessoas. Pronto para o Sheets.");
+      data[index]['confirmado'] = true;
+    }
+  }
+
+  /// Alimenta o app com os dados reais vindos da sua Importação
+  Future<void> popularDoExcel(List<Pessoa> novasPessoas) async {
+    // Garantimos que a lista anterior (ou mocks residuais) seja apagada
+    data.clear();
+
+    // Transformamos as entidades de domínio em dados de infraestrutura (Map)
+    for (var pessoa in novasPessoas) {
+      data.add({
+        "nome": pessoa.nome,
+        "acomp": pessoa.acompanhantes,
+        "confirmado": false,
+      });
     }
   }
 }

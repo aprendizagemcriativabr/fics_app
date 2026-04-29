@@ -1,3 +1,4 @@
+import 'package:fics_app_new/presentation/pages/receber_dados_page.dart';
 import 'package:flutter/material.dart';
 import 'lista_page.dart';
 import '../components/fic_button.dart';
@@ -48,9 +49,10 @@ class HomePage extends StatelessWidget {
                 // Receber Dados
                 FicButton(
                   label: "Receber Dados",
-                  onPressed: () {
-                    // Lógica para puxar do Sheets
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReceberDadosPage()),
+                  ),
                 ),
                 const SizedBox(height: 24),
 
