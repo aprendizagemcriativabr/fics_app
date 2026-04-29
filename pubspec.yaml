@@ -25,6 +25,3 @@ flutter:
 
   assets:
     - assets/images/logo_fic.png
-    
-flutter_native_splash:
-  color: "#F5F5F5"
