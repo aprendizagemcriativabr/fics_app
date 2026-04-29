@@ -32,7 +32,7 @@ jobs:
 
       # 5. Verifica a formatação do código (Lint)
       - name: Verify formatting
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       # 6. Analisa o código em busca de erros estáticos
       - name: Analyze project
