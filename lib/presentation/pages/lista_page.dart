@@ -95,7 +95,7 @@ class _ListaPageState extends State<ListaPage> {
           Icon(
             Icons.search_off,
             size: 60,
-            color: AppColors.text.withOpacity(0.3),
+            color: AppColors.text.withValues(alpha: 0.7),
           ),
           const SizedBox(height: 10),
           const Text(
