@@ -1,6 +1,5 @@
 name: Flutter CI
 
-# Define quando a pipeline será executada
 on:
   push:
     branches: [ main, master, develop ]
@@ -12,36 +11,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Baixa o código do repositório
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # O Sonar precisa do histórico completo para analisar as mudanças
 
-      # 2. Configura o ambiente Java (necessário para Android)
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # 3. Configura o Flutter
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      # 4. Instala as dependências (excel, file_picker, etc)
       - name: Install dependencies
         run: flutter pub get
 
-      # 5. Verifica a formatação do código (Lint)
       - name: Verify formatting
         run: dart format --set-exit-if-changed .
 
-      # 6. Analisa o código em busca de erros estáticos
       - name: Analyze project
         run: flutter analyze
 
-      # 7. Executa os testes unitários
-      - name: Run tests
-        run: flutter test
+      - name: Run tests with coverage
+        run: |
+          mkdir -p test
+          flutter test --coverage
 
-      # 8. Gera o APK para download
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+
       - name: Build APK
         run: flutter build apk --debug
