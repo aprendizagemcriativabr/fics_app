@@ -24,8 +24,7 @@ jobs:
       # 3. Configura o Flutter
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0' # Use a versão do seu projeto
-          channel: 'stable'
+          channel: 'stable
 
       # 4. Instala as dependências (excel, file_picker, etc)
       - name: Install dependencies
