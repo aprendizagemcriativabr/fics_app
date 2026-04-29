@@ -23,34 +23,30 @@ class ReceberDadosPage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 80),
-                  const Text("ENVIE SUA PLANILHA", 
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  const Text("ENVIE SUA PLANILHA",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                   const SizedBox(height: 32),
-                  
                   FicFilePicker(
                     onTap: vm.isProcessing ? () {} : vm.pickFile,
                     fileName: vm.fileName,
                   ),
-
                   const Spacer(),
-
                   FicButton(
                     label: "RECEBER",
-                    isLoading: vm.isProcessing, // O loader aparece dentro do botão
+                    isLoading:
+                        vm.isProcessing, // O loader aparece dentro do botão
                     onPressed: () => vm.executarImportacao(
                       listaVM: context.read<PessoaViewModel>(),
                       onSuccess: () {
                         // Usando seu novo componente de feedback
-                        FicFeedback.show(context, 
-                          message: "Dados recebidos com sucesso!", 
-                          type: FeedbackType.success
-                        );
+                        FicFeedback.show(context,
+                            message: "Dados recebidos com sucesso!",
+                            type: FeedbackType.success);
                       },
                       onError: (msg) {
-                        FicFeedback.show(context, 
-                          message: "Erro: $msg", 
-                          type: FeedbackType.error
-                        );
+                        FicFeedback.show(context,
+                            message: "Erro: $msg", type: FeedbackType.error);
                       },
                     ),
                   ),

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 enum FeedbackType { success, error, warning, info }
 
 class FicFeedback {
-  static void show(BuildContext context, {
+  static void show(
+    BuildContext context, {
     required String message,
     FeedbackType type = FeedbackType.info,
   }) {
@@ -21,8 +22,9 @@ class FicFeedback {
       FeedbackType.info: Icons.info_outline,
     };
 
-    ScaffoldMessenger.of(context).clearSnackBars(); // Remove o anterior antes de mostrar novo
-    
+    ScaffoldMessenger.of(context)
+        .clearSnackBars(); // Remove o anterior antes de mostrar novo
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
@@ -37,7 +39,8 @@ class FicFeedback {
             Expanded(
               child: Text(
                 message,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w500),
               ),
             ),
           ],

@@ -15,7 +15,7 @@ class FicFilePicker extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         decoration: BoxDecoration(
-          color: AppColors.secondaryYellow, 
+          color: AppColors.secondaryYellow,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(

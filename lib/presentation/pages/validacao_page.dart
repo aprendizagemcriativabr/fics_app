@@ -39,36 +39,33 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
             const Text(
               "NOME DO RESPONSÁVEL",
               style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 12, 
-                color: AppColors.text, 
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                color: AppColors.text,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               widget.pessoa.nome.toUpperCase(),
               style: const TextStyle(
-                fontSize: 22, 
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.text,
               ),
             ),
-            
             const Spacer(),
-            
             const Center(
               child: Text(
                 "QUANTIDADE DE\nACOMPANHANTES",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold, 
+                  fontWeight: FontWeight.bold,
                   fontSize: 14,
                   color: AppColors.text,
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            
             FicCounter(
               value: qtd,
               onChanged: (newValue) {
@@ -77,16 +74,14 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
                 }
               },
             ),
-            
             const Spacer(),
-            
             FicButton(
               label: "Confirmar Check-in",
               onPressed: () async {
                 await vm.atualizarQtd(widget.pessoa.nome, qtd);
-              
+
                 if (context.mounted) {
-                  Navigator.pop(context); 
+                  Navigator.pop(context);
                 }
               },
             ),

@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PessoaViewModel(getPessoas, atualizar, importar)..carregar(),
+          create: (_) =>
+              PessoaViewModel(getPessoas, atualizar, importar)..carregar(),
         ),
       ],
       child: MaterialApp(
@@ -60,11 +61,13 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppColors.primaryYellow,
-            primary: AppColors.primaryYellow, // Força o amarelo como cor principal
+            primary:
+                AppColors.primaryYellow, // Força o amarelo como cor principal
           ),
           scaffoldBackgroundColor: AppColors.primaryYellow,
           appBarTheme: const AppBarTheme(
-            surfaceTintColor: Colors.transparent, // Remove o escurecimento na rolagem
+            surfaceTintColor:
+                Colors.transparent, // Remove o escurecimento na rolagem
             backgroundColor: AppColors.primaryYellow,
           ),
         ),

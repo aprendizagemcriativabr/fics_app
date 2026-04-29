@@ -33,7 +33,8 @@ class FicTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
         ),
       ],

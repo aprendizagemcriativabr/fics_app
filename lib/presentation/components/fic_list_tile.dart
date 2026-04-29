@@ -25,11 +25,14 @@ class FicListTile extends StatelessWidget {
         ),
         subtitle: Text(
           "${pessoa.acompanhantes} acompanhantes",
-          style: TextStyle(color: pessoa.confirmado ? AppColors.disabledText : AppColors.text),
+          style: TextStyle(
+              color:
+                  pessoa.confirmado ? AppColors.disabledText : AppColors.text),
         ),
         trailing: pessoa.confirmado
             ? const Icon(Icons.check_circle, color: Colors.green, size: 24)
-            : const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.button),
+            : const Icon(Icons.arrow_forward_ios,
+                size: 16, color: AppColors.button),
         onTap: pessoa.confirmado ? null : onTap,
       ),
     );

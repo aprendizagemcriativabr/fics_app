@@ -11,7 +11,7 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.primaryYellow,
       elevation: 0,
-      centerTitle: true, 
+      centerTitle: true,
       toolbarHeight: 100,
       leading: IconButton(
         padding: const EdgeInsets.only(top: 10),

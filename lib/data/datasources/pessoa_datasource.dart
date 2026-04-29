@@ -1,7 +1,7 @@
 import '../../domain/entities/pessoa.dart';
 
 class PessoaDataSource {
-  // Agora a lista começa VAZIA. 
+  // Agora a lista começa VAZIA.
   // Ela só será preenchida quando você clicar em "Receber Dados".
   List<Map<String, dynamic>> data = [];
 

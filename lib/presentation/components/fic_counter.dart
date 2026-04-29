@@ -16,7 +16,7 @@ class FicCounter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
-            value.toString().padLeft(2, '0'), 
+            value.toString().padLeft(2, '0'),
             style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
           ),
         ),

@@ -7,13 +7,14 @@ import '../viewmodels/pessoa_view_model.dart';
 
 class ReceberDadosViewModel extends ChangeNotifier {
   final ImportService _importService = ImportService();
-  
+
   File? _selectedFile;
   bool _isProcessing = false;
 
   File? get selectedFile => _selectedFile;
   bool get isProcessing => _isProcessing;
-  String? get fileName => _selectedFile?.path.split(Platform.pathSeparator).last;
+  String? get fileName =>
+      _selectedFile?.path.split(Platform.pathSeparator).last;
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -26,7 +27,7 @@ class ReceberDadosViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   Future<void> executarImportacao({
     required PessoaViewModel listaVM,
     required VoidCallback onSuccess,
@@ -38,11 +39,12 @@ class ReceberDadosViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      List<Pessoa> novasPessoas = await _importService.lerPlanilha(_selectedFile!);
+      List<Pessoa> novasPessoas =
+          await _importService.lerPlanilha(_selectedFile!);
       if (novasPessoas.isEmpty) throw Exception("Planilha vazia");
 
       await listaVM.importarNovasPessoas(novasPessoas);
-      
+
       _isProcessing = false;
       notifyListeners();
       onSuccess(); // Dispara o callback de sucesso

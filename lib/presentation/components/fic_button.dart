@@ -22,9 +22,11 @@ class FicButton extends StatelessWidget {
       height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: isLoading ? backgroundColor.withOpacity(0.7) : backgroundColor,
+          backgroundColor:
+              isLoading ? backgroundColor.withOpacity(0.7) : backgroundColor,
           foregroundColor: AppColors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,
         ),
         // Se estiver carregando, desabilitamos o clique
@@ -40,7 +42,8 @@ class FicButton extends StatelessWidget {
               )
             : Text(
                 label.toUpperCase(),
-                style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, letterSpacing: 1.1),
               ),
       ),
     );

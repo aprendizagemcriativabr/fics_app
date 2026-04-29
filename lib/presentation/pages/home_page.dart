@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // O backgroundColor é herdado do Theme (primaryYellow), 
+      // O backgroundColor é herdado do Theme (primaryYellow),
       // mas mantemos o SafeArea para a logo não bater no topo.
       body: SafeArea(
         child: Center(

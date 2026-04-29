@@ -14,7 +14,7 @@ class ListaPage extends StatefulWidget {
 }
 
 class _ListaPageState extends State<ListaPage> {
-  String filtro = ""; 
+  String filtro = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _ListaPageState extends State<ListaPage> {
             Container(
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: AppColors.secondaryYellow, 
+                color: AppColors.secondaryYellow,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: TextField(
@@ -56,13 +56,14 @@ class _ListaPageState extends State<ListaPage> {
             Expanded(
               child: vm.isLoading
                   ? const Center(
-                      child: CircularProgressIndicator(color: AppColors.text), 
+                      child: CircularProgressIndicator(color: AppColors.text),
                     )
                   : pessoasFiltradas.isEmpty
                       ? _buildEmptyState()
                       : ListView.separated(
                           itemCount: pessoasFiltradas.length,
-                          separatorBuilder: (context, index) => const SizedBox(height: 5),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 5),
                           itemBuilder: (_, i) {
                             final p = pessoasFiltradas[i];
 
@@ -92,15 +93,15 @@ class _ListaPageState extends State<ListaPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            Icons.search_off, 
-            size: 60, 
-            color: AppColors.text.withOpacity(0.3), 
+            Icons.search_off,
+            size: 60,
+            color: AppColors.text.withOpacity(0.3),
           ),
           const SizedBox(height: 10),
           const Text(
             "Nenhum participante encontrado",
             style: TextStyle(
-              fontWeight: FontWeight.bold, 
+              fontWeight: FontWeight.bold,
               color: AppColors.text,
             ),
           ),
