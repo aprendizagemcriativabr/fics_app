@@ -6,7 +6,10 @@ import '../../data/services/import_excel.dart';
 import '../viewmodels/pessoa_view_model.dart';
 
 class ReceberDadosViewModel extends ChangeNotifier {
-  final ImportService _importService = ImportService();
+  final ImportService _importService;
+
+  ReceberDadosViewModel({ImportService? importService}) 
+      : _importService = importService ?? ImportService();
 
   File? _selectedFile;
   bool _isProcessing = false;
@@ -15,6 +18,7 @@ class ReceberDadosViewModel extends ChangeNotifier {
   bool get isProcessing => _isProcessing;
   String? get fileName =>
       _selectedFile?.path.split(Platform.pathSeparator).last;
+      
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
