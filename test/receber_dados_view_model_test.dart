@@ -8,7 +8,9 @@ import 'package:fics_app_new/presentation/viewmodels/receber_dados_view_model.da
 
 // Mocks
 class MockImportService extends Mock implements ImportService {}
+
 class MockPessoaViewModel extends Mock implements PessoaViewModel {}
+
 class MockFile extends Mock implements File {}
 
 void main() {
@@ -22,7 +24,7 @@ void main() {
     mockPessoaVM = MockPessoaViewModel();
     mockFile = MockFile();
     viewModel = ReceberDadosViewModel(importService: mockImportService);
-    
+
     registerFallbackValue(mockFile);
   });
 
@@ -32,13 +34,16 @@ void main() {
       expect(viewModel.isProcessing, false);
     });
 
-    test('executarImportacao: deve disparar sucesso quando planilha tem dados', () async {
+    test('executarImportacao: deve disparar sucesso quando planilha tem dados',
+        () async {
       final tPessoas = [Pessoa(nome: 'Teste', acompanhantes: 1)];
       bool sucessoChamado = false;
 
       // Stubbing
-      when(() => mockImportService.lerPlanilha(any())).thenAnswer((_) async => tPessoas);
-      when(() => mockPessoaVM.importarNovasPessoas(any())).thenAnswer((_) async => {});
+      when(() => mockImportService.lerPlanilha(any()))
+          .thenAnswer((_) async => tPessoas);
+      when(() => mockPessoaVM.importarNovasPessoas(any()))
+          .thenAnswer((_) async => {});
 
       await viewModel.executarImportacao(
         listaVM: mockPessoaVM,
@@ -49,18 +54,20 @@ void main() {
       expect(sucessoChamado, false);
     });
 
-    test('executarImportacao: deve disparar erro quando a planilha está vazia', () async {
+    test('executarImportacao: deve disparar erro quando a planilha está vazia',
+        () async {
       String? mensagemErro;
-      
-      when(() => mockImportService.lerPlanilha(any())).thenAnswer((_) async => []);
-      
+
+      when(() => mockImportService.lerPlanilha(any()))
+          .thenAnswer((_) async => []);
+
       await viewModel.executarImportacao(
         listaVM: mockPessoaVM,
         onSuccess: () {},
         onError: (msg) => mensagemErro = msg,
       );
 
-      expect(mensagemErro, contains("Exception: Planilha vazia")); 
+      expect(mensagemErro, contains("Exception: Planilha vazia"));
       expect(viewModel.isProcessing, false);
     });
   });

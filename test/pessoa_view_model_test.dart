@@ -8,7 +8,10 @@ import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
 
 // Criando os Mocks (Dublês)
 class MockGetPessoas extends Mock implements GetPessoas {}
-class MockAtualizarAcompanhantes extends Mock implements AtualizarAcompanhantes {}
+
+class MockAtualizarAcompanhantes extends Mock
+    implements AtualizarAcompanhantes {}
+
 class MockImportarPessoas extends Mock implements ImportarPessoas {}
 
 void main() {
@@ -33,16 +36,17 @@ void main() {
       expect(viewModel.isLoading, false);
     });
 
-    test('carregar: deve buscar pessoas e atualizar o estado da lista', () async {
+    test('carregar: deve buscar pessoas e atualizar o estado da lista',
+        () async {
       // Arrange
       when(() => mockGet()).thenAnswer((_) async => tLista);
 
       // Act
       final future = viewModel.carregar();
-      
+
       // Assert: Verifica se isLoading ficou true logo após a chamada
       expect(viewModel.isLoading, true);
-      
+
       await future;
 
       expect(viewModel.pessoas, tLista);
@@ -50,7 +54,8 @@ void main() {
       verify(() => mockGet()).called(1);
     });
 
-    test('importarNovasPessoas: deve chamar o usecase e recarregar a lista', () async {
+    test('importarNovasPessoas: deve chamar o usecase e recarregar a lista',
+        () async {
       // Arrange
       when(() => mockImportar(any())).thenAnswer((_) async => {});
       when(() => mockGet()).thenAnswer((_) async => tLista);
@@ -65,7 +70,7 @@ void main() {
     });
 
     test('atualizarQtd: deve chamar atualizar e recarregar dados', () async {
-       // Arrange
+      // Arrange
       when(() => mockAtualizar(any(), any())).thenAnswer((_) async => {});
       when(() => mockGet()).thenAnswer((_) async => tLista);
 
