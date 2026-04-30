@@ -54,14 +54,16 @@ void main() {
       expect(sucessoChamado, false);
     });
 
-    test('executarImportacao: deve disparar erro quando a planilha está vazia', () async {
+    test('executarImportacao: deve disparar erro quando a planilha está vazia',
+        () async {
       String? mensagemErro;
-      
+
       // 1. Preparamos o mock do arquivo e do serviço
-      when(() => mockImportService.lerPlanilha(any())).thenAnswer((_) async => []);
-      
+      when(() => mockImportService.lerPlanilha(any()))
+          .thenAnswer((_) async => []);
+
       // 2. O PULO DO GATO: Injetamos o arquivo mockado
-      viewModel.setFileForTest(mockFile); 
+      viewModel.setFileForTest(mockFile);
 
       // 3. Agora sim, executamos
       await viewModel.executarImportacao(
@@ -71,7 +73,7 @@ void main() {
       );
 
       // 4. Verificações
-      expect(mensagemErro, contains("Exception: Planilha vazia")); 
+      expect(mensagemErro, contains("Exception: Planilha vazia"));
       expect(viewModel.isProcessing, false);
     });
   });
