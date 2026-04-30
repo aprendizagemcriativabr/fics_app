@@ -31,6 +31,11 @@ class ReceberDadosViewModel extends ChangeNotifier {
     }
   }
 
+  void setFileForTest(File file) {
+    _selectedFile = file;
+    notifyListeners();
+  }
+
   Future<void> executarImportacao({
     required PessoaViewModel listaVM,
     required VoidCallback onSuccess,
