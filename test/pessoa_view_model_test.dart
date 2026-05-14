@@ -4,6 +4,7 @@ import 'package:fics_app_new/domain/entities/pessoa.dart';
 import 'package:fics_app_new/domain/usecases/get_pessoas.dart';
 import 'package:fics_app_new/domain/usecases/atualizar_acompanhantes.dart';
 import 'package:fics_app_new/domain/usecases/importar_pessoas.dart';
+import 'package:fics_app_new/domain/usecases/add_pessoa.dart';
 import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
 
 // Criando os Mocks (Dublês)
@@ -14,17 +15,21 @@ class MockAtualizarAcompanhantes extends Mock
 
 class MockImportarPessoas extends Mock implements ImportarPessoas {}
 
+class MockAddPessoa extends Mock implements AddPessoa {}
+
 void main() {
   late PessoaViewModel viewModel;
   late MockGetPessoas mockGet;
   late MockAtualizarAcompanhantes mockAtualizar;
   late MockImportarPessoas mockImportar;
+  late MockAddPessoa mockAdd;
 
   setUp(() {
     mockGet = MockGetPessoas();
     mockAtualizar = MockAtualizarAcompanhantes();
     mockImportar = MockImportarPessoas();
-    viewModel = PessoaViewModel(mockGet, mockAtualizar, mockImportar);
+    mockAdd = MockAddPessoa();
+    viewModel = PessoaViewModel(mockGet, mockAtualizar, mockImportar, mockAdd);
   });
 
   group('PessoaViewModel -', () {

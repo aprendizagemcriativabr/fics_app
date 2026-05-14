@@ -35,4 +35,13 @@ class PessoaDataSource {
       });
     }
   }
+
+  /// Adiciona uma nova pessoa ao datasource
+  Future<void> addPessoa(Pessoa pessoa) async {
+    data.add({
+      "nome": pessoa.nome,
+      "acomp": pessoa.acompanhantes,
+      "confirmado": pessoa.confirmado,
+    });
+  }
 }

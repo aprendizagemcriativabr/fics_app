@@ -1,6 +1,7 @@
 import 'package:fics_app_new/presentation/pages/receber_dados_page.dart';
 import 'package:flutter/material.dart';
 import 'lista_page.dart';
+import 'cadastro_page.dart';
 import '../components/fic_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,9 +41,10 @@ class HomePage extends StatelessWidget {
                 // Cadastro de Participante
                 FicButton(
                   label: "Cadastro de Participante",
-                  onPressed: () {
-                    // Futura CadastroPage()
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CadastroPage()),
+                  ),
                 ),
                 const SizedBox(height: 24),
 

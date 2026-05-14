@@ -4,4 +4,5 @@ abstract class PessoaRepository {
   Future<List<Pessoa>> getPessoas();
   Future<void> atualizarAcompanhantes(String nome, int quantidade);
   Future<void> popularDoExcel(List<Pessoa> pessoas);
+  Future<void> addPessoa(Pessoa pessoa);
 }

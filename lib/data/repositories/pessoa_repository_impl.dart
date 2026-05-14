@@ -23,4 +23,9 @@ class PessoaRepositoryImpl implements PessoaRepository {
   Future<void> popularDoExcel(List<Pessoa> pessoas) async {
     await dataSource.popularDoExcel(pessoas);
   }
+
+  @override
+  Future<void> addPessoa(Pessoa pessoa) async {
+    await dataSource.addPessoa(pessoa);
+  }
 }

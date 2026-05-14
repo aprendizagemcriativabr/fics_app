@@ -3,14 +3,16 @@ import '../../domain/entities/pessoa.dart';
 import '../../domain/usecases/get_pessoas.dart';
 import '../../domain/usecases/atualizar_acompanhantes.dart';
 import '../../domain/usecases/importar_pessoas.dart'; // Importe o novo UseCase
+import '../../domain/usecases/add_pessoa.dart';
 
 class PessoaViewModel extends ChangeNotifier {
   final GetPessoas getPessoas;
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar; // 1. Adicione a variável
+  final AddPessoa addPessoa;
 
   // 2. Adicione ao construtor
-  PessoaViewModel(this.getPessoas, this.atualizar, this.importar);
+  PessoaViewModel(this.getPessoas, this.atualizar, this.importar, this.addPessoa);
 
   List<Pessoa> pessoas = [];
   bool isLoading = false;
@@ -42,6 +44,12 @@ class PessoaViewModel extends ChangeNotifier {
 
   Future<void> atualizarQtd(String nome, int qtd) async {
     await atualizar(nome, qtd);
+    await carregar();
+  }
+
+  Future<void> adicionarPessoa(String nome, int acompanhantes) async {
+    final pessoa = Pessoa(nome: nome, acompanhantes: acompanhantes);
+    await addPessoa(pessoa);
     await carregar();
   }
 }
