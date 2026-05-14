@@ -158,7 +158,11 @@ class PessoaViewModel extends ChangeNotifier {
   }
 
   Future<void> adicionarPessoa(String nome, int acompanhantes) async {
-    final pessoa = Pessoa(nome: nome, acompanhantes: acompanhantes);
+    final pessoa = Pessoa(
+      nome: nome,
+      acompanhantes: acompanhantes,
+      confirmado: true,
+    );
     await addPessoa(pessoa);
     await carregar();
   }
