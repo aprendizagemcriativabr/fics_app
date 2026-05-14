@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/pessoa_view_model.dart';
-import 'validacao_page.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_list_tile.dart';
+import '../components/fic_filters_modal.dart';
 import '../utility/color.dart';
+import 'validacao_page.dart';
 
 class ListaPage extends StatefulWidget {
   const ListaPage({super.key});
@@ -14,74 +15,100 @@ class ListaPage extends StatefulWidget {
 }
 
 class _ListaPageState extends State<ListaPage> {
-  String filtro = "";
+  @override
+  void initState() {
+    super.initState();
+    // Carrega os dados assim que a tela é construída
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PessoaViewModel>().carregar();
+    });
+  }
+
+  /// Abre o BottomSheet de filtros e envia as escolhas para a VM
+  void _abrirModalFiltro(PessoaViewModel vm) async {
+    final resultado = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent, // Permite visualizar as bordas arredondadas do modal
+      builder: (context) => FiltroModal(
+        statusInicial: vm.filtroStatus,
+        ordemAzInicial: vm.ordemAz,
+      ),
+    );
+
+    if (resultado != null) {
+      // Aplica os filtros na ViewModel
+      vm.aplicarFiltros(
+        status: resultado['status'],
+        ordem: resultado['ordem'],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Escuta a ViewModel para reagir a mudanças nos filtros ou na lista
     final vm = Provider.of<PessoaViewModel>(context);
-
-    final pessoasFiltradas = vm.pessoas
-        .where((p) => p.nome.toLowerCase().contains(filtro.toLowerCase()))
-        .toList();
+    final listaExibida = vm.pessoasFiltradas;
 
     return Scaffold(
-      appBar: const FicAppBar(title: "Validação de\npré-cadastro"),
+      backgroundColor: AppColors.primaryYellow, // Fundo amarelo conforme o design
+      appBar: FicAppBar(
+        title: "Validação de\npré-cadastro",
+        onFilterPressed: () => _abrirModalFiltro(vm),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            // --- BARRA DE PESQUISA ---
-            Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryYellow,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    filtro = value;
-                  });
-                },
-                decoration: const InputDecoration(
-                  hintText: "Pesquisar por nome...",
-                  prefixIcon: Icon(Icons.search, color: AppColors.text),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            children: [
+              // --- BARRA DE PESQUISA ---
+              Container(
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryYellow,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: TextField(
+                  onChanged: (value) => vm.atualizarBuscaNome(value),
+                  decoration: const InputDecoration(
+                    hintText: "Pesquisar por nome...",
+                    prefixIcon: Icon(Icons.search, color: AppColors.text),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(vertical: 15),
+                  ),
                 ),
               ),
-            ),
 
-            // --- LISTA DE RESULTADOS ---
-            Expanded(
-              child: vm.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(color: AppColors.text),
-                    )
-                  : pessoasFiltradas.isEmpty
-                      ? _buildEmptyState()
-                      : ListView.separated(
-                          itemCount: pessoasFiltradas.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 5),
-                          itemBuilder: (_, i) {
-                            final p = pessoasFiltradas[i];
+              // --- LISTA DE RESULTADOS ---
+              Expanded(
+                child: vm.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(color: AppColors.text),
+                      )
+                    : listaExibida.isEmpty
+                        ? _buildEmptyState()
+                        : ListView.separated(
+                            itemCount: listaExibida.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 5),
+                            itemBuilder: (_, i) {
+                              final p = listaExibida[i];
 
-                            return FicListTile(
-                              pessoa: p,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => ValidacaoPage(pessoa: p),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-            ),
-          ],
+                              return FicListTile(
+                                pessoa: p,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ValidacaoPage(pessoa: p),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+              ),
+            ],
         ),
       ),
     );
