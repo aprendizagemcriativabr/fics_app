@@ -35,11 +35,10 @@ class ReceberDadosPage extends StatelessWidget {
                   FicButton(
                     label: "RECEBER",
                     isLoading:
-                        vm.isProcessing, // O loader aparece dentro do botão
+                        vm.isProcessing, 
                     onPressed: () => vm.executarImportacao(
                       listaVM: context.read<PessoaViewModel>(),
                       onSuccess: () {
-                        // Usando seu novo componente de feedback
                         FicFeedback.show(context,
                             message: "Dados recebidos com sucesso!",
                             type: FeedbackType.success);

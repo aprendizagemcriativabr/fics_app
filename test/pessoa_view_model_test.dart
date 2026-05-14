@@ -32,7 +32,7 @@ void main() {
     final tLista = [tPessoa];
 
     test('deve iniciar com estado vazio e sem carregamento', () {
-      expect(viewModel.pessoas, isEmpty);
+      expect(viewModel.todasPessoas, isEmpty);
       expect(viewModel.isLoading, false);
     });
 
@@ -49,7 +49,7 @@ void main() {
 
       await future;
 
-      expect(viewModel.pessoas, tLista);
+      expect(viewModel.todasPessoas, tLista);
       expect(viewModel.isLoading, false);
       verify(() => mockGet()).called(1);
     });
@@ -66,7 +66,7 @@ void main() {
       // Assert
       verify(() => mockImportar(tLista)).called(1);
       verify(() => mockGet()).called(1); // Garante que recarregou a lista
-      expect(viewModel.pessoas, tLista);
+      expect(viewModel.todasPessoas, tLista);
     });
 
     test('atualizarQtd: deve chamar atualizar e recarregar dados', () async {

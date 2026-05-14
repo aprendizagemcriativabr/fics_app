@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppColors.primaryYellow,
             primary:
-                AppColors.primaryYellow, // Força o amarelo como cor principal
+                AppColors.primaryYellow, 
           ),
           scaffoldBackgroundColor: AppColors.primaryYellow,
           appBarTheme: const AppBarTheme(

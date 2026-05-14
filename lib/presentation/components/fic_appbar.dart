@@ -3,8 +3,13 @@ import '../utility/color.dart';
 
 class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final VoidCallback? onFilterPressed; // Adicionado para controlar o clique no filtro
 
-  const FicAppBar({super.key, required this.title});
+  const FicAppBar({
+    super.key, 
+    required this.title, 
+    this.onFilterPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,18 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
+      
+      // Adicionado a lista de actions para incluir o ícone de filtro
+      actions: [
+        if (onFilterPressed != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 10, right: 10),
+            child: IconButton(
+              icon: const Icon(Icons.filter_alt, color: AppColors.text, size: 35),
+              onPressed: onFilterPressed,
+            ),
+          ),
+      ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(20),
         child: SizedBox(height: 20),

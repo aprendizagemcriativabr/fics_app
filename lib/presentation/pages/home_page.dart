@@ -11,8 +11,6 @@ class HomePage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // O backgroundColor é herdado do Theme (primaryYellow),
-      // mas mantemos o SafeArea para a logo não bater no topo.
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -22,7 +20,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/logo_fic.png',
-                  width: screenWidth * 0.6, // Ocupa 40% da largura da tela
+                  width: screenWidth * 0.6, 
                   fit: BoxFit.contain,
                 ),
                 const SizedBox(height: 40),
