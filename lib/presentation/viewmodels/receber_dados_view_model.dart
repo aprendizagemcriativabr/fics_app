@@ -7,6 +7,7 @@ import '../viewmodels/pessoa_view_model.dart';
 
 class ReceberDadosViewModel extends ChangeNotifier {
   final ImportService _importService;
+  bool get canSubmit => fileName != null && !isProcessing;
 
   ReceberDadosViewModel({ImportService? importService})
       : _importService = importService ?? ImportService();

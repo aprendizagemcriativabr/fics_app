@@ -10,7 +10,10 @@ import '../components/fic_counter.dart';
 class ValidacaoPage extends StatefulWidget {
   final Pessoa pessoa;
 
-  const ValidacaoPage({super.key, required this.pessoa});
+  const ValidacaoPage({
+    super.key,
+    required this.pessoa,
+  });
 
   @override
   State<ValidacaoPage> createState() => _ValidacaoPageState();
@@ -27,65 +30,100 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<PessoaViewModel>(context, listen: false);
+    final vm = Provider.of<PessoaViewModel>(
+      context,
+      listen: false,
+    );
 
     return Scaffold(
-      appBar: const FicAppBar(title: "Confirmação de\nAcompanhantes"),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "NOME DO RESPONSÁVEL",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-                color: AppColors.text,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              widget.pessoa.nome.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.text,
-              ),
-            ),
-            const Spacer(),
-            const Center(
-              child: Text(
-                "QUANTIDADE DE\nACOMPANHANTES",
-                textAlign: TextAlign.center,
+      appBar: const FicAppBar(
+        title: "Confirmação de\nAcompanhantes",
+      ),
+
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+              /// TOPO FIXO
+              const Text(
+                "NOME DO RESPONSÁVEL",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 12,
                   color: AppColors.text,
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            FicCounter(
-              value: qtd,
-              onChanged: (newValue) {
-                if (newValue >= 0) {
-                  setState(() => qtd = newValue);
-                }
-              },
-            ),
-            const Spacer(),
-            FicButton(
-              label: "Confirmar Check-in",
-              onPressed: () async {
-                await vm.atualizarQtd(widget.pessoa.nome, qtd);
 
-                if (context.mounted) {
-                  Navigator.pop(context);
-                }
-              },
-            ),
-          ],
+              const SizedBox(height: 8),
+
+              Text(
+                widget.pessoa.nome.toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.text,
+                ),
+              ),
+
+              /// CONTEÚDO CENTRAL
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+                      const Text(
+                        "QUANTIDADE DE\nACOMPANHANTES",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: AppColors.text,
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      FicCounter(
+                        value: qtd,
+                        onChanged: (newValue) {
+                          if (newValue >= 0) {
+                            setState(() {
+                              qtd = newValue;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              /// BOTÃO NO FINAL
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+
+                child: FicButton(
+                  label: "Confirmar Check-in",
+
+                  onPressed: () async {
+                    await vm.atualizarQtd(
+                      widget.pessoa.nome,
+                      qtd,
+                    );
+
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
