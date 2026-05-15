@@ -1,7 +1,6 @@
 import '../../domain/entities/pessoa.dart';
 import '../../domain/repositories/pessoa_repository.dart';
 import '../datasources/pessoa_datasource.dart';
-import '../models/pessoa_model.dart';
 
 class PessoaRepositoryImpl implements PessoaRepository {
   final PessoaDataSource dataSource;
@@ -10,8 +9,7 @@ class PessoaRepositoryImpl implements PessoaRepository {
 
   @override
   Future<List<Pessoa>> getPessoas() async {
-    final data = await dataSource.getData();
-    return data.map((e) => PessoaModel.fromJson(e)).toList();
+    return await dataSource.getData();
   }
 
   @override

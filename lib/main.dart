@@ -1,10 +1,12 @@
 import 'package:fics_app_new/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 // DATA
 import 'data/datasources/pessoa_datasource.dart';
 import 'data/repositories/pessoa_repository_impl.dart';
+import 'data/models/pessoa_model.dart';
 
 // DOMAIN
 import 'domain/usecases/get_pessoas.dart';
@@ -18,22 +20,32 @@ import 'presentation/viewmodels/pessoa_view_model.dart';
 // COLORS
 import 'package:fics_app_new/presentation/utility/color.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// HIVE
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(PessoaModelAdapter());
+
+  await Hive.openBox<PessoaModel>('pessoas');
+
+  /// DEPENDÊNCIAS
   final dataSource = PessoaDataSource();
   final repository = PessoaRepositoryImpl(dataSource);
-
   final getPessoas = GetPessoas(repository);
   final atualizar = AtualizarAcompanhantes(repository);
   final importar = ImportarPessoas(repository);
-  final addPessoa = AddPessoa(repository);
+  final addPessoas = AddPessoa(repository);
 
-  runApp(MyApp(
-    getPessoas: getPessoas,
-    atualizar: atualizar,
-    importar: importar,
-    addPessoa: addPessoa,
-  ));
+  runApp(
+    MyApp(
+      getPessoas: getPessoas,
+      atualizar: atualizar,
+      importar: importar,
+      addPessoa: addPessoas,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -55,27 +67,38 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) =>
-              PessoaViewModel(getPessoas, atualizar, importar, addPessoa)..carregar(),
+          create: (_) => PessoaViewModel(
+            getPessoas,
+            atualizar,
+            importar,
+            addPessoa
+          )..carregar(),
         ),
       ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+
         title: 'FIC App',
+
         theme: ThemeData(
           useMaterial3: true,
+
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppColors.primaryYellow,
-            primary:
-                AppColors.primaryYellow, 
+            primary: AppColors.primaryYellow,
           ),
-          scaffoldBackgroundColor: AppColors.primaryYellow,
+
+          scaffoldBackgroundColor:
+              AppColors.primaryYellow,
+
           appBarTheme: const AppBarTheme(
-            surfaceTintColor:
-                Colors.transparent, // Remove o escurecimento na rolagem
-            backgroundColor: AppColors.primaryYellow,
+            surfaceTintColor: Colors.transparent,
+            backgroundColor:
+                AppColors.primaryYellow,
           ),
         ),
+
         home: const SplashPage(),
       ),
     );

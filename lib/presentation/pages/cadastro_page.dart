@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
 import 'package:fics_app_new/presentation/utility/color.dart';
+
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
 import '../components/fic_counter.dart';
@@ -12,11 +13,16 @@ class CadastroPage extends StatefulWidget {
   const CadastroPage({super.key});
 
   @override
-  State<CadastroPage> createState() => _CadastroPageState();
+  State<CadastroPage> createState() =>
+      _CadastroPageState();
 }
 
-class _CadastroPageState extends State<CadastroPage> {
-  final TextEditingController nomeController = TextEditingController();
+class _CadastroPageState
+    extends State<CadastroPage> {
+
+  final TextEditingController nomeController =
+      TextEditingController();
+
   int acompanhantes = 0;
 
   @override
@@ -27,69 +33,127 @@ class _CadastroPageState extends State<CadastroPage> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<PessoaViewModel>(context, listen: false);
+
+    final vm = context.watch<PessoaViewModel>();
 
     return Scaffold(
-      appBar: const FicAppBar(title: "Cadastro de\nParticipante"),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FicTextField(
-              label: "Nome do Responsável",
-              controller: nomeController,
-              hintText: "Digite o nome completo",
-            ),
-            const SizedBox(height: 30),
-            const Text(
-              "QUANTIDADE DE ACOMPANHANTES",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-                color: AppColors.text,
+      appBar: const FicAppBar(
+        title: "Cadastro de\nParticipante",
+      ),
+
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+
+          child: Column(
+            children: [
+
+              /// CONTEÚDO CENTRALIZADO
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+
+                    children: [
+
+                      /// NOME
+                      FicTextField(
+                        label: "Nome do Responsável",
+                        controller: nomeController,
+                        hintText:
+                            "Digite o nome completo",
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      /// ACOMPANHANTES
+                      const Text(
+                        "QUANTIDADE DE ACOMPANHANTES",
+                        style: TextStyle(
+                          fontWeight:
+                              FontWeight.bold,
+                          fontSize: 12,
+                          color: AppColors.text,
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      FicCounter(
+                        value: acompanhantes,
+
+                        onChanged: (newValue) {
+                          if (newValue >= 0) {
+                            setState(() {
+                              acompanhantes =
+                                  newValue;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            FicCounter(
-              value: acompanhantes,
-              onChanged: (newValue) {
-                if (newValue >= 0) {
-                  setState(() => acompanhantes = newValue);
-                }
-              },
-            ),
-            const Spacer(),
-            FicButton(
-              label: "Cadastrar",
-              onPressed: () async {
-                if (nomeController.text.trim().isEmpty) {
-                  FicFeedback.show(context,
-                      message: "Por favor, digite o nome do responsável.",
-                      type: FeedbackType.error);
-                  return;
-                }
 
-                try {
-                  await vm.adicionarPessoa(
-                      nomeController.text.trim(), acompanhantes);
+              /// BOTÃO FIXO NO FINAL
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 24,
+                ),
 
-                  if (context.mounted) {
-                    FicFeedback.show(context,
-                        message: "Participante cadastrado com sucesso!",
-                        type: FeedbackType.success);
-                    Navigator.pop(context);
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    FicFeedback.show(context,
-                        message: "Erro ao cadastrar: $e",
-                        type: FeedbackType.error);
-                  }
-                }
-              },
-            ),
-          ],
+                child: FicButton(
+                  label: "Cadastrar",
+                  isLoading: vm.isLoading,
+                  onPressed: vm.isLoading
+                      ? null
+                      : () async {
+
+                          try {
+
+                            await vm.adicionarPessoa(
+                              nomeController.text,
+                              acompanhantes,
+                            );
+
+                            if (!context.mounted) {
+                              return;
+                            }
+
+                            FicFeedback.show(
+                              context,
+                              message:
+                                  "Participante cadastrado com sucesso!",
+                              type:
+                                  FeedbackType.success,
+                            );
+
+                            Navigator.pop(context);
+
+                          } catch (e) {
+
+                            if (!context.mounted) {
+                              return;
+                            }
+
+                            FicFeedback.show(
+                              context,
+                              message:
+                                  e.toString().replaceAll(
+                                        "Exception: ",
+                                        "",
+                                      ),
+                              type:
+                                  FeedbackType.error,
+                            );
+                          }
+                        },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

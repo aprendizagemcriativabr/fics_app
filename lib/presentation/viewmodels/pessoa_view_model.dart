@@ -157,13 +157,52 @@ class PessoaViewModel extends ChangeNotifier {
     await carregar();
   }
 
-  Future<void> adicionarPessoa(String nome, int acompanhantes) async {
-    final pessoa = Pessoa(
-      nome: nome,
-      acompanhantes: acompanhantes,
-      confirmado: true,
+  Future<void> adicionarPessoa(
+    String nome,
+    int acompanhantes,
+  ) async {
+
+    final nomeLimpo = nome.trim();
+
+    /// VALIDAÇÃO
+    if (nomeLimpo.isEmpty) {
+      throw Exception(
+        "Digite o nome do responsável.",
+      );
+    }
+
+    /// EVITA DUPLICADOS
+    final jaExiste = todasPessoas.any(
+      (p) =>
+          p.nome.toLowerCase() ==
+          nomeLimpo.toLowerCase(),
     );
-    await addPessoa(pessoa);
-    await carregar();
+
+    if (jaExiste) {
+      throw Exception(
+        "Já existe um participante com esse nome.",
+      );
+    }
+
+    isLoading = true;
+    notifyListeners();
+
+    try {
+
+      final pessoa = Pessoa(
+        nome: nomeLimpo,
+        acompanhantes: acompanhantes,
+        confirmado: true,
+      );
+
+      await addPessoa(pessoa);
+
+      await carregar();
+
+    } finally {
+
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }

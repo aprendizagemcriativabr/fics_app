@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
 
                 // Botão de Validação
                 FicButton(
-                  label: "Validação de Pré-Cadastro",
+                  label: "Pré-cadastrados",
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const ListaPage()),
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
 
                 // Cadastro de Participante
                 FicButton(
-                  label: "Cadastro de Participante",
+                  label: "Cadastro no Local",
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const CadastroPage()),
@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
 
                 // Receber Dados
                 FicButton(
-                  label: "Receber Dados",
+                  label: "Importar Planilha",
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const ReceberDadosPage()),
@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
 
                 // Enviar Dados
                 FicButton(
-                  label: "Enviar Dados",
+                  label: "Encerrar FICS",
                   onPressed: () {
                     // Lógica para mandar pro Sheets
                   },
