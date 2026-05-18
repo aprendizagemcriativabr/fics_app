@@ -1,0 +1,129 @@
+[
+  {
+    "id": "pre_cadastro",
+    "title": "PRÉ-CADASTRADOS",
+    "subtitle": "Valide participantes importados da planilha",
+    "icon": "how_to_reg_rounded",
+    "faqs": [
+      "Como validar ou fazer check-in um participante?",
+      "Como marcar presença?",
+      "Como pesquisar um nome?",
+      "Como filtrar a lista?"
+    ],
+    "steps": [
+      {
+        "icon": "touch_app_rounded",
+        "title": "Acesse \"Pré-cadastrados\"",
+        "description": "Na tela inicial, toque no botão \"PRÉ-CADASTRADOS\" para ver a lista de pessoas que foram importadas via planilha."
+      },
+      {
+        "icon": "search_rounded",
+        "title": "Pesquise pelo nome",
+        "description": "Use o campo de busca no topo para encontrar rapidamente um participante pelo nome. A busca filtra em tempo real."
+      },
+      {
+        "icon": "filter_alt_rounded",
+        "title": "Use os filtros (opcional)",
+        "description": "Toque no ícone de funil no canto superior direito para filtrar por status: todos, validados ou pendentes."
+      },
+      {
+        "icon": "check_circle_rounded",
+        "title": "Confirme a presença",
+        "description": "Encontrou o participante? Toque no ícone de check verde ao lado do nome para confirmar a entrada."
+      }
+    ]
+  },
+  {
+    "id": "cadastro_local",
+    "title": "CADASTRO NO LOCAL",
+    "subtitle": "Cadastre novos participantes na hora",
+    "icon": "person_add_rounded",
+    "faqs": [
+      "Como cadastrar alguém no evento?",
+      "Como adicionar acompanhantes?",
+      "Pessoa não está na lista, e agora?"
+    ],
+    "steps": [
+      {
+        "icon": "touch_app_rounded",
+        "title": "Acesse \"Cadastro no Local\"",
+        "description": "Na tela inicial, toque em \"CADASTRO NO LOCAL\"."
+      },
+      {
+        "icon": "person_rounded",
+        "title": "Informe o nome",
+        "description": "Digite o nome completo do participante."
+      },
+      {
+        "icon": "group_rounded",
+        "title": "Informe os acompanhantes",
+        "description": "Use o contador para indicar acompanhantes."
+      },
+      {
+        "icon": "save_rounded",
+        "title": "Salve o cadastro",
+        "description": "Toque no botão \"Cadastrar\" para salvar."
+      }
+    ]
+  },
+  {
+    "id": "importar_planilha",
+    "title": "IMPORTAR PLANILHA",
+    "subtitle": "Carregue a lista via Excel",
+    "icon": "upload_file_rounded",
+    "faqs": [
+      "Como importar os dados?",
+      "Qual formato de planilha usar?",
+      "Como preparar o arquivo Excel?"
+    ],
+    "steps": [
+      {
+        "icon": "table_chart_rounded",
+        "title": "Prepare a planilha",
+        "description": "O arquivo deve estar no formato .xlsx."
+      },
+      {
+        "icon": "touch_app_rounded",
+        "title": "Acesse \"Importar Planilha\"",
+        "description": "Na tela inicial, toque no ícone de upload (seta para cima)."
+      },
+      {
+        "icon": "upload_rounded",
+        "title": "Selecione o arquivo",
+        "description": "Escolha o arquivo .xlsx."
+      },
+      {
+        "icon": "download_done_rounded",
+        "title": "Confirme a importação",
+        "description": "Toque em \"RECEBER\"."
+      }
+    ]
+  },
+  {
+    "id": "encerrar",
+    "title": "ENCERRAR FICS",
+    "subtitle": "Finalize o evento",
+    "icon": "lock_rounded",
+    "faqs": [
+      "Como encerrar o evento?",
+      "Como exportar os dados ao final?"
+    ],
+    "steps": [
+      {
+        "icon": "checklist_rounded",
+        "title": "Confirme que tudo está pronto",
+        "description": "Verifique os participantes antes de encerrar."
+      },
+      {
+        "icon": "lock_rounded",
+        "title": "Toque em \"Encerrar FICS\"",
+        "description": "Na tela inicial, toque no botão."
+      },
+      {
+        "icon": "check_circle_outline_rounded",
+        "title": "Confirme o encerramento",
+        "description": "Leia o aviso e confirme."
+      }
+    ]
+  }
+]

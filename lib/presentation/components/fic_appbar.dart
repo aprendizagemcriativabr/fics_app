@@ -9,12 +9,16 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
 
   /// actions extras
+  final VoidCallback? onBack;
+
+  /// substitui o comportamento padrão do botão voltar
 
   const FicAppBar({
     super.key,
     required this.title,
     this.onFilterPressed,
     this.actions,
+    this.onBack,
   });
 
   @override
@@ -30,7 +34,7 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
           Icons.arrow_back_ios_new,
           color: AppColors.text,
         ),
-        onPressed: () => Navigator.pop(context),
+        onPressed: onBack ?? () => Navigator.pop(context),
       ),
       title: Padding(
         padding: const EdgeInsets.only(top: 20),

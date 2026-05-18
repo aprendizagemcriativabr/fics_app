@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'lista_page.dart';
 import 'cadastro_page.dart';
 import 'checkins_page.dart';
+import 'tutorial_page.dart';
 import '../components/fic_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
                   width: screenWidth * 0.6,
                   fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 12),
 
                 // Botão de Validação
                 FicButton(
@@ -35,7 +36,7 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const ListaPage()),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
 
                 // Cadastro de Participante
                 FicButton(
@@ -45,7 +46,7 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const CadastroPage()),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
 
                 // Visualizar todos os Checkins feitos
                 FicButton(
@@ -55,7 +56,7 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const CheckinsPage()),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
 
                 // Receber Dados
                 FicButton(
@@ -65,7 +66,7 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const ReceberDadosPage()),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
 
                 // Enviar Dados
                 FicButton(
@@ -73,6 +74,16 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     // Lógica para mandar pro Sheets
                   },
+                ),
+                const SizedBox(height: 12),
+
+                // Tutorial e Ajuda
+                FicButton(
+                  label: "Tutorial e Ajuda",
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => TutorialPage()),
+                  ),
                 ),
               ],
             ),
