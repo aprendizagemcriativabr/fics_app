@@ -3,25 +3,31 @@ import '../utility/color.dart';
 
 class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final VoidCallback? onFilterPressed; // Adicionado para controlar o clique no filtro
+  final VoidCallback? onFilterPressed; /// botão de filtro
+  final List<Widget>? actions; /// actions extras
 
   const FicAppBar({
-    super.key, 
-    required this.title, 
+    super.key,
+    required this.title,
     this.onFilterPressed,
+    this.actions,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.primaryYellow,
+      backgroundColor:AppColors.primaryYellow,
       elevation: 0,
       centerTitle: true,
       toolbarHeight: 100,
       leading: IconButton(
         padding: const EdgeInsets.only(top: 10),
-        icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.text),
-        onPressed: () => Navigator.pop(context),
+        icon: const Icon(
+          Icons.arrow_back_ios_new,
+          color: AppColors.text,
+        ),
+        onPressed: () =>
+            Navigator.pop(context),
       ),
       title: Padding(
         padding: const EdgeInsets.only(top: 20),
@@ -36,17 +42,26 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      
-      // Adicionado a lista de actions para incluir o ícone de filtro
+
+      /// ACTIONS
       actions: [
+        /// FILTRO
         if (onFilterPressed != null)
           Padding(
-            padding: const EdgeInsets.only(top: 10, right: 10),
+            padding: const EdgeInsets.only(top: 10, right: 4),
             child: IconButton(
-              icon: const Icon(Icons.filter_alt, color: AppColors.text, size: 35),
+              icon: const Icon(
+                Icons.filter_alt,
+                color: AppColors.text,
+                size: 35,
+              ),
               onPressed: onFilterPressed,
             ),
           ),
+
+        /// ACTIONS EXTRAS
+        if (actions != null)
+          ...actions!,
       ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(20),

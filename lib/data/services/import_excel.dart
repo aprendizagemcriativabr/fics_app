@@ -8,12 +8,10 @@ class ImportService {
     var excel = Excel.decodeBytes(bytes);
     List<Pessoa> novosCadastros = [];
 
-    // Assume que os dados estão na primeira aba (Sheet1)
     for (var table in excel.tables.keys) {
       var sheet = excel.tables[table];
       if (sheet == null) continue;
 
-      // Pula a primeira linha (cabeçalho: Nome | Acompanhantes)
       for (int i = 1; i < sheet.maxRows; i++) {
         var row = sheet.rows[i];
         if (row[0] != null) {

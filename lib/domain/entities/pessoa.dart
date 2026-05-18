@@ -2,11 +2,14 @@ class Pessoa {
   final String nome;
   final int acompanhantes;
   final bool confirmado;
+  final String? horaEntrada; 
+  final bool preCadastro;
 
   Pessoa({
     required this.nome,
     required this.acompanhantes,
-    this.confirmado =
-        false, // Por padrão, a pessoa não está com o checkin feito
+    this.confirmado = false, 
+    this.horaEntrada,
+    this.preCadastro = false,
   });
 }

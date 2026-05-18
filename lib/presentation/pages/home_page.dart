@@ -2,6 +2,7 @@ import 'package:fics_app_new/presentation/pages/receber_dados_page.dart';
 import 'package:flutter/material.dart';
 import 'lista_page.dart';
 import 'cadastro_page.dart';
+import 'checkins_page.dart';
 import '../components/fic_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -42,6 +43,16 @@ class HomePage extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const CadastroPage()),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Visualizar todos os Checkins feitos
+                FicButton(
+                  label: "Visualizar Check-ins",
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CheckinsPage()),
                   ),
                 ),
                 const SizedBox(height: 24),

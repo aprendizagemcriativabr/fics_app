@@ -20,19 +20,25 @@ class PessoaModelAdapter extends TypeAdapter<PessoaModel> {
       nome: fields[0] as String,
       acompanhantes: fields[1] as int,
       confirmado: fields[2] as bool,
+      horaEntrada: fields[3] as String?,
+      preCadastro: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PessoaModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.nome)
       ..writeByte(1)
       ..write(obj.acompanhantes)
       ..writeByte(2)
-      ..write(obj.confirmado);
+      ..write(obj.confirmado)
+      ..writeByte(3)
+      ..write(obj.horaEntrada)
+      ..writeByte(4)
+      ..write(obj.preCadastro);
   }
 
   @override

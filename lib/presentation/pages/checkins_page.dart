@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
+import 'package:fics_app_new/presentation/utility/color.dart';
+
+import '../components/fic_appbar.dart';
+import '../components/fic_search_bar.dart';
+import '../components/fic_list_tile.dart';
+
+class CheckinsPage extends StatefulWidget {
+  const CheckinsPage({super.key});
+
+  @override
+  State<CheckinsPage> createState() => _CheckinsPageState();
+}
+
+class _CheckinsPageState extends State<CheckinsPage> {
+  String filterText = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<PessoaViewModel>();
+    
+    final listaFiltrada = vm.pessoasComCheckin.where((pessoa) {
+      return pessoa.nome.toLowerCase().contains(filterText.toLowerCase());
+    }).toList();
+
+    return Scaffold(
+      backgroundColor: AppColors.primaryYellow,
+      appBar: const FicAppBar(
+        title: "Checkins\nRealizados",
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              FicSearchBar(
+                hintText: "Pesquisar por nome...",
+                onChanged: (value) {
+                  setState(() {
+                    filterText = value;
+                  });
+                },
+              ),
+
+              Expanded(
+                child: listaFiltrada.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "Nenhum check-in encontrado",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.text,
+                          ),
+                        ),
+                      )
+                    : ListView.separated(
+                        itemCount: listaFiltrada.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 5),
+                        itemBuilder: (context, index) {
+                          return FicListTile(
+                            pessoa: listaFiltrada[index],
+                            isCheckinFlow: true,
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

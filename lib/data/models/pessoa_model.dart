@@ -18,19 +18,29 @@ class PessoaModel extends HiveObject implements Pessoa {
   @HiveField(2)
   bool confirmado;
 
+  @override
+  @HiveField(3)
+  String? horaEntrada;
+
+  @override
+  @HiveField(4)
+  final bool preCadastro;
+
   PessoaModel({
     required this.nome,
     required this.acompanhantes,
     this.confirmado = false,
+    this.horaEntrada,
+    this.preCadastro = false,
   });
 
-  factory PessoaModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory PessoaModel.fromJson(Map<String, dynamic> json) {
     return PessoaModel(
       nome: json['nome'],
       acompanhantes: json['acomp'],
       confirmado: json['confirmado'] ?? false,
+      horaEntrada: json['hora_entrada'],
+      preCadastro: json['pre_cadastro'] ?? true,
     );
   }
 
@@ -39,16 +49,18 @@ class PessoaModel extends HiveObject implements Pessoa {
       'nome': nome,
       'acomp': acompanhantes,
       'confirmado': confirmado,
+      'hora_entrada': horaEntrada,
+      'pre_cadastro': preCadastro,
     };
   }
 
-  factory PessoaModel.fromEntity(
-    Pessoa pessoa,
-  ) {
+  factory PessoaModel.fromEntity(Pessoa pessoa) {
     return PessoaModel(
       nome: pessoa.nome,
       acompanhantes: pessoa.acompanhantes,
       confirmado: pessoa.confirmado,
+      horaEntrada: pessoa.horaEntrada,
+      preCadastro: pessoa.preCadastro,
     );
   }
 }

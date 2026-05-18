@@ -25,6 +25,13 @@ class PessoaDataSource {
     pessoa.acompanhantes = novaQtd;
     pessoa.confirmado = true;
 
+    if (pessoa.horaEntrada == null) {
+      final agora = DateTime.now();
+      final hora = agora.hour.toString().padLeft(2, '0');
+      final minuto = agora.minute.toString().padLeft(2, '0');
+      pessoa.horaEntrada = "$hora:$minuto";
+    }
+
     await pessoa.save();
   }
 
@@ -43,6 +50,8 @@ class PessoaDataSource {
         nome: pessoa.nome,
         acompanhantes: pessoa.acompanhantes,
         confirmado: false,
+        horaEntrada: null,
+        preCadastro: true,
       );
 
       await box.add(model);
@@ -56,6 +65,8 @@ class PessoaDataSource {
       nome: pessoa.nome,
       acompanhantes: pessoa.acompanhantes,
       confirmado: pessoa.confirmado,
+      horaEntrada: pessoa.horaEntrada,
+      preCadastro: false,
     );
 
     await box.add(model);
