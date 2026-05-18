@@ -27,7 +27,7 @@ class FicSearchBar extends StatelessWidget {
         style: const TextStyle(color: AppColors.text),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(color: AppColors.text.withOpacity(0.6)),
+          hintStyle: TextStyle(color: AppColors.text.withValues(alpha: 0.6)),
           prefixIcon: const Icon(Icons.search, color: AppColors.text),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 15),
