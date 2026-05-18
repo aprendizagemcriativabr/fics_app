@@ -41,9 +41,7 @@ class PessoaViewModel extends ChangeNotifier {
     List<Pessoa> lista = todasPessoas.where((p) {
       // MOSTRA APENAS PESSOAS DO PRÉ-CADASTRO
       if (!p.preCadastro) return false;
-      final bateNome = p.nome
-          .toLowerCase()
-          .contains(_filtroNome.toLowerCase());
+      final bateNome = p.nome.toLowerCase().contains(_filtroNome.toLowerCase());
 
       bool bateStatus;
 
@@ -64,9 +62,7 @@ class PessoaViewModel extends ChangeNotifier {
     }).toList();
 
     lista.sort((a, b) {
-      return _ordemAz
-          ? a.nome.compareTo(b.nome)
-          : b.nome.compareTo(a.nome);
+      return _ordemAz ? a.nome.compareTo(b.nome) : b.nome.compareTo(a.nome);
     });
 
     return lista;
@@ -172,7 +168,6 @@ class PessoaViewModel extends ChangeNotifier {
 
       await addPessoa(pessoa);
       await carregar();
-
     } finally {
       isLoading = false;
       notifyListeners();

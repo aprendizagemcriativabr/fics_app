@@ -113,13 +113,13 @@ class _CadastroPageState extends State<CadastroPage> {
                             setState(() {
                               acompanhantes = 0;
                             });
-
                           } catch (e) {
                             if (!context.mounted) return;
 
                             FicFeedback.show(
                               context,
-                              message: e.toString().replaceAll("Exception: ", ""),
+                              message:
+                                  e.toString().replaceAll("Exception: ", ""),
                               type: FeedbackType.error,
                             );
                           }

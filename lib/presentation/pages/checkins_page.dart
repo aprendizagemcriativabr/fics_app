@@ -21,7 +21,7 @@ class _CheckinsPageState extends State<CheckinsPage> {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<PessoaViewModel>();
-    
+
     final listaFiltrada = vm.pessoasComCheckin.where((pessoa) {
       return pessoa.nome.toLowerCase().contains(filterText.toLowerCase());
     }).toList();
@@ -44,7 +44,6 @@ class _CheckinsPageState extends State<CheckinsPage> {
                   });
                 },
               ),
-
               Expanded(
                 child: listaFiltrada.isEmpty
                     ? const Center(

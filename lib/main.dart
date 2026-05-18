@@ -67,38 +67,26 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PessoaViewModel(
-            getPessoas,
-            atualizar,
-            importar,
-            addPessoa
-          )..carregar(),
+          create: (_) =>
+              PessoaViewModel(getPessoas, atualizar, importar, addPessoa)
+                ..carregar(),
         ),
       ],
-
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-
         title: 'FIC App',
-
         theme: ThemeData(
           useMaterial3: true,
-
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppColors.primaryYellow,
             primary: AppColors.primaryYellow,
           ),
-
-          scaffoldBackgroundColor:
-              AppColors.primaryYellow,
-
+          scaffoldBackgroundColor: AppColors.primaryYellow,
           appBarTheme: const AppBarTheme(
             surfaceTintColor: Colors.transparent,
-            backgroundColor:
-                AppColors.primaryYellow,
+            backgroundColor: AppColors.primaryYellow,
           ),
         ),
-
         home: const SplashPage(),
       ),
     );

@@ -128,9 +128,7 @@ class _FiltroModalState extends State<FiltroModal> {
                   isPrimary: false,
                 ),
               ),
-
               const SizedBox(width: 16),
-
               Expanded(
                 child: _buildButton(
                   "APLICAR",

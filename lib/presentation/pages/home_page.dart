@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/logo_fic.png',
-                  width: screenWidth * 0.6, 
+                  width: screenWidth * 0.6,
                   fit: BoxFit.contain,
                 ),
                 const SizedBox(height: 40),

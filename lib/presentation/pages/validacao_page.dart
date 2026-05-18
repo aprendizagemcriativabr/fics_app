@@ -39,14 +39,11 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
       appBar: const FicAppBar(
         title: "Confirmação de\nAcompanhantes",
       ),
-
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               /// TOPO FIXO
               const Text(
@@ -74,7 +71,6 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-
                     children: [
                       const Text(
                         "QUANTIDADE DE\nACOMPANHANTES",
@@ -85,9 +81,7 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
                           color: AppColors.text,
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
                       FicCounter(
                         value: qtd,
                         onChanged: (newValue) {
@@ -106,10 +100,8 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
               /// BOTÃO NO FINAL
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
-
                 child: FicButton(
                   label: "Confirmar Check-in",
-
                   onPressed: () async {
                     await vm.atualizarQtd(
                       widget.pessoa.nome,

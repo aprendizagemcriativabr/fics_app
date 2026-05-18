@@ -3,9 +3,7 @@ import '../models/pessoa_model.dart';
 import '../../domain/entities/pessoa.dart';
 
 class PessoaDataSource {
-
-  final Box<PessoaModel> box =
-      Hive.box<PessoaModel>('pessoas');
+  final Box<PessoaModel> box = Hive.box<PessoaModel>('pessoas');
 
   /// Retorna pessoas salvas localmente
   Future<List<PessoaModel>> getData() async {
@@ -17,7 +15,6 @@ class PessoaDataSource {
     String nome,
     int novaQtd,
   ) async {
-
     final pessoa = box.values.firstWhere(
       (p) => p.nome == nome,
     );
@@ -39,13 +36,11 @@ class PessoaDataSource {
   Future<void> popularDoExcel(
     List<Pessoa> novasPessoas,
   ) async {
-
     /// limpa antigos
     await box.clear();
 
     /// salva novos
     for (final pessoa in novasPessoas) {
-
       final model = PessoaModel(
         nome: pessoa.nome,
         acompanhantes: pessoa.acompanhantes,
@@ -60,7 +55,6 @@ class PessoaDataSource {
 
   /// Adiciona uma nova pessoa ao datasource
   Future<void> addPessoa(Pessoa pessoa) async {
-
     final model = PessoaModel(
       nome: pessoa.nome,
       acompanhantes: pessoa.acompanhantes,

@@ -15,20 +15,17 @@ class ReceberDadosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ReceberDadosViewModel(),
-
       child: Consumer<ReceberDadosViewModel>(
         builder: (context, vm, child) {
           return Scaffold(
             appBar: const FicAppBar(
               title: "Receber dados",
             ),
-
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40.0,
                 ),
-
                 child: Column(
                   children: [
                     /// CONTEÚDO CENTRAL
@@ -36,7 +33,6 @@ class ReceberDadosPage extends StatelessWidget {
                       child: Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-
                           children: [
                             const Text(
                               "ENVIE SUA PLANILHA",
@@ -45,14 +41,9 @@ class ReceberDadosPage extends StatelessWidget {
                                 fontSize: 18,
                               ),
                             ),
-
                             const SizedBox(height: 32),
-
                             FicFilePicker(
-                              onTap: vm.isProcessing
-                                  ? () {}
-                                  : vm.pickFile,
-
+                              onTap: vm.isProcessing ? () {} : vm.pickFile,
                               fileName: vm.fileName,
                             ),
                           ],
@@ -65,23 +56,19 @@ class ReceberDadosPage extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         bottom: 24,
                       ),
-
                       child: FicButton(
                         label: "RECEBER",
                         isLoading: vm.isProcessing,
-
                         onPressed: vm.canSubmit
                             ? () async {
                                 final pessoaVM =
                                     context.read<PessoaViewModel>();
 
                                 if (pessoaVM.todasPessoas.isNotEmpty) {
-                                  final confirmar =
-                                      await FicDialog.show(
+                                  final confirmar = await FicDialog.show(
                                     context: context,
                                     title: "Atenção",
-                                    message:
-                                        "Você já enviou uma planilha.\n\n"
+                                    message: "Você já enviou uma planilha.\n\n"
                                         "Tem certeza que deseja continuar?\n"
                                         "Os dados atuais serão substituídos.",
                                     confirmText: "SIM",
@@ -95,16 +82,13 @@ class ReceberDadosPage extends StatelessWidget {
 
                                 vm.executarImportacao(
                                   listaVM: pessoaVM,
-
                                   onSuccess: () {
                                     FicFeedback.show(
                                       context,
-                                      message:
-                                          "Dados recebidos com sucesso!",
+                                      message: "Dados recebidos com sucesso!",
                                       type: FeedbackType.success,
                                     );
                                   },
-
                                   onError: (msg) {
                                     FicFeedback.show(
                                       context,

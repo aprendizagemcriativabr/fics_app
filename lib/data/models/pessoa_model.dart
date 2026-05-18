@@ -5,7 +5,6 @@ part 'pessoa_model.g.dart';
 
 @HiveType(typeId: 0)
 class PessoaModel extends HiveObject implements Pessoa {
-
   @override
   @HiveField(0)
   final String nome;

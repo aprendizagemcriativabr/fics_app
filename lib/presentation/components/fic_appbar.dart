@@ -3,8 +3,12 @@ import '../utility/color.dart';
 
 class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final VoidCallback? onFilterPressed; /// botão de filtro
-  final List<Widget>? actions; /// actions extras
+  final VoidCallback? onFilterPressed;
+
+  /// botão de filtro
+  final List<Widget>? actions;
+
+  /// actions extras
 
   const FicAppBar({
     super.key,
@@ -16,7 +20,7 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor:AppColors.primaryYellow,
+      backgroundColor: AppColors.primaryYellow,
       elevation: 0,
       centerTitle: true,
       toolbarHeight: 100,
@@ -26,8 +30,7 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
           Icons.arrow_back_ios_new,
           color: AppColors.text,
         ),
-        onPressed: () =>
-            Navigator.pop(context),
+        onPressed: () => Navigator.pop(context),
       ),
       title: Padding(
         padding: const EdgeInsets.only(top: 20),
@@ -60,8 +63,7 @@ class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
 
         /// ACTIONS EXTRAS
-        if (actions != null)
-          ...actions!,
+        if (actions != null) ...actions!,
       ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(20),
