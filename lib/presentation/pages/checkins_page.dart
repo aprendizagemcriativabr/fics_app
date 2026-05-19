@@ -25,6 +25,7 @@ class _CheckinsPageState extends State<CheckinsPage> {
     final listaFiltrada = vm.pessoasComCheckin.where((pessoa) {
       return pessoa.nome.toLowerCase().contains(filterText.toLowerCase());
     }).toList();
+    listaFiltrada.sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
 
     return Scaffold(
       backgroundColor: AppColors.primaryYellow,
