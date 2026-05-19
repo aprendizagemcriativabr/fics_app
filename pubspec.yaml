@@ -25,9 +25,22 @@ dev_dependencies:
   mocktail: ^1.0.4  
   hive_generator: ^2.0.1
   build_runner: ^2.4.8
+  flutter_launcher_icons: ^0.13.1 
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
     - lib/data/datasources/tutorials.json
+  #  - assets/tutorials.json
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false # Deixar false já que não vamos gerar para iPhone agora
+  windows:
+    generate: true
+    image_path: "assets/images/icone_fics.png"
+
+  image_path: "assets/images/icone_fics.png"
+  adaptive_icon_background: "assets/images/icone_fics.png" 
+  adaptive_icon_foreground: "assets/images/icone_fics.png" 

@@ -46,13 +46,24 @@ class _CheckinsPageState extends State<CheckinsPage> {
               ),
               Expanded(
                 child: listaFiltrada.isEmpty
-                    ? const Center(
-                        child: Text(
-                          "Nenhum check-in encontrado",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.text,
-                          ),
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 60,
+                              color: AppColors.text.withValues(alpha: 0.7),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              "Nenhum check-in encontrado",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.text,
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     : ListView.separated(
