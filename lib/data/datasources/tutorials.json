@@ -1,0 +1,182 @@
+[
+  {
+    "id": "pre_cadastro",
+    "title": "PRÉ-CADASTRADOS",
+    "subtitle": "Valide participantes importados da planilha",
+    "icon": "how_to_reg_rounded",
+    "faqs": [
+      {
+        "question": "Como validar ou fazer check-in um participante?",
+        "answer": "Encontre o participante desejado na lista através da rolagem ou da barra de pesquisa e toque no ícone de check verde posicionado ao lado do nome.",
+        "related_flow_id": "pre_cadastro"
+      },
+      {
+        "question": "Como marcar presença?",
+        "answer": "A presença é confirmada instantaneamente ao clicar no botão de checkin do participante dentro do fluxo correspondente (pré-cadastro ou cadastro local).",
+        "related_flow_id": "pre_cadastro"
+      },
+      {
+        "question": "Como pesquisar um nome?",
+        "answer": "Utilize o campo de busca localizado no topo da tela de Pré-Cadastrados. Digite o nome ou parte dele e a listagem filtrará os resultados em tempo real.",
+        "related_flow_id": "pre_cadastro"
+      },
+      {
+        "question": "Como filtrar a lista?",
+        "answer": "Toque no ícone de funil no canto superior direito. Um menu surgirá permitindo filtrar os participantes por status (todos, validados ou pendentes).",
+        "related_flow_id": "pre_cadastro"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "touch_app_rounded",
+        "title": "Acesse \"pré-cadastrados\"",
+        "description": "Na tela inicial, toque no botão \"PRÉ-CADASTRADOS\" para ver a lista de pessoas que foram importadas via planilha."
+      },
+      {
+        "icon": "search_rounded",
+        "title": "Pesquise pelo nome (opcional)",
+        "description": "Use o campo de busca no topo para encontrar rapidamente um participante pelo nome. A busca filtra em tempo real."
+      },
+      {
+        "icon": "filter_alt_rounded",
+        "title": "Use os filtros (opcional)",
+        "description": "Toque no ícone de funil no canto superior direito para filtrar por status: todos, validados ou pendentes. Além disso, é possível ordernar a lista em A-Z ou Z-A."
+      },
+      {
+        "icon": "check_circle_rounded",
+        "title": "Confirme a presença",
+        "description": "Encontrou o participante? Toque no nome dele. Valide se o número de acompanhantes está correto e confirme o check-in."
+      }
+    ]
+  },
+  {
+    "id": "cadastro_local",
+    "title": "CADASTRO NO LOCAL",
+    "subtitle": "Cadastre novos participantes na hora",
+    "icon": "person_add_rounded",
+    "faqs": [
+      {
+        "question": "Como cadastrar alguém no evento?",
+        "answer": "Vá até à opção 'Cadastro no Local' na tela inicial, introduza o nome completo do novo participante, defina os acompanhantes se existirem e clique em salvar.",
+        "related_flow_id": "cadastro_local"
+      },
+      {
+        "question": "Como adicionar acompanhantes?",
+        "answer": "Durante o cadastro local, utilize os botões de mais (+) e menos (-) do contador digital para definir o número exato de acompanhantes que vieram com o participante.",
+        "related_flow_id": "cadastro_local"
+      },
+      {
+        "question": "Pessoa não está na lista, e agora?",
+        "answer": "Não há problema! Se o participante não veio na planilha de pré-cadastro, utilize o fluxo de 'Cadastro no Local' para registá-lo na hora.",
+        "related_flow_id": "cadastro_local"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "touch_app_rounded",
+        "title": "Acesse \"cadastro no Local\"",
+        "description": "Na tela inicial, toque no botão \"CADASTRO NO LOCAL\" para ver o formulário de cadastro."
+      },
+      {
+        "icon": "person_rounded",
+        "title": "Informe o nome",
+        "description": "Digite o nome completo do participante."
+      },
+      {
+        "icon": "group_rounded",
+        "title": "Informe os acompanhantes",
+        "description": "Use o contador para indicar a quantidade de acompanhantes. É possível deixar como zero caso não haja acompanhantes."
+      },
+      {
+        "icon": "save_rounded",
+        "title": "Salve o cadastro",
+        "description": "Toque no botão \"CADASTRAR\" para salvar."
+      },
+      {
+        "icon": "save_rounded",
+        "title": "Verifique o Check-in",
+        "description": "Volte na tela inicial, toque no botão \"VISUALIZAR CHECK-INS\" para ver todas as pessoas que realizaram check-in durante o evento."
+      }
+    ]
+  },
+  {
+    "id": "importar_planilha",
+    "title": "IMPORTAR PLANILHA",
+    "subtitle": "Carregue a lista via Excel",
+    "icon": "upload_file_rounded",
+    "faqs": [
+      {
+        "question": "Como importar os dados?",
+        "answer": "Clique no ícone de upload na tela inicial, selecione o arquivo Excel (.xlsx) guardado no seu dispositivo e confirme a operação clicando em 'RECEBER'.",
+        "related_flow_id": "importar_planilha"
+      },
+      {
+        "question": "Qual formato de planilha usar?",
+        "answer": "O sistema aceita exclusivamente ficheiros com a extensão Excel (.xlsx). Certifique-se de que o ficheiro não está corrompido antes de carregar.",
+        "related_flow_id": "importar_planilha"
+      },
+      {
+        "question": "Como preparar o arquivo Excel?",
+        "answer": "Crie uma planilha simples contendo as colunas de dados necessárias para a importação e salve-a diretamente no formato padrão do Excel (.xlsx).",
+        "related_flow_id": "importar_planilha"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "table_chart_rounded",
+        "title": "Prepare a planilha",
+        "description": "O arquivo deve estar no formato .xlsx."
+      },
+      {
+        "icon": "touch_app_rounded",
+        "title": "Acesse \"Importar Planilha\"",
+        "description": "Na tela inicial, toque no ícone de upload (seta para cima)."
+      },
+      {
+        "icon": "upload_rounded",
+        "title": "Selecione o arquivo",
+        "description": "Escolha o arquivo .xlsx."
+      },
+      {
+        "icon": "download_done_rounded",
+        "title": "Confirme a importação",
+        "description": "Toque em \"RECEBER\"."
+      }
+    ]
+  },
+  {
+    "id": "encerrar",
+    "title": "ENCERRAR FICS",
+    "subtitle": "Finalize o evento",
+    "icon": "lock_rounded",
+    "faqs": [
+      {
+        "question": "Como encerrar o evento?",
+        "answer": "Clique no botão 'Encerrar FICS' na tela de início, revise atentamente a lista de checagem final e confirme a ação de bloqueio definitivo das atividades.",
+        "related_flow_id": "encerrar"
+      },
+      {
+        "question": "Como exportar os dados ao final?",
+        "answer": "Ao efetuar o encerramento completo do evento através do botão de cadeado, o sistema compilará as informações recolhidas automaticamente.",
+        "related_flow_id": "encerrar"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "checklist_rounded",
+        "title": "Confirme que tudo está pronto",
+        "description": "Verifique os participantes antes de encerrar."
+      },
+      {
+        "icon": "lock_rounded",
+        "title": "Toque em \"Encerrar FICS\"",
+        "description": "Na tela inicial, toque no botão."
+      },
+      {
+        "icon": "check_circle_outline_rounded",
+        "title": "Confirme o encerramento",
+        "description": "Leia o aviso e confirme."
+      }
+    ]
+  }
+]
