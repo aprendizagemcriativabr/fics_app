@@ -32,7 +32,6 @@ flutter:
   assets:
     - assets/images/
     - lib/data/datasources/tutorials.json
-  #  - assets/tutorials.json
 
 flutter_launcher_icons:
   android: "launcher_icon"
