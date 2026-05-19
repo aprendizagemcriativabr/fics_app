@@ -118,7 +118,7 @@ class _FiltroModalState extends State<FiltroModal> {
             children: [
               Expanded(
                 child: _buildButton(
-                  "LIMPAR\nFILTROS",
+                  "LIMPAR",
                   () {
                     Navigator.pop(context, {
                       'status': FiltroStatus.todos,
@@ -172,7 +172,7 @@ class _FiltroModalState extends State<FiltroModal> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor:
-            isPrimary ? AppColors.secondaryYellow : Colors.grey.shade200,
+            isPrimary ? AppColors.primaryYellow : Colors.grey.shade200,
         foregroundColor: Colors.black,
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 12),
