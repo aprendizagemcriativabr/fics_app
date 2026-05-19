@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:fics_app_new/domain/entities/pessoa.dart';
 
-class ImportService {
+class ImportExcelService {
   Future<List<Pessoa>> lerPlanilha(File file) async {
     var bytes = file.readAsBytesSync();
     var excel = Excel.decodeBytes(bytes);

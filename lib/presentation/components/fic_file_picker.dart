@@ -23,7 +23,7 @@ class FicFilePicker extends StatelessWidget {
             const Icon(Icons.upload_outlined, size: 60, color: AppColors.text),
             const SizedBox(height: 16),
             Text(
-              fileName ?? "Formatos suportados: .xlsx\nAté 1 arquivo",
+              fileName ?? "Formatos suportados: .xlsx, .csv\nAté 1 arquivo",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: AppColors.text,

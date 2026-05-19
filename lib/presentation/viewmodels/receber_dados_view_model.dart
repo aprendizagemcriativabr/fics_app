@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../domain/entities/pessoa.dart';
-import '../../data/services/import_excel.dart';
+import '../../data/services/import_service.dart';
 import '../viewmodels/pessoa_view_model.dart';
 
 class ReceberDadosViewModel extends ChangeNotifier {
@@ -23,7 +23,7 @@ class ReceberDadosViewModel extends ChangeNotifier {
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['xlsx'],
+      allowedExtensions: ['xlsx', 'csv'],
     );
 
     if (result != null && result.files.single.path != null) {

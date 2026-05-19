@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fics_app_new/domain/entities/pessoa.dart';
-import 'package:fics_app_new/data/services/import_excel.dart';
+import 'package:fics_app_new/data/services/import_service.dart';
 import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
 import 'package:fics_app_new/presentation/viewmodels/receber_dados_view_model.dart';
 
@@ -45,13 +45,15 @@ void main() {
       when(() => mockPessoaVM.importarNovasPessoas(any()))
           .thenAnswer((_) async => {});
 
+      viewModel.setFileForTest(mockFile);
+
       await viewModel.executarImportacao(
         listaVM: mockPessoaVM,
         onSuccess: () => sucessoChamado = true,
         onError: (msg) {},
       );
 
-      expect(sucessoChamado, false);
+      expect(sucessoChamado, true);
     });
 
     test('executarImportacao: deve disparar erro quando a planilha está vazia',
