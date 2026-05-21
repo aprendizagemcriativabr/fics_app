@@ -4,6 +4,7 @@ import 'lista_page.dart';
 import 'cadastro_page.dart';
 import 'checkins_page.dart';
 import 'tutorial_page.dart';
+import 'planilha_final_page.dart';
 import '../components/fic_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -64,6 +65,16 @@ class HomePage extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const ReceberDadosPage()),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Exportar dados consolidados 
+                FicButton(
+                  label: "Gerar Planilha Final",
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const UnificarDadosPage()),
                   ),
                 ),
                 const SizedBox(height: 12),
