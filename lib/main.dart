@@ -16,6 +16,7 @@ import 'domain/usecases/add_pessoa.dart';
 
 // PRESENTATION
 import 'presentation/viewmodels/pessoa_view_model.dart';
+import 'presentation/viewmodels/planilha_view_model.dart';
 
 // COLORS
 import 'package:fics_app_new/presentation/utility/color.dart';
@@ -70,6 +71,9 @@ class MyApp extends StatelessWidget {
           create: (_) =>
               PessoaViewModel(getPessoas, atualizar, importar, addPessoa)
                 ..carregar(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PlanilhaViewModel.fromContext(context),
         ),
       ],
       child: MaterialApp(

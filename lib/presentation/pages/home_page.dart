@@ -1,10 +1,10 @@
-import 'package:fics_app_new/presentation/pages/receber_dados_page.dart';
 import 'package:flutter/material.dart';
 import 'lista_page.dart';
 import 'cadastro_page.dart';
 import 'checkins_page.dart';
 import 'tutorial_page.dart';
-import 'planilha_final_page.dart';
+import 'encerramento_page.dart';
+import 'receber_dados_page.dart';
 import '../components/fic_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -69,22 +69,13 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // Exportar dados consolidados 
-                FicButton(
-                  label: "Gerar Planilha Final",
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const UnificarDadosPage()),
-                  ),
-                ),
-                const SizedBox(height: 12),
-
                 // Enviar Dados
                 FicButton(
                   label: "Encerrar FICS",
-                  onPressed: () {
-                    // Lógica para mandar pro Sheets
-                  },
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => EncerramentoPage()),
+                  ),
                 ),
                 const SizedBox(height: 12),
 
