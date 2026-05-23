@@ -93,10 +93,7 @@ class PlanilhaViewModel extends ChangeNotifier {
       /// CRIA EXCEL
       final excel = Excel.createExcel();
 
-      /// REMOVE ABA PADRÃO
-      excel.delete('Sheet1');
-
-      final sheet = excel['Participantes'];
+      final sheet = excel['Sheet1'];
 
       /// CABEÇALHO
       sheet
