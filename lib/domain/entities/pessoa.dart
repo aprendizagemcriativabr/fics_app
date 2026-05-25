@@ -8,8 +8,32 @@ class Pessoa {
   Pessoa({
     required this.nome,
     required this.acompanhantes,
-    this.confirmado = false,
+    required this.confirmado,
     this.horaEntrada,
     this.preCadastro = false,
   });
+
+  Pessoa copyWith({
+    String? nome,
+    int? acompanhantes,
+    bool? confirmado,
+    String? horaEntrada,
+    bool? preCadastro,
+  }) {
+    return Pessoa(
+      nome: nome ?? this.nome,
+      acompanhantes:
+          acompanhantes ??
+          this.acompanhantes,
+      confirmado:
+          confirmado ??
+          this.confirmado,
+      horaEntrada:
+          horaEntrada ??
+          this.horaEntrada,
+      preCadastro:
+          preCadastro ??
+          this.preCadastro,
+    );
+  }
 }

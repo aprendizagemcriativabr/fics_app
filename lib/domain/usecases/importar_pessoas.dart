@@ -6,7 +6,11 @@ class ImportarPessoas {
 
   ImportarPessoas(this.repository);
 
-  Future<void> call(List<Pessoa> pessoas) async {
-    return await repository.popularDoExcel(pessoas);
+  Future<void> call(
+    List<Pessoa> pessoas,
+  ) async {
+    await repository.saveAll(
+      pessoas,
+    );
   }
 }

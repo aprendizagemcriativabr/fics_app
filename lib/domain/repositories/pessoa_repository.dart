@@ -1,8 +1,21 @@
-import 'package:fics_app_new/domain/entities/pessoa.dart';
+import '../entities/pessoa.dart';
 
 abstract class PessoaRepository {
-  Future<List<Pessoa>> getPessoas();
-  Future<void> atualizarAcompanhantes(String nome, int quantidade);
-  Future<void> popularDoExcel(List<Pessoa> pessoas);
-  Future<void> addPessoa(Pessoa pessoa);
+  Future<List<Pessoa>> getAll();
+
+  Future<void> saveAll(
+    List<Pessoa> pessoas,
+  );
+
+  Future<void> update(
+    Pessoa pessoa,
+  );
+
+  Future<Pessoa?> findByNome(
+    String nome,
+  );
+
+  Future<void> addPessoa(
+    Pessoa pessoa,
+  );
 }

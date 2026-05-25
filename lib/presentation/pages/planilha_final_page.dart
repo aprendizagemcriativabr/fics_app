@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../domain/usecases/unificar_planilhas.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
 import '../components/fic_feedback.dart';
 import '../viewmodels/unificar_planilhas_view_model.dart';
+import '../../data/services/import_service.dart';
 import '../utility/color.dart';
 import 'dart:io';
 
@@ -13,7 +15,11 @@ class UnificarDadosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => UnificarDadosViewModel(),
+      create: (_) => UnificarDadosViewModel(
+        unificarPlanilhas: UnificarPlanilhas(
+          ImportService(),
+        ),
+      ),
       child: Consumer<UnificarDadosViewModel>(
         builder: (context, vm, child) {
           return Scaffold(

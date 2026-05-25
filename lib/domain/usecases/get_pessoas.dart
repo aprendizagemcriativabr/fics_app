@@ -1,12 +1,12 @@
-import 'package:fics_app_new/domain/repositories/pessoa_repository.dart';
-import 'package:fics_app_new/domain/entities/pessoa.dart';
+import '../entities/pessoa.dart';
+import '../repositories/pessoa_repository.dart';
 
 class GetPessoas {
   final PessoaRepository repository;
 
   GetPessoas(this.repository);
 
-  Future<List<Pessoa>> call() {
-    return repository.getPessoas();
+  Future<List<Pessoa>> call() async {
+    return await repository.getAll();
   }
 }

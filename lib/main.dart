@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'data/datasources/pessoa_datasource.dart';
 import 'data/repositories/pessoa_repository_impl.dart';
 import 'data/models/pessoa_model.dart';
+import 'data/mappers/pessoa_model_mapper.dart';
 
 // DOMAIN
 import 'domain/usecases/get_pessoas.dart';
@@ -31,28 +32,55 @@ Future<void> main() async {
 
   await Hive.openBox<PessoaModel>('pessoas');
 
-  /// DEPENDÊNCIAS
+  /// DATASOURCE
   final dataSource = PessoaDataSource();
-  final repository = PessoaRepositoryImpl(dataSource);
-  final getPessoas = GetPessoas(repository);
-  final atualizar = AtualizarAcompanhantes(repository);
-  final importar = ImportarPessoas(repository);
-  final addPessoas = AddPessoa(repository);
+
+  /// MAPPER
+  final mapper = PessoaModelMapper();
+
+  /// REPOSITORY
+  final repository = PessoaRepositoryImpl(
+    datasource: dataSource,
+    mapper: mapper,
+  );
+
+  /// USECASES
+  final getPessoas =
+      GetPessoas(repository);
+
+  final atualizar =
+      AtualizarAcompanhantes(
+    repository,
+  );
+
+  final importar =
+      ImportarPessoas(
+    repository,
+  );
+
+  final addPessoa =
+      AddPessoa(
+    repository,
+  );
 
   runApp(
     MyApp(
       getPessoas: getPessoas,
       atualizar: atualizar,
       importar: importar,
-      addPessoa: addPessoas,
+      addPessoa: addPessoa,
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final GetPessoas getPessoas;
-  final AtualizarAcompanhantes atualizar;
+
+  final AtualizarAcompanhantes
+      atualizar;
+
   final ImportarPessoas importar;
+
   final AddPessoa addPessoa;
 
   const MyApp({
@@ -67,30 +95,56 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+
+        /// PESSOAS
         ChangeNotifierProvider(
-          create: (_) =>
-              PessoaViewModel(getPessoas, atualizar, importar, addPessoa)
-                ..carregar(),
+          create: (_) => PessoaViewModel(
+            getPessoas,
+            atualizar,
+            importar,
+            addPessoa,
+          )..carregar(),
         ),
+
+        /// PLANILHA
         ChangeNotifierProvider(
-          create: (context) => PlanilhaViewModel.fromContext(context),
+          create: (_) => PlanilhaViewModel(
+            getPessoas,
+          ),
         ),
       ],
+
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner:
+            false,
+
         title: 'FIC App',
+
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primaryYellow,
-            primary: AppColors.primaryYellow,
+
+          colorScheme:
+              ColorScheme.fromSeed(
+            seedColor:
+                AppColors.primaryYellow,
+
+            primary:
+                AppColors.primaryYellow,
           ),
-          scaffoldBackgroundColor: AppColors.primaryYellow,
-          appBarTheme: const AppBarTheme(
-            surfaceTintColor: Colors.transparent,
-            backgroundColor: AppColors.primaryYellow,
+
+          scaffoldBackgroundColor:
+              AppColors.primaryYellow,
+
+          appBarTheme:
+              const AppBarTheme(
+            surfaceTintColor:
+                Colors.transparent,
+
+            backgroundColor:
+                AppColors.primaryYellow,
           ),
         ),
+
         home: const SplashPage(),
       ),
     );

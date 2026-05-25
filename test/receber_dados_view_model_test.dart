@@ -8,10 +8,9 @@ import 'package:fics_app_new/presentation/viewmodels/receber_dados_view_model.da
 
 // Mocks
 class MockImportService extends Mock implements ImportService {}
-
 class MockPessoaViewModel extends Mock implements PessoaViewModel {}
-
 class MockFile extends Mock implements File {}
+class FakePessoa extends Fake implements Pessoa {}
 
 void main() {
   late ReceberDadosViewModel viewModel;
@@ -19,24 +18,28 @@ void main() {
   late MockPessoaViewModel mockPessoaVM;
   late MockFile mockFile;
 
+  setUpAll(() {
+    registerFallbackValue(MockFile());
+    registerFallbackValue(FakePessoa());
+  });
+
   setUp(() {
     mockImportService = MockImportService();
     mockPessoaVM = MockPessoaViewModel();
     mockFile = MockFile();
     viewModel = ReceberDadosViewModel(importService: mockImportService);
-
-    registerFallbackValue(mockFile);
+    when(() => mockFile.path).thenReturn('caminho/do/arquivo/planilha.xlsx');
   });
 
   group('ReceberDadosViewModel -', () {
     test('deve inicializar com valores padrão', () {
       expect(viewModel.selectedFile, null);
       expect(viewModel.isProcessing, false);
+      expect(viewModel.fileName, null);
     });
 
-    test('executarImportacao: deve disparar sucesso quando planilha tem dados',
-        () async {
-      final tPessoas = [Pessoa(nome: 'Teste', acompanhantes: 1)];
+    test('executarImportacao: deve disparar sucesso quando planilha tem dados', () async {
+      final tPessoas = [Pessoa(nome: 'Teste', acompanhantes: 1, confirmado: true)];
       bool sucessoChamado = false;
 
       // Stubbing
@@ -54,27 +57,23 @@ void main() {
       );
 
       expect(sucessoChamado, true);
+      expect(viewModel.isProcessing, false);
     });
 
-    test('executarImportacao: deve disparar erro quando a planilha está vazia',
-        () async {
+    test('executarImportacao: deve disparar erro quando a planilha está vazia', () async {
       String? mensagemErro;
 
-      // 1. Preparamos o mock do arquivo e do serviço
       when(() => mockImportService.lerPlanilha(any()))
           .thenAnswer((_) async => []);
 
-      // 2. O PULO DO GATO: Injetamos o arquivo mockado
       viewModel.setFileForTest(mockFile);
 
-      // 3. Agora sim, executamos
       await viewModel.executarImportacao(
         listaVM: mockPessoaVM,
         onSuccess: () {},
         onError: (msg) => mensagemErro = msg,
       );
 
-      // 4. Verificações
       expect(mensagemErro, contains("Exception: Planilha vazia"));
       expect(viewModel.isProcessing, false);
     });

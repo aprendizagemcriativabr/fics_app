@@ -1,28 +1,52 @@
 import 'dart:io';
+
 import 'package:excel/excel.dart';
 import 'package:fics_app_new/domain/entities/pessoa.dart';
 
 class ImportExcelService {
   Future<List<Pessoa>> lerPlanilha(File file) async {
-    var bytes = file.readAsBytesSync();
-    var excel = Excel.decodeBytes(bytes);
-    List<Pessoa> novosCadastros = [];
+    final bytes = file.readAsBytesSync();
 
-    for (var table in excel.tables.keys) {
-      var sheet = excel.tables[table];
+    final excel = Excel.decodeBytes(bytes);
+
+    final List<Pessoa> novosCadastros = [];
+
+    for (final table in excel.tables.keys) {
+      final sheet = excel.tables[table];
+
       if (sheet == null) continue;
 
       for (int i = 1; i < sheet.maxRows; i++) {
-        var row = sheet.rows[i];
-        if (row[0] != null) {
-          novosCadastros.add(Pessoa(
-            nome: row[0]?.value.toString() ?? "",
-            acompanhantes: int.tryParse(row[1]?.value.toString() ?? "0") ?? 0,
-            confirmado: false,
-          ));
+        final row = sheet.rows[i];
+
+        /// IGNORA LINHAS VAZIAS
+        if (row.isEmpty || row[0]?.value == null) {
+          continue;
         }
+
+        final nome =
+            row[0]?.value.toString().trim() ?? "";
+
+        final acompanhantes =
+            int.tryParse(
+                  row.length > 1
+                      ? row[1]?.value.toString() ?? "0"
+                      : "0",
+                ) ??
+                0;
+
+        novosCadastros.add(
+          Pessoa(
+            nome: nome,
+            acompanhantes: acompanhantes,
+            confirmado: false,
+            horaEntrada: null,
+            preCadastro: true,
+          ),
+        );
       }
     }
+
     return novosCadastros;
   }
 }

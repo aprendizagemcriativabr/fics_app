@@ -4,23 +4,14 @@ import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
-
 import '../../domain/usecases/get_pessoas.dart';
-import 'pessoa_view_model.dart';
 
 class PlanilhaViewModel extends ChangeNotifier {
   final GetPessoas getPessoas;
 
-  PlanilhaViewModel(this.getPessoas);
-
-  factory PlanilhaViewModel.fromContext(BuildContext context) {
-    final pessoaViewModel = context.read<PessoaViewModel>();
-
-    return PlanilhaViewModel(
-      pessoaViewModel.getPessoas,
-    );
-  }
+  PlanilhaViewModel(
+    this.getPessoas,
+  );
 
   bool _isLoading = false;
   int _totalConfirmados = 0;

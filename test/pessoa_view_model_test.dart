@@ -7,15 +7,12 @@ import 'package:fics_app_new/domain/usecases/importar_pessoas.dart';
 import 'package:fics_app_new/domain/usecases/add_pessoa.dart';
 import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
 
-// Criando os Mocks (Dublês)
+// Mocks 
 class MockGetPessoas extends Mock implements GetPessoas {}
-
-class MockAtualizarAcompanhantes extends Mock
-    implements AtualizarAcompanhantes {}
-
+class MockAtualizarAcompanhantes extends Mock implements AtualizarAcompanhantes {}
 class MockImportarPessoas extends Mock implements ImportarPessoas {}
-
 class MockAddPessoa extends Mock implements AddPessoa {}
+class FakePessoa extends Fake implements Pessoa {}
 
 void main() {
   late PessoaViewModel viewModel;
@@ -23,6 +20,26 @@ void main() {
   late MockAtualizarAcompanhantes mockAtualizar;
   late MockImportarPessoas mockImportar;
   late MockAddPessoa mockAdd;
+
+  final tPessoaPreCadastro = Pessoa(
+    nome: 'Izabella',
+    acompanhantes: 50,
+    preCadastro: true, // vindo de planilha
+    confirmado: false,
+  );
+  
+  final tPessoaLocal = Pessoa(
+    nome: 'Carlos',
+    acompanhantes: 2,
+    preCadastro: false, // cadastro manual
+    confirmado: true,
+  );
+
+  final tLista = [tPessoaPreCadastro, tPessoaLocal];
+
+  setUpAll(() {
+    registerFallbackValue(FakePessoa());
+  });
 
   setUp(() {
     mockGet = MockGetPessoas();
@@ -33,58 +50,61 @@ void main() {
   });
 
   group('PessoaViewModel -', () {
-    final tPessoa = Pessoa(nome: 'Izabella', acompanhantes: 50);
-    final tLista = [tPessoa];
-
     test('deve iniciar com estado vazio e sem carregamento', () {
       expect(viewModel.todasPessoas, isEmpty);
       expect(viewModel.isLoading, false);
+      expect(viewModel.possuiPreCadastro, false); 
     });
 
-    test('carregar: deve buscar pessoas e atualizar o estado da lista',
-        () async {
-      // Arrange
-      when(() => mockGet()).thenAnswer((_) async => tLista);
+    test('carregar: deve buscar pessoas e atualizar o estado da lista', () async {
+      when(() => mockGet.call()).thenAnswer((_) async => tLista);
 
-      // Act
       final future = viewModel.carregar();
 
-      // Assert: Verifica se isLoading ficou true logo após a chamada
       expect(viewModel.isLoading, true);
 
       await future;
 
       expect(viewModel.todasPessoas, tLista);
       expect(viewModel.isLoading, false);
-      verify(() => mockGet()).called(1);
+      verify(() => mockGet.call()).called(1);
     });
 
-    test('importarNovasPessoas: deve chamar o usecase e recarregar a lista',
-        () async {
+    test('possuiPreCadastro: deve identificar corretamente se há dados de planilha', () async {
+      when(() => mockGet.call()).thenAnswer((_) async => [tPessoaLocal]);
+      await viewModel.carregar();
+      expect(viewModel.possuiPreCadastro, false); // Local não conta como pré-cadastro
+
+      when(() => mockGet.call()).thenAnswer((_) async => tLista);
+      await viewModel.carregar();
+      expect(viewModel.possuiPreCadastro, true); // Identificou o pré-cadastro
+    });
+
+    test('importarNovasPessoas: deve chamar o usecase e recarregar a lista', () async {
       // Arrange
-      when(() => mockImportar(any())).thenAnswer((_) async => {});
-      when(() => mockGet()).thenAnswer((_) async => tLista);
+      when(() => mockImportar.call(any())).thenAnswer((_) async => {});
+      when(() => mockGet.call()).thenAnswer((_) async => tLista);
 
       // Act
       await viewModel.importarNovasPessoas(tLista);
 
       // Assert
-      verify(() => mockImportar(tLista)).called(1);
-      verify(() => mockGet()).called(1); // Garante que recarregou a lista
+      verify(() => mockImportar.call(tLista)).called(1);
+      verify(() => mockGet.call()).called(1); // Garante que recarregou a lista
       expect(viewModel.todasPessoas, tLista);
     });
 
     test('atualizarQtd: deve chamar atualizar e recarregar dados', () async {
       // Arrange
-      when(() => mockAtualizar(any(), any())).thenAnswer((_) async => {});
-      when(() => mockGet()).thenAnswer((_) async => tLista);
+      when(() => mockAtualizar.call(any(), any())).thenAnswer((_) async => {});
+      when(() => mockGet.call()).thenAnswer((_) async => tLista);
 
       // Act
       await viewModel.atualizarQtd('Izabella', 10);
 
       // Assert
-      verify(() => mockAtualizar('Izabella', 10)).called(1);
-      verify(() => mockGet()).called(1);
+      verify(() => mockAtualizar.call('Izabella', 10)).called(1);
+      verify(() => mockGet.call()).called(1);
     });
   });
 }

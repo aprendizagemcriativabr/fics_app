@@ -1,68 +1,57 @@
 import 'package:hive/hive.dart';
+
 import '../models/pessoa_model.dart';
-import '../../domain/entities/pessoa.dart';
 
 class PessoaDataSource {
   final Box<PessoaModel> box = Hive.box<PessoaModel>('pessoas');
-
-  /// Retorna pessoas salvas localmente
-  Future<List<PessoaModel>> getData() async {
+  Future<List<PessoaModel>> getAll() async {
     return box.values.toList();
   }
 
-  /// Atualiza check-in
-  Future<void> update(
-    String nome,
-    int novaQtd,
-  ) async {
-    final pessoa = box.values.firstWhere(
-      (p) => p.nome == nome,
-    );
-
-    pessoa.acompanhantes = novaQtd;
-    pessoa.confirmado = true;
-
-    if (pessoa.horaEntrada == null) {
-      final agora = DateTime.now();
-      final hora = agora.hour.toString().padLeft(2, '0');
-      final minuto = agora.minute.toString().padLeft(2, '0');
-      pessoa.horaEntrada = "$hora:$minuto";
-    }
-
-    await pessoa.save();
-  }
-
-  /// Importa nova planilha
-  Future<void> popularDoExcel(
-    List<Pessoa> novasPessoas,
-  ) async {
-    /// limpa antigos
+  Future<void> clear() async {
     await box.clear();
+  }
 
-    /// salva novos
-    for (final pessoa in novasPessoas) {
-      final model = PessoaModel(
-        nome: pessoa.nome,
-        acompanhantes: pessoa.acompanhantes,
-        confirmado: false,
-        horaEntrada: null,
-        preCadastro: true,
+  Future<void> save(
+    PessoaModel model,
+  ) async {
+    await box.add(model);
+  }
+
+  Future<void> saveAll(
+    List<PessoaModel> models,
+  ) async {
+    await box.addAll(models);
+  }
+
+  Future<PessoaModel?>
+      findByNome(String nome) async {
+    try {
+      return box.values.firstWhere(
+        (p) => p.nome == nome,
       );
-
-      await box.add(model);
+    } catch (_) {
+      return null;
     }
   }
 
-  /// Adiciona uma nova pessoa ao datasource
-  Future<void> addPessoa(Pessoa pessoa) async {
-    final model = PessoaModel(
-      nome: pessoa.nome,
-      acompanhantes: pessoa.acompanhantes,
-      confirmado: pessoa.confirmado,
-      horaEntrada: pessoa.horaEntrada,
-      preCadastro: false,
-    );
+  Future<void> update(
+    PessoaModel model,
+  ) async {
+    await model.save();
+  }
 
-    await box.add(model);
+  Future<void> removerPreCadastros() async {
+    final keysParaRemover = <dynamic>[];
+
+    for (final key in box.keys) {
+      final pessoa = box.get(key);
+
+      if (pessoa != null && pessoa.preCadastro == true) {
+        keysParaRemover.add(key);
+      }
+    }
+
+    await box.deleteAll(keysParaRemover);
   }
 }

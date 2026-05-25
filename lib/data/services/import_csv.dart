@@ -18,22 +18,66 @@ class ImportCsvService {
       List<Pessoa> novosCadastros = [];
       if (linhas.isEmpty) return novosCadastros;
 
-      for (int i = 0; i < linhas.length; i++) {
+      // 1. MAPEIA DINAMICAMENTE OS ÍNDICES ATRAVÉS DO CABEÇALHO (Linha 0)
+      final cabecalho = linhas[0].map((c) => c.toString().toLowerCase().trim()).toList();
+      
+      final int idxNome = cabecalho.indexWhere((c) => c == 'nome');
+      
+      final int idxAcompanhantes = cabecalho.indexWhere(
+        (c) => c == 'acompanhantes' || c == 'qte. acompanhantes'
+      );
+      
+      final int idxHora = cabecalho.indexWhere(
+        (c) => c == 'hora entrada' || c == 'horario checkin' || c == 'horário checkin'
+      );
+      
+      final int idxPre = cabecalho.indexWhere(
+        (c) => c == 'pré cadastro' || c == 'pre cadastro'
+      );
+
+      // Se não achar a coluna principal (Nome), não dá para continuar
+      if (idxNome == -1) return novosCadastros;
+
+      // 2. CONSOME OS DADOS (Começa em i = 1 para pular o cabeçalho)
+      for (int i = 1; i < linhas.length; i++) {
         var row = linhas[i];
         
-        if (row.isNotEmpty && row[0] != null && row[0].toString().trim().isNotEmpty) {
+        if (row.isNotEmpty && row.length > idxNome && row[idxNome] != null) {
+          final nome = row[idxNome].toString().trim();
           
-          final nome = row[0].toString().trim();
-          int acompanhantes = 0;
+          // Ignora linhas vazias ou a linha de TOTAL GERAL da planilha unificada
+          if (nome.isEmpty || nome.toUpperCase() == 'TOTAL GERAL') continue;
 
-          if (row.length > 1 && row[1] != null) {
-            acompanhantes = int.tryParse(row[1].toString().trim()) ?? 0;
+          // Captura Acompanhantes
+          int acompanhantes = 0;
+          if (idxAcompanhantes != -1 && idxAcompanhantes < row.length && row[idxAcompanhantes] != null) {
+            acompanhantes = int.tryParse(row[idxAcompanhantes].toString().trim()) ?? 0;
+          }
+
+          // Captura Hora de Entrada
+          String? horaEntrada;
+          if (idxHora != -1 && idxHora < row.length && row[idxHora] != null) {
+            final valorHora = row[idxHora].toString().trim();
+            if (valorHora.isNotEmpty && valorHora != '--:--') {
+              horaEntrada = valorHora;
+            }
+          }
+
+          // Captura Pré-Cadastro de forma correta (Tratando o "Sim"/"Não")
+          bool preCadastro = false;
+          if (idxPre != -1 && idxPre < row.length && row[idxPre] != null) {
+            final valorPre = row[idxPre].toString().toLowerCase().trim();
+            if (valorPre == 'sim' || valorPre == 'true') {
+              preCadastro = true;
+            }
           }
 
           novosCadastros.add(Pessoa(
             nome: nome,
             acompanhantes: acompanhantes,
-            confirmado: false,
+            confirmado: horaEntrada != null, // Se tem horário válido, está confirmado
+            horaEntrada: horaEntrada,
+            preCadastro: preCadastro,
           ));
         }
       }

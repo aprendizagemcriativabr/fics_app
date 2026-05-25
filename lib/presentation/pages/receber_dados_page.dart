@@ -63,8 +63,7 @@ class ReceberDadosPage extends StatelessWidget {
                             ? () async {
                                 final pessoaVM =
                                     context.read<PessoaViewModel>();
-
-                                if (pessoaVM.todasPessoas.isNotEmpty) {
+                                if (pessoaVM.possuiPreCadastro) {
                                   final confirmar = await FicDialog.show(
                                     context: context,
                                     title: "Atenção",

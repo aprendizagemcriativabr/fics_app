@@ -75,6 +75,9 @@ class PessoaViewModel extends ChangeNotifier {
   String get filtroNome => _filtroNome;
   bool get possuiDados => todasPessoas.isNotEmpty;
 
+  /// NOVO: Retorna verdadeiro apenas se houver registros vindos de planilha (pré-cadastro)
+  bool get possuiPreCadastro => todasPessoas.any((p) => p.preCadastro == true);
+
   // --- FILTROS ---
   void atualizarBuscaNome(String nome) {
     _filtroNome = nome;

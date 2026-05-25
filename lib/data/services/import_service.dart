@@ -10,7 +10,6 @@ class ImportService {
   Future<List<Pessoa>> lerPlanilha(File file) async {
     final caminho = file.path.toLowerCase();
 
-    // O serviço decide de forma transparente quem vai ler o arquivo
     if (caminho.endsWith('.csv')) {
       return await _csvService.lerPlanilha(file);
     } else {
