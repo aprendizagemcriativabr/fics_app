@@ -4,6 +4,7 @@ import '../../domain/usecases/get_pessoas.dart';
 import '../../domain/usecases/atualizar_acompanhantes.dart';
 import '../../domain/usecases/importar_pessoas.dart';
 import '../../domain/usecases/add_pessoa.dart';
+import '../../domain/usecases/deletar_pessoas.dart'; 
 
 /// Enum para definir os estados de filtragem por status
 enum FiltroStatus {
@@ -17,12 +18,14 @@ class PessoaViewModel extends ChangeNotifier {
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
+  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase; // ADICIONADO
 
   PessoaViewModel(
     this.getPessoas,
     this.atualizar,
     this.importar,
     this.addPessoa,
+    this.deletarTodasPessoasUseCase, // ADICIONADO
   );
 
   // --- ESTADO PRIVADO ---
@@ -171,6 +174,29 @@ class PessoaViewModel extends ChangeNotifier {
 
       await addPessoa(pessoa);
       await carregar();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // --- LIMPAR TODOS OS DADOS DO FICS ---
+  Future<void> apagarTodosOsDados() async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      // 1. Executa o use case que limpa fisicamente o box do Hive
+      await deletarTodasPessoasUseCase.execute();
+      
+      // 2. Limpa de forma imediata a lista que está em memória
+      todasPessoas.clear();
+      
+      // 3. Atualiza o estado chamando o carregar novamente (opcional, mas garante integridade)
+      await carregar();
+    } catch (e) {
+      debugPrint("Erro ao apagar dados do FICS: $e");
+      rethrow;
     } finally {
       isLoading = false;
       notifyListeners();

@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
 import '../components/fic_feedback.dart'; // Importado para manter o padrão visual de erros
+import '../components/fic_dialog.dart'; // IMPORTADO O COMPONENTE DE ALERTA
 import '../utility/color.dart';
 import '../viewmodels/planilha_view_model.dart';
+import '../viewmodels/pessoa_view_model.dart'; // IMPORTADO PARA ACESSAR A LIMPEZA DE DADOS
 import 'planilha_final_page.dart';
 
 class EncerramentoPage extends StatefulWidget {
@@ -49,6 +51,8 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<PlanilhaViewModel>();
+    // Escuta o PessoaViewModel para identificar carregamentos na deleção
+    final pessoaViewModel = context.watch<PessoaViewModel>(); 
 
     return Scaffold(
       backgroundColor: AppColors.primaryYellow,
@@ -113,27 +117,26 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                   children: [
                     /// BAIXAR PLANILHA
                     FicButton(
-                      label: viewModel.isLoading ? "PROCESSANDO..." : "BAIXAR PLANILHA",
-                      onPressed: viewModel.isLoading
-                          ? null
-                          : () async {
-                              await viewModel.exportarPlanilhaParticipantes(
-                                onSuccess: () {
-                                  FicFeedback.show(
-                                    context,
-                                    message: 'Planilha baixada com sucesso!',
-                                    type: FeedbackType.success,
-                                  );
-                                },
-                                onError: (erro) {
-                                  FicFeedback.show(
-                                    context,
-                                    message: erro,
-                                    type: FeedbackType.error,
-                                  );
-                                },
-                              );
-                            },
+                      label: "BAIXAR PLANILHA",
+                      isLoading: viewModel.isLoading,
+                      onPressed: () async {
+                        await viewModel.exportarPlanilhaParticipantes(
+                          onSuccess: () {
+                            FicFeedback.show(
+                              context,
+                              message: 'Planilha baixada com sucesso!',
+                              type: FeedbackType.success,
+                            );
+                          },
+                          onError: (erro) {
+                            FicFeedback.show(
+                              context,
+                              message: erro,
+                              type: FeedbackType.error,
+                            );
+                          },
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
 
@@ -147,6 +150,46 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                             builder: (_) => const UnificarDadosPage(),
                           ),
                         );
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    /// NOVO BOTAO: FINALIZAR E APAGAR DADOS DO FICS
+                    FicButton(
+                      label: "FINALIZAR E APAGAR DADOS",
+                      backgroundColor: Colors.red.shade800, // Destaque visual de ação destrutiva/crítica
+                      isLoading: pessoaViewModel.isLoading,
+                      onPressed: () async {
+                        // Exibe o componente FicDialog customizado do projeto
+                        final confirmar = await FicDialog.show(
+                          context: context,
+                          title: "ATENÇÃO!",
+                          message: "Esta ação apagará de forma permanente todos os dados cadastrados e check-ins deste dispositivo. Certifique-se de ter exportado tudo.\n\nDeseja continuar?",
+                          confirmText: "SIM, APAGAR",
+                          cancelText: "NÃO",
+                        );
+
+                        if (confirmar == true) {
+                          try {
+                            await pessoaViewModel.apagarTodosOsDados();
+                            // Atualiza a contagem da tela atual também
+                            await viewModel.inicializarTela();
+
+                            if (!context.mounted) return;
+                            FicFeedback.show(
+                              context,
+                              message: "Dados do FICS apagados com sucesso!",
+                              type: FeedbackType.success,
+                            );
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            FicFeedback.show(
+                              context,
+                              message: "Erro ao apagar dados: $e",
+                              type: FeedbackType.error,
+                            );
+                          }
+                        }
                       },
                     ),
                   ],

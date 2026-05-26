@@ -17,6 +17,13 @@ class CheckinsPage extends StatefulWidget {
 
 class _CheckinsPageState extends State<CheckinsPage> {
   String filterText = '';
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +44,10 @@ class _CheckinsPageState extends State<CheckinsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
+              const SizedBox(height: 10),
               FicSearchBar(
-                hintText: "Pesquisar por nome...",
+                hintText: "Pesquisar participante confirmado...",
+                controller: _searchController,
                 onChanged: (value) {
                   setState(() {
                     filterText = value;

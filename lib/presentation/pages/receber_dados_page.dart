@@ -13,6 +13,8 @@ class ReceberDadosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pessoaVM = context.read<PessoaViewModel>();
+
     return ChangeNotifierProvider(
       create: (_) => ReceberDadosViewModel(),
       child: Consumer<ReceberDadosViewModel>(
@@ -23,12 +25,9 @@ class ReceberDadosPage extends StatelessWidget {
             ),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40.0,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Column(
                   children: [
-                    /// CONTEÚDO CENTRAL
                     Expanded(
                       child: Center(
                         child: Column(
@@ -38,45 +37,35 @@ class ReceberDadosPage extends StatelessWidget {
                               "ENVIE SUA PLANILHA",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
-                            const SizedBox(height: 32),
+                            const SizedBox(height: 24),
                             FicFilePicker(
-                              onTap: vm.isProcessing ? () {} : vm.pickFile,
                               fileName: vm.fileName,
+                              onTap: () => vm.pickFile(),
                             ),
                           ],
                         ),
                       ),
                     ),
-
-                    /// BOTÃO NO FINAL
                     Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 24,
-                      ),
+                      padding: const EdgeInsets.only(bottom: 24.0),
                       child: FicButton(
-                        label: "RECEBER",
+                        label: "Importar dados",
                         isLoading: vm.isProcessing,
-                        onPressed: vm.canSubmit
+                        onPressed: vm.selectedFile != null
                             ? () async {
-                                final pessoaVM =
-                                    context.read<PessoaViewModel>();
-                                if (pessoaVM.possuiPreCadastro) {
+                                if (pessoaVM.todasPessoas.isNotEmpty) {
                                   final confirmar = await FicDialog.show(
                                     context: context,
-                                    title: "Atenção",
-                                    message: "Você já enviou uma planilha.\n\n"
-                                        "Tem certeza que deseja continuar?\n"
-                                        "Os dados atuais serão substituídos.",
+                                    title: "Substituir Dados?",
+                                    message: "Já existem participantes registados. Se prosseguir, os dados atuais serão substituídos.",
                                     confirmText: "SIM",
                                     cancelText: "NÃO",
                                   );
 
-                                  if (confirmar != true) {
-                                    return;
-                                  }
+                                  if (confirmar != true) return;
                                 }
 
                                 vm.executarImportacao(

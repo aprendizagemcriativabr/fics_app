@@ -8,13 +8,14 @@ import 'data/datasources/pessoa_datasource.dart';
 import 'data/repositories/pessoa_repository_impl.dart';
 import 'data/models/pessoa_model.dart';
 import 'data/mappers/pessoa_model_mapper.dart';
-import 'data/services/share_service.dart'; // <--- Importado para injeção de dependência
+import 'data/services/share_service.dart';
 
 // DOMAIN
 import 'domain/usecases/get_pessoas.dart';
 import 'domain/usecases/atualizar_acompanhantes.dart';
 import 'domain/usecases/importar_pessoas.dart';
 import 'domain/usecases/add_pessoa.dart';
+import 'domain/usecases/deletar_pessoas.dart'; 
 
 // PRESENTATION
 import 'presentation/viewmodels/pessoa_view_model.dart';
@@ -57,12 +58,15 @@ Future<void> main() async {
 
   final addPessoa = AddPessoa(repository);
 
+  final deletarTodasPessoasUseCase = DeletarTodasPessoasUseCase(repository); // <--- ADICIONADO
+
   runApp(
     MyApp(
       getPessoas: getPessoas,
       atualizar: atualizar,
       importar: importar,
       addPessoa: addPessoa,
+      deletarTodasPessoasUseCase: deletarTodasPessoasUseCase, // <--- ADICIONADO
       shareService: shareService, // <--- Repassado para o MyApp
     ),
   );
@@ -73,6 +77,7 @@ class MyApp extends StatelessWidget {
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
+  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase; // <--- ADICIONADO
   final ShareService shareService; // <--- Declarado aqui
 
   const MyApp({
@@ -81,6 +86,7 @@ class MyApp extends StatelessWidget {
     required this.atualizar,
     required this.importar,
     required this.addPessoa,
+    required this.deletarTodasPessoasUseCase, // <--- ADICIONADO
     required this.shareService, // <--- Adicionado ao construtor
   });
 
@@ -95,6 +101,7 @@ class MyApp extends StatelessWidget {
             atualizar,
             importar,
             addPessoa,
+            deletarTodasPessoasUseCase, // <--- INJETADO COM SUCESSO AQUI
           )..carregar(),
         ),
 

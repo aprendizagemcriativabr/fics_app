@@ -46,7 +46,7 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// TOPO FIXO
-              const Text(
+              Text(
                 "NOME DO RESPONSÁVEL",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -102,6 +102,7 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
                 padding: const EdgeInsets.only(bottom: 24),
                 child: FicButton(
                   label: "Confirmar Check-in",
+                  isLoading: vm.isLoading,
                   onPressed: () async {
                     await vm.atualizarQtd(
                       widget.pessoa.nome,

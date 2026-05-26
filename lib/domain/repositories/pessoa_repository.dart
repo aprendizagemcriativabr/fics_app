@@ -18,4 +18,6 @@ abstract class PessoaRepository {
   Future<void> addPessoa(
     Pessoa pessoa,
   );
+
+  Future<void> clearAll();
 }

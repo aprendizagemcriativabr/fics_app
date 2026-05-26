@@ -82,4 +82,9 @@ class PessoaRepositoryImpl
 
     await datasource.save(model);
   }
+
+  @override
+  Future<void> clearAll() async {
+    await datasource.clear(); 
+  }
 }
