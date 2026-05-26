@@ -8,6 +8,7 @@ import 'data/datasources/pessoa_datasource.dart';
 import 'data/repositories/pessoa_repository_impl.dart';
 import 'data/models/pessoa_model.dart';
 import 'data/mappers/pessoa_model_mapper.dart';
+import 'data/services/share_service.dart'; // <--- Importado para injeção de dependência
 
 // DOMAIN
 import 'domain/usecases/get_pessoas.dart';
@@ -44,24 +45,17 @@ Future<void> main() async {
     mapper: mapper,
   );
 
+  /// SERVICES
+  final shareService = ShareService(); // <--- Instanciado aqui
+
   /// USECASES
-  final getPessoas =
-      GetPessoas(repository);
+  final getPessoas = GetPessoas(repository);
 
-  final atualizar =
-      AtualizarAcompanhantes(
-    repository,
-  );
+  final atualizar = AtualizarAcompanhantes(repository);
 
-  final importar =
-      ImportarPessoas(
-    repository,
-  );
+  final importar = ImportarPessoas(repository);
 
-  final addPessoa =
-      AddPessoa(
-    repository,
-  );
+  final addPessoa = AddPessoa(repository);
 
   runApp(
     MyApp(
@@ -69,19 +63,17 @@ Future<void> main() async {
       atualizar: atualizar,
       importar: importar,
       addPessoa: addPessoa,
+      shareService: shareService, // <--- Repassado para o MyApp
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final GetPessoas getPessoas;
-
-  final AtualizarAcompanhantes
-      atualizar;
-
+  final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
-
   final AddPessoa addPessoa;
+  final ShareService shareService; // <--- Declarado aqui
 
   const MyApp({
     super.key,
@@ -89,13 +81,13 @@ class MyApp extends StatelessWidget {
     required this.atualizar,
     required this.importar,
     required this.addPessoa,
+    required this.shareService, // <--- Adicionado ao construtor
   });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-
         /// PESSOAS
         ChangeNotifierProvider(
           create: (_) => PessoaViewModel(
@@ -110,41 +102,25 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => PlanilhaViewModel(
             getPessoas,
+            shareService, // <--- Resolvido! Injetado com sucesso no construtor atualizado
           ),
         ),
       ],
-
       child: MaterialApp(
-        debugShowCheckedModeBanner:
-            false,
-
+        debugShowCheckedModeBanner: false,
         title: 'FIC App',
-
         theme: ThemeData(
           useMaterial3: true,
-
-          colorScheme:
-              ColorScheme.fromSeed(
-            seedColor:
-                AppColors.primaryYellow,
-
-            primary:
-                AppColors.primaryYellow,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.primaryYellow,
+            primary: AppColors.primaryYellow,
           ),
-
-          scaffoldBackgroundColor:
-              AppColors.primaryYellow,
-
-          appBarTheme:
-              const AppBarTheme(
-            surfaceTintColor:
-                Colors.transparent,
-
-            backgroundColor:
-                AppColors.primaryYellow,
+          scaffoldBackgroundColor: AppColors.primaryYellow,
+          appBarTheme: const AppBarTheme(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: AppColors.primaryYellow,
           ),
         ),
-
         home: const SplashPage(),
       ),
     );

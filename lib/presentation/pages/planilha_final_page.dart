@@ -1,13 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../domain/usecases/unificar_planilhas.dart';
+import '../../data/services/import_service.dart';
+import '../../data/services/share_service.dart'; // Importado para injeção de dependência
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
 import '../components/fic_feedback.dart';
 import '../viewmodels/unificar_planilhas_view_model.dart';
-import '../../data/services/import_service.dart';
 import '../utility/color.dart';
-import 'dart:io';
 
 class UnificarDadosPage extends StatelessWidget {
   const UnificarDadosPage({super.key});
@@ -19,13 +20,42 @@ class UnificarDadosPage extends StatelessWidget {
         unificarPlanilhas: UnificarPlanilhas(
           ImportService(),
         ),
+        shareService: ShareService(), // <--- Resolvido o parâmetro obrigatório aqui
       ),
       child: Consumer<UnificarDadosViewModel>(
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: AppColors.primaryYellow,
-            appBar: const FicAppBar(
+            appBar: FicAppBar(
               title: "Unificar planilhas",
+              actions: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.share_outlined,
+                    color: AppColors.text,
+                  ),
+                  onPressed: vm.isProcessing 
+                      ? null 
+                      : () {
+                          vm.compartilharPlanilha(
+                            onAvisoGerarPrimeiro: () {
+                              FicFeedback.show(
+                                context,
+                                message: "Gere e exporte a planilha unificada primeiro.",
+                                type: FeedbackType.error,
+                              );
+                            },
+                            onError: (mensagemErro) {
+                              FicFeedback.show(
+                                context,
+                                message: "Erro ao compartilhar: $mensagemErro",
+                                type: FeedbackType.error,
+                              );
+                            },
+                          );
+                        },
+                ),
+              ],
             ),
             body: SafeArea(
               child: Padding(
@@ -44,7 +74,7 @@ class UnificarDadosPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // BOTÃO DE ADICIONAR (Sempre disponível para clicar quantas vezes quiser)
+                    // BOTÃO DE SELEÇÃO
                     ElevatedButton.icon(
                       onPressed: vm.isProcessing ? null : vm.pickMultipleFiles,
                       style: ElevatedButton.styleFrom(
@@ -60,7 +90,7 @@ class UnificarDadosPage extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // LISTA DE ARQUIVOS JÁ SELECIONADOS
+                    // LISTA DE ARQUIVOS ADICIONADOS
                     Expanded(
                       child: vm.selectedFiles.isEmpty
                           ? const Center(
@@ -79,7 +109,7 @@ class UnificarDadosPage extends StatelessWidget {
                                 return Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.5),
+                                    color: Colors.white.withAlpha(128), // Ajustado para evitar o aviso de predepreciação de withValues
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Row(
@@ -104,7 +134,7 @@ class UnificarDadosPage extends StatelessWidget {
                             ),
                     ),
 
-                    // BOTÃO DE EXECUTAR NO FINAL
+                    // BOTÃO DE SUBMIT
                     Padding(
                       padding: const EdgeInsets.only(bottom: 24, top: 16),
                       child: FicButton(
@@ -123,7 +153,7 @@ class UnificarDadosPage extends StatelessWidget {
                                   onError: (msg) {
                                     FicFeedback.show(
                                       context,
-                                      message: "Erro ao processar: $msg",
+                                      message: msg,
                                       type: FeedbackType.error,
                                     );
                                   },
