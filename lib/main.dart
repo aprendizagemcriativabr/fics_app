@@ -1,5 +1,6 @@
 import 'package:fics_app_new/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // <--- ADICIONADO para controlar a rotação
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -26,6 +27,12 @@ import 'package:fics_app_new/presentation/utility/color.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // <--- ADICIONADO: Bloqueia a rotação e força o app a ficar sempre em pé
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   /// HIVE
   await Hive.initFlutter();
