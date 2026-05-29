@@ -8,6 +8,7 @@ class FicDialog {
     required String message,
     String confirmText = "CONFIRMAR",
     String cancelText = "CANCELAR",
+    bool showCancel = true,
   }) {
     return showDialog<bool>(
       context: context,
@@ -24,17 +25,18 @@ class FicDialog {
           ),
           content: Text(message),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              child: Text(
-                cancelText,
-                style: const TextStyle(
-                  color: Colors.black54,
+            if (showCancel)
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                child: Text(
+                  cancelText,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                  ),
                 ),
               ),
-            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryYellow,

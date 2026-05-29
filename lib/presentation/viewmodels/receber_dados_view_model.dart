@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../domain/entities/pessoa.dart';
@@ -39,8 +40,8 @@ class ReceberDadosViewModel extends ChangeNotifier {
 
   Future<void> executarImportacao({
     required PessoaViewModel listaVM,
-    required VoidCallback onSuccess,
-    required Function(String) onError,
+    required FutureOr<void> Function() onSuccess,
+    required FutureOr<void> Function(String) onError,
   }) async {
     if (_selectedFile == null) return;
 
@@ -56,11 +57,12 @@ class ReceberDadosViewModel extends ChangeNotifier {
 
       _isProcessing = false;
       notifyListeners();
-      onSuccess(); // Dispara o callback de sucesso
+      await Future.sync(onSuccess); // Dispara o callback de sucesso
     } catch (e) {
       _isProcessing = false;
       notifyListeners();
-      onError(e.toString()); // Dispara o callback de erro
+      await Future.sync(
+          () => onError(e.toString())); // Dispara o callback de erro
     }
   }
 }

@@ -6,6 +6,7 @@ import 'tutorial_page.dart';
 import 'encerramento_page.dart';
 import 'receber_dados_page.dart';
 import '../components/fic_button.dart';
+import '../components/fic_feedback.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -62,10 +63,24 @@ class HomePage extends StatelessWidget {
                 // Receber Dados
                 FicButton(
                   label: "Importar Planilha",
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ReceberDadosPage()),
-                  ),
+                  onPressed: () async {
+                    final result = await Navigator.push<bool>(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const ReceberDadosPage()),
+                    );
+
+                    if (result == true && context.mounted) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!context.mounted) return;
+                        FicFeedback.show(
+                          context,
+                          message: "Dados recebidos com sucesso!",
+                          type: FeedbackType.success,
+                        );
+                      });
+                    }
+                  },
                 ),
                 const SizedBox(height: 12),
 
