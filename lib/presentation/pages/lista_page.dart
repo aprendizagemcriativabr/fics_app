@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/pessoa_view_model.dart';
 import '../components/fic_appbar.dart';
+import '../components/fic_search_bar.dart';
 import '../components/fic_list_tile.dart';
+import '../components/fic_empty_state.dart';
 import '../components/fic_filters_modal.dart';
 import '../utility/color.dart';
 import 'validacao_page.dart';
@@ -20,7 +22,6 @@ class _ListaPageState extends State<ListaPage> {
   @override
   void initState() {
     super.initState();
-    // Carrega os dados assim que a tela é construída
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final vm = context.read<PessoaViewModel>();
       vm.carregar();
@@ -34,7 +35,6 @@ class _ListaPageState extends State<ListaPage> {
     super.dispose();
   }
 
-  /// Abre o BottomSheet de filtros e envia as escolhas para a VM
   void _abrirModalFiltro(PessoaViewModel vm) async {
     final resultado = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
@@ -47,7 +47,6 @@ class _ListaPageState extends State<ListaPage> {
     );
 
     if (resultado != null) {
-      // Aplica os filtros na ViewModel
       vm.aplicarFiltros(
         status: resultado['status'],
         ordem: resultado['ordem'],
@@ -57,7 +56,6 @@ class _ListaPageState extends State<ListaPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Escuta a ViewModel para reagir a mudanças nos filtros ou na lista
     final vm = Provider.of<PessoaViewModel>(context);
     final listaExibida = vm.pessoasFiltradas;
 
@@ -71,31 +69,13 @@ class _ListaPageState extends State<ListaPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            // --- BARRA DE PESQUISA ---
-            Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: AppColors.secondaryYellow,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  vm.atualizarBuscaNome(value);
-                },
-                decoration: const InputDecoration(
-                  hintText: "Pesquisar por nome...",
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: AppColors.text,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 15),
-                ),
-              ),
+            FicSearchBar(
+              hintText: "Pesquisar por nome...",
+              controller: _searchController,
+              onChanged: (value) {
+                vm.atualizarBuscaNome(value);
+              },
             ),
-
-            // --- LISTA DE RESULTADOS ---
             Expanded(
               child: vm.isLoading
                   ? const Center(
@@ -104,7 +84,7 @@ class _ListaPageState extends State<ListaPage> {
                       ),
                     )
                   : listaExibida.isEmpty
-                      ? _buildEmptyState()
+                      ? const FicEmptyState() // Usado de forma simples e limpa aqui
                       : ListView.separated(
                           itemCount: listaExibida.length,
                           separatorBuilder: (context, index) =>
@@ -127,29 +107,6 @@ class _ListaPageState extends State<ListaPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.search_off,
-            size: 60,
-            color: AppColors.text.withValues(alpha: 0.7),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            "Nenhum participante encontrado",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors.text,
-            ),
-          ),
-        ],
       ),
     );
   }

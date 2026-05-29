@@ -7,6 +7,7 @@ import 'package:fics_app_new/presentation/utility/color.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_search_bar.dart';
 import '../components/fic_list_tile.dart';
+import '../components/fic_empty_state.dart';
 
 class CheckinsPage extends StatefulWidget {
   const CheckinsPage({super.key});
@@ -32,6 +33,7 @@ class _CheckinsPageState extends State<CheckinsPage> {
     final listaFiltrada = vm.pessoasComCheckin.where((pessoa) {
       return pessoa.nome.toLowerCase().contains(filterText.toLowerCase());
     }).toList();
+
     listaFiltrada
         .sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
 
@@ -57,25 +59,8 @@ class _CheckinsPageState extends State<CheckinsPage> {
               ),
               Expanded(
                 child: listaFiltrada.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 60,
-                              color: AppColors.text.withValues(alpha: 0.7),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Nenhum check-in encontrado",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.text,
-                              ),
-                            ),
-                          ],
-                        ),
+                    ? const FicEmptyState(
+                        text: "Nenhum check-in encontrado",
                       )
                     : ListView.separated(
                         itemCount: listaFiltrada.length,
