@@ -117,7 +117,7 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                   children: [
                     /// BAIXAR PLANILHA
                     FicButton(
-                      label: "BAIXAR E EXPORTAR PLANILHA",
+                      label: "BAIXAR E EXPORTAR",
                       isLoading: viewModel.isLoading,
                       onPressed: () async {
                         await viewModel.exportarPlanilhaParticipantes(
