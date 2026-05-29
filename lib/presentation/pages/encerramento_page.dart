@@ -92,12 +92,12 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                       const SizedBox(height: 24),
 
                       /// TOTAL DE CONFIRMADOS
-                      viewModel.isLoading && viewModel.totalConfirmados == 0
+                      viewModel.isLoading && viewModel.totalParticipantes == 0
                           ? const CircularProgressIndicator(
                               color: AppColors.text,
                             )
                           : Text(
-                              '${viewModel.totalConfirmados}',
+                              '${viewModel.totalParticipantes}',
                               style: const TextStyle(
                                 color: AppColors.text,
                                 fontSize: 64,

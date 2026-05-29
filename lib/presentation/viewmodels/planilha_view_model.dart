@@ -17,10 +17,12 @@ class PlanilhaViewModel extends ChangeNotifier {
 
   bool _isLoading = false;
   int _totalConfirmados = 0;
+  int _totalParticipantes = 0;
   String? _ultimoArquivoGerado;
 
   bool get isLoading => _isLoading;
   int get totalConfirmados => _totalConfirmados;
+  int get totalParticipantes => _totalParticipantes;
   String? get ultimoArquivoGerado => _ultimoArquivoGerado;
 
   /// CARREGA TOTAL
@@ -30,8 +32,14 @@ class PlanilhaViewModel extends ChangeNotifier {
 
     try {
       final todasPessoas = await getPessoas();
-      _totalConfirmados = todasPessoas.where((p) => p.confirmado).length;
+      final confirmados = todasPessoas.where((p) => p.confirmado).toList();
+      _totalConfirmados = confirmados.length;
+      _totalParticipantes = confirmados.fold<int>(
+        0,
+        (total, pessoa) => total + pessoa.acompanhantes + 1,
+      );
       debugPrint("TOTAL CONFIRMADOS: $_totalConfirmados");
+      debugPrint("TOTAL PARTICIPANTES: $_totalParticipantes");
     } catch (e) {
       debugPrint("Erro ao carregar total: $e");
     } finally {
