@@ -112,7 +112,9 @@ class _TutorialPageState extends State<TutorialPage> {
 
     if (_searchQuery.isEmpty) return all;
 
-    return all.where((e) => _matchesSearch(e.key.question, _searchQuery)).toList();
+    return all
+        .where((e) => _matchesSearch(e.key.question, _searchQuery))
+        .toList();
   }
 
   @override
@@ -272,7 +274,8 @@ class _EmptySearch extends StatelessWidget {
           Text(
             'Nenhum resultado para "$query"',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),
+            style: const TextStyle(
+                fontWeight: FontWeight.w600, color: Colors.black54),
           ),
         ],
       ),
@@ -425,7 +428,7 @@ class _StepCard extends StatelessWidget {
               ),
               child: Text(
                 step.description,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
@@ -434,6 +437,35 @@ class _StepCard extends StatelessWidget {
                 ),
               ),
             ),
+            if (step.image != null && step.image!.trim().isNotEmpty) ...[
+              const SizedBox(height: 16),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  step.image!,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.07),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Text(
+                        'Imagem do tutorial não encontrada.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
             const SizedBox(height: 12),
           ],
         ),
