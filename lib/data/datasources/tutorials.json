@@ -207,7 +207,7 @@
       {
         "icon": "check_circle_outline_rounded",
         "title": "Confirme o encerramento",
-        "description": "Leia o aviso e confirme."
+        "description": "Você pode baixar e exportar a planilha, unificar planilhas ou finalizar e apagar dados. (cuidado: apagar dados é irreversível!)"
       }
     ]
   }
