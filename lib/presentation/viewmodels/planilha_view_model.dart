@@ -25,7 +25,6 @@ class PlanilhaViewModel extends ChangeNotifier {
   int get totalParticipantes => _totalParticipantes;
   String? get ultimoArquivoGerado => _ultimoArquivoGerado;
 
-  /// CARREGA TOTAL
   Future<void> inicializarTela() async {
     _isLoading = true;
     notifyListeners();
@@ -48,7 +47,6 @@ class PlanilhaViewModel extends ChangeNotifier {
     }
   }
 
-  /// EXPORTA XLSX E ABRE O COMPARTILHAMENTO LOGO EM SEGUIDA
   Future<void> exportarPlanilhaParticipantes({
     required VoidCallback onSuccess,
     required Function(String) onError,
@@ -59,7 +57,6 @@ class PlanilhaViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      /// PERMISSÕES
       if (Platform.isAndroid) {
         final status = await Permission.manageExternalStorage.request();
         if (!status.isGranted) {
@@ -77,20 +74,20 @@ class PlanilhaViewModel extends ChangeNotifier {
         throw Exception("Não há participantes confirmados.");
       }
 
-      /// CRIA EXCEL
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];
 
-      /// CABEÇALHO
       sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = TextCellValue('Nome');
       sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value = TextCellValue('Acompanhantes');
       sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value = TextCellValue('Hora Entrada');
       sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value = TextCellValue('Pré Cadastro');
 
-      /// DADOS
+      int totalPessoas = 0;
       for (int i = 0; i < participantesConfirmados.length; i++) {
         final pessoa = participantesConfirmados[i];
         final row = i + 1;
+
+        totalPessoas += pessoa.acompanhantes + 1;
 
         sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value = TextCellValue(pessoa.nome);
         sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row)).value = IntCellValue(pessoa.acompanhantes);
@@ -98,7 +95,12 @@ class PlanilhaViewModel extends ChangeNotifier {
         sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row)).value = TextCellValue(pessoa.preCadastro ? 'Sim' : 'Não');
       }
 
-      /// DIRETÓRIO
+      final linhaTotalRow = participantesConfirmados.length + 1;
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: linhaTotalRow)).value = TextCellValue('TOTAL');
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: linhaTotalRow)).value = IntCellValue(totalPessoas);
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: linhaTotalRow)).value = TextCellValue('');
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: linhaTotalRow)).value = TextCellValue('');
+
       Directory? directory;
       if (Platform.isAndroid) {
         directory = Directory('/storage/emulated/0/Download');
@@ -109,25 +111,21 @@ class PlanilhaViewModel extends ChangeNotifier {
         directory = await getApplicationDocumentsDirectory();
       }
 
-      /// NOME DO ARQUIVO
       final dataAtual = DateTime.now().toString().split(' ')[0];
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final path = '${directory.path}/participantes_confirmados_${dataAtual}_$timestamp.xlsx';
 
       debugPrint("CAMINHO SALVAMENTO: $path");
 
-      /// GERA ARQUIVO
       final fileBytes = excel.save();
       if (fileBytes == null) {
         throw Exception("Erro ao gerar a estrutura do Excel.");
       }
 
-      /// SALVA NO DISCO
       final file = File(path);
       await file.create(recursive: true);
       await file.writeAsBytes(fileBytes, flush: true);
 
-      /// FORÇA O ANDROID A INDEXAR O ARQUIVO
       if (Platform.isAndroid) {
         try {
           await Process.run(
@@ -148,13 +146,10 @@ class PlanilhaViewModel extends ChangeNotifier {
       _ultimoArquivoGerado = file.path;
       debugPrint("PLANILHA SALVA COM SUCESSO: ${file.path}");
 
-      /// === INVOCADO LOGO NA SEQUÊNCIA ===
-      /// DISPARA A DIÁLOGO NATIVA DE COMPARTILHAMENTO
       await _shareService.compartilharArquivoLocal(
         caminhoArquivoOriginal: _ultimoArquivoGerado!,
       );
 
-      // Só executa o callback de sucesso da View se o fluxo de salvamento e partilha derem certo
       onSuccess();
     } catch (e) {
       debugPrint("ERRO EXPORTAÇÃO: $e");
@@ -165,7 +160,6 @@ class PlanilhaViewModel extends ChangeNotifier {
     }
   }
 
-  /// COMPARTILHA VIA SERVIÇO UNIFICADO (MANUAL VIA ICONBUTTON SE FOR NECESSÁRIO)
   Future<void> compartilharPlanilha({
     required VoidCallback onAvisoGerarPrimeiro,
     required Function(String) onError,
