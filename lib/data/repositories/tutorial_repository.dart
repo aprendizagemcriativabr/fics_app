@@ -31,7 +31,8 @@ class TutorialRepository {
 
   static Future<List<TutorialFlow>> loadTutorials() async {
     try {
-      final jsonString = await rootBundle.loadString('lib/data/datasources/tutorials.json');
+      final jsonString =
+          await rootBundle.loadString('lib/data/datasources/tutorials.json');
       final List<dynamic> decodedData = json.decode(jsonString);
 
       return decodedData.map((flowMap) {

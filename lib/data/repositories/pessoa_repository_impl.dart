@@ -4,9 +4,7 @@ import '../../domain/repositories/pessoa_repository.dart';
 import '../datasources/pessoa_datasource.dart';
 import '../mappers/pessoa_model_mapper.dart';
 
-class PessoaRepositoryImpl
-    implements PessoaRepository {
-
+class PessoaRepositoryImpl implements PessoaRepository {
   final PessoaDataSource datasource;
   final PessoaModelMapper mapper;
 
@@ -19,17 +17,14 @@ class PessoaRepositoryImpl
   Future<List<Pessoa>> getAll() async {
     final models = await datasource.getAll();
 
-    return models
-        .map(mapper.toEntity)
-        .toList();
+    return models.map(mapper.toEntity).toList();
   }
 
   @override
   Future<void> saveAll(
     List<Pessoa> pessoas,
   ) async {
-    final models =
-        pessoas.map(mapper.toModel).toList();
+    final models = pessoas.map(mapper.toModel).toList();
 
     await datasource.removerPreCadastros();
     await datasource.saveAll(models);
@@ -39,24 +34,19 @@ class PessoaRepositoryImpl
   Future<void> update(
     Pessoa pessoa,
   ) async {
-    final model =
-        await datasource.findByNome(
+    final model = await datasource.findByNome(
       pessoa.nome,
     );
 
     if (model == null) return;
 
-    model.acompanhantes =
-        pessoa.acompanhantes;
+    model.acompanhantes = pessoa.acompanhantes;
 
-    model.confirmado =
-        pessoa.confirmado;
+    model.confirmado = pessoa.confirmado;
 
-    model.horaEntrada =
-        pessoa.horaEntrada;
+    model.horaEntrada = pessoa.horaEntrada;
 
-    model.preCadastro =
-        pessoa.preCadastro;
+    model.preCadastro = pessoa.preCadastro;
 
     await datasource.update(model);
   }
@@ -65,8 +55,7 @@ class PessoaRepositoryImpl
   Future<Pessoa?> findByNome(
     String nome,
   ) async {
-    final model =
-        await datasource.findByNome(nome);
+    final model = await datasource.findByNome(nome);
 
     if (model == null) return null;
 
@@ -77,14 +66,13 @@ class PessoaRepositoryImpl
   Future<void> addPessoa(
     Pessoa pessoa,
   ) async {
-    final model =
-        mapper.toModel(pessoa);
+    final model = mapper.toModel(pessoa);
 
     await datasource.save(model);
   }
 
   @override
   Future<void> clearAll() async {
-    await datasource.clear(); 
+    await datasource.clear();
   }
 }

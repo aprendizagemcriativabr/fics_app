@@ -5,11 +5,9 @@ import '../../data/services/import_service.dart';
 import '../repositories/pessoa_repository.dart';
 
 class ImportarPlanilhaUseCase {
-  final ImportService
-      importService;
+  final ImportService importService;
 
-  final PessoaRepository
-      repository;
+  final PessoaRepository repository;
 
   ImportarPlanilhaUseCase({
     required this.importService,
@@ -19,9 +17,7 @@ class ImportarPlanilhaUseCase {
   Future<void> executar(
     File file,
   ) async {
-    final pessoas =
-        await importService
-            .lerPlanilha(file);
+    final pessoas = await importService.lerPlanilha(file);
 
     if (pessoas.isEmpty) {
       throw Exception(

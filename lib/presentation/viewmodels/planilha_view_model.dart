@@ -67,7 +67,8 @@ class PlanilhaViewModel extends ChangeNotifier {
       final todasPessoas = await getPessoas();
       debugPrint("TOTAL PESSOAS: ${todasPessoas.length}");
 
-      final participantesConfirmados = todasPessoas.where((p) => p.confirmado).toList();
+      final participantesConfirmados =
+          todasPessoas.where((p) => p.confirmado).toList();
       debugPrint("TOTAL EXPORTAÇÃO: ${participantesConfirmados.length}");
 
       if (participantesConfirmados.isEmpty) {
@@ -77,10 +78,18 @@ class PlanilhaViewModel extends ChangeNotifier {
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];
 
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = TextCellValue('Nome');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value = TextCellValue('Acompanhantes');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value = TextCellValue('Hora Entrada');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value = TextCellValue('Pré Cadastro');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+          .value = TextCellValue('Nome');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+          .value = TextCellValue('Acompanhantes');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
+          .value = TextCellValue('Hora Entrada');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0))
+          .value = TextCellValue('Pré Cadastro');
 
       int totalPessoas = 0;
       for (int i = 0; i < participantesConfirmados.length; i++) {
@@ -89,17 +98,37 @@ class PlanilhaViewModel extends ChangeNotifier {
 
         totalPessoas += pessoa.acompanhantes + 1;
 
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value = TextCellValue(pessoa.nome);
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row)).value = IntCellValue(pessoa.acompanhantes);
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row)).value = TextCellValue(pessoa.horaEntrada ?? '-');
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row)).value = TextCellValue(pessoa.preCadastro ? 'Sim' : 'Não');
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+            .value = TextCellValue(pessoa.nome);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
+            .value = IntCellValue(pessoa.acompanhantes);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row))
+            .value = TextCellValue(pessoa.horaEntrada ?? '-');
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row))
+            .value = TextCellValue(pessoa.preCadastro ? 'Sim' : 'Não');
       }
 
       final linhaTotalRow = participantesConfirmados.length + 1;
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: linhaTotalRow)).value = TextCellValue('TOTAL');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: linhaTotalRow)).value = IntCellValue(totalPessoas);
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: linhaTotalRow)).value = TextCellValue('');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: linhaTotalRow)).value = TextCellValue('');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 0, rowIndex: linhaTotalRow))
+          .value = TextCellValue('TOTAL');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 1, rowIndex: linhaTotalRow))
+          .value = IntCellValue(totalPessoas);
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 2, rowIndex: linhaTotalRow))
+          .value = TextCellValue('');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 3, rowIndex: linhaTotalRow))
+          .value = TextCellValue('');
 
       Directory? directory;
       if (Platform.isAndroid) {
@@ -113,7 +142,8 @@ class PlanilhaViewModel extends ChangeNotifier {
 
       final dataAtual = DateTime.now().toString().split(' ')[0];
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final path = '${directory.path}/participantes_confirmados_${dataAtual}_$timestamp.xlsx';
+      final path =
+          '${directory.path}/participantes_confirmados_${dataAtual}_$timestamp.xlsx';
 
       debugPrint("CAMINHO SALVAMENTO: $path");
 

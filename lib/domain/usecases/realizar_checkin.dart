@@ -11,8 +11,7 @@ class RealizarCheckinUseCase {
     required String nome,
     required int acompanhantes,
   }) async {
-    final pessoa =
-        await repository.findByNome(nome);
+    final pessoa = await repository.findByNome(nome);
 
     if (pessoa == null) {
       throw Exception(
@@ -22,21 +21,16 @@ class RealizarCheckinUseCase {
 
     final agora = DateTime.now();
 
-    final hora =
-        agora.hour.toString().padLeft(2, '0');
+    final hora = agora.hour.toString().padLeft(2, '0');
 
-    final minuto =
-        agora.minute.toString().padLeft(2, '0');
+    final minuto = agora.minute.toString().padLeft(2, '0');
 
     final horario = '$hora:$minuto';
 
-    final pessoaAtualizada =
-        pessoa.copyWith(
+    final pessoaAtualizada = pessoa.copyWith(
       confirmado: true,
       acompanhantes: acompanhantes,
-      horaEntrada:
-          pessoa.horaEntrada ??
-          horario,
+      horaEntrada: pessoa.horaEntrada ?? horario,
     );
 
     await repository.update(

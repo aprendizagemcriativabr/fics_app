@@ -8,8 +8,11 @@ import 'package:fics_app_new/presentation/viewmodels/receber_dados_view_model.da
 
 // Mocks
 class MockImportService extends Mock implements ImportService {}
+
 class MockPessoaViewModel extends Mock implements PessoaViewModel {}
+
 class MockFile extends Mock implements File {}
+
 class FakePessoa extends Fake implements Pessoa {}
 
 void main() {
@@ -38,8 +41,11 @@ void main() {
       expect(viewModel.fileName, null);
     });
 
-    test('executarImportacao: deve disparar sucesso quando planilha tem dados', () async {
-      final tPessoas = [Pessoa(nome: 'Teste', acompanhantes: 1, confirmado: true)];
+    test('executarImportacao: deve disparar sucesso quando planilha tem dados',
+        () async {
+      final tPessoas = [
+        Pessoa(nome: 'Teste', acompanhantes: 1, confirmado: true)
+      ];
       bool sucessoChamado = false;
 
       // Stubbing
@@ -60,7 +66,8 @@ void main() {
       expect(viewModel.isProcessing, false);
     });
 
-    test('executarImportacao: deve disparar erro quando a planilha está vazia', () async {
+    test('executarImportacao: deve disparar erro quando a planilha está vazia',
+        () async {
       String? mensagemErro;
 
       when(() => mockImportService.lerPlanilha(any()))

@@ -23,7 +23,7 @@ class ImportExcelService {
           c.contains('nome') ||
           c.contains('convidado') ||
           c.contains('participante'));
-          
+
       int idxAcompanhantes = cabecalho.indexWhere((c) =>
           c.contains('acompanhante') ||
           c.contains('qte') ||
@@ -31,7 +31,9 @@ class ImportExcelService {
           c.contains('quantidade'));
 
       int idxHora = cabecalho.indexWhere((c) =>
-          (c.contains('hora') || c.contains('entrada') || c.contains('check')) &&
+          (c.contains('hora') ||
+              c.contains('entrada') ||
+              c.contains('check')) &&
           !c.contains('carimbo'));
 
       int idxPre =
@@ -39,8 +41,8 @@ class ImportExcelService {
 
       if (idxNome == -1) idxNome = 0;
       if (idxAcompanhantes == -1) idxAcompanhantes = 1;
-      if (idxHora == -1) idxHora = 2; 
-      if (idxPre == -1) idxPre = 3; 
+      if (idxHora == -1) idxHora = 2;
+      if (idxPre == -1) idxPre = 3;
 
       for (int i = 1; i < sheet.maxRows; i++) {
         final row = sheet.rows[i];
@@ -81,7 +83,7 @@ class ImportExcelService {
           Pessoa(
             nome: nome,
             acompanhantes: acompanhantes,
-            confirmado: horaEntrada != null, 
+            confirmado: horaEntrada != null,
             horaEntrada: horaEntrada,
             preCadastro: preCadastro,
           ),

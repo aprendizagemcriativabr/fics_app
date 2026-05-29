@@ -67,8 +67,8 @@ class FicExpandableFaq extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     const Icon(
-                      Icons.arrow_forward_rounded, 
-                      size: 14, 
+                      Icons.arrow_forward_rounded,
+                      size: 14,
                       color: AppColors.primaryYellow,
                     ),
                   ],

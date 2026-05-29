@@ -7,14 +7,10 @@ class PessoaModelMapper {
   ) {
     return PessoaModel(
       nome: entity.nome,
-      acompanhantes:
-          entity.acompanhantes,
-      confirmado:
-          entity.confirmado,
-      horaEntrada:
-          entity.horaEntrada,
-      preCadastro:
-          entity.preCadastro,
+      acompanhantes: entity.acompanhantes,
+      confirmado: entity.confirmado,
+      horaEntrada: entity.horaEntrada,
+      preCadastro: entity.preCadastro,
     );
   }
 
@@ -23,14 +19,10 @@ class PessoaModelMapper {
   ) {
     return Pessoa(
       nome: model.nome,
-      acompanhantes:
-          model.acompanhantes,
-      confirmado:
-          model.confirmado,
-      horaEntrada:
-          model.horaEntrada,
-      preCadastro:
-          model.preCadastro,
+      acompanhantes: model.acompanhantes,
+      confirmado: model.confirmado,
+      horaEntrada: model.horaEntrada,
+      preCadastro: model.preCadastro,
     );
   }
 }

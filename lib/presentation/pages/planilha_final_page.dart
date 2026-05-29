@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../domain/usecases/unificar_planilhas.dart';
 import '../../data/services/import_service.dart';
-import '../../data/services/share_service.dart'; 
+import '../../data/services/share_service.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
 import '../components/fic_feedback.dart';
@@ -20,7 +20,7 @@ class UnificarDadosPage extends StatelessWidget {
         unificarPlanilhas: UnificarPlanilhas(
           ImportService(),
         ),
-        shareService: ShareService(), 
+        shareService: ShareService(),
       ),
       child: Consumer<UnificarDadosViewModel>(
         builder: (context, vm, child) {
@@ -34,14 +34,15 @@ class UnificarDadosPage extends StatelessWidget {
                     Icons.share_outlined,
                     color: AppColors.text,
                   ),
-                  onPressed: vm.isProcessing 
-                      ? null 
+                  onPressed: vm.isProcessing
+                      ? null
                       : () {
                           vm.compartilharPlanilha(
                             onAvisoGerarPrimeiro: () {
                               FicFeedback.show(
                                 context,
-                                message: "Gere e exporte a planilha unificada primeiro.",
+                                message:
+                                    "Gere e exporte a planilha unificada primeiro.",
                                 type: FeedbackType.error,
                               );
                             },
@@ -73,26 +74,24 @@ class UnificarDadosPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     ElevatedButton.icon(
                       onPressed: vm.isProcessing ? null : vm.pickMultipleFiles,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondaryYellow,
                         foregroundColor: AppColors.text,
-                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
                         elevation: 0,
                       ),
                       icon: const Icon(Icons.add_to_photos),
                       label: const Text("Escolher Planilhas"),
                     ),
-
                     const SizedBox(height: 20),
-
                     Expanded(
                       child: _buildListaArquivos(context, vm),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 24, top: 16),
                       child: FicButton(
@@ -103,7 +102,8 @@ class UnificarDadosPage extends StatelessWidget {
                                 if (vm.selectedFiles.length < 2) {
                                   FicFeedback.show(
                                     context,
-                                    message: "Selecione ao menos duas planilhas para poder unificar os dados.",
+                                    message:
+                                        "Selecione ao menos duas planilhas para poder unificar os dados.",
                                     type: FeedbackType.error,
                                   );
                                   return;
@@ -113,7 +113,8 @@ class UnificarDadosPage extends StatelessWidget {
                                   onSuccess: () {
                                     FicFeedback.show(
                                       context,
-                                      message: "Planilha unificada e salva com sucesso!",
+                                      message:
+                                          "Planilha unificada e salva com sucesso!",
                                       type: FeedbackType.success,
                                     );
                                   },
@@ -159,7 +160,7 @@ class UnificarDadosPage extends StatelessWidget {
               "⚠️ Selecione mais 1 planilha para poder unificar.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.text, 
+                color: AppColors.text,
                 fontWeight: FontWeight.w500,
                 fontSize: 13,
               ),
@@ -171,10 +172,12 @@ class UnificarDadosPage extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(height: 8),
             itemBuilder: (context, index) {
               final arquivo = vm.selectedFiles[index];
-              final nomeArquivo = arquivo.path.split(Platform.pathSeparator).last;
+              final nomeArquivo =
+                  arquivo.path.split(Platform.pathSeparator).last;
 
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.white.withAlpha(128),
                   borderRadius: BorderRadius.circular(10),
@@ -186,7 +189,8 @@ class UnificarDadosPage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         nomeArquivo,
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.text),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: AppColors.text),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

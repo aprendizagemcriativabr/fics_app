@@ -41,45 +41,44 @@ class UnificarPlanilhas {
       final existente = pessoasUnificadas[chave]!;
 
       // Verifica se o registro existente possui um horário preenchido de verdade
-      final bool existenteTemHora = existente.horaEntrada != null && 
-                                    existente.horaEntrada!.trim().isNotEmpty && 
-                                    existente.horaEntrada!.trim() != '--:--';
+      final bool existenteTemHora = existente.horaEntrada != null &&
+          existente.horaEntrada!.trim().isNotEmpty &&
+          existente.horaEntrada!.trim() != '--:--';
 
       // Verifica se o registro atual possui um horário preenchido de verdade
-      final bool pessoaTemHora = pessoa.horaEntrada != null && 
-                                 pessoa.horaEntrada!.trim().isNotEmpty && 
-                                 pessoa.horaEntrada!.trim() != '--:--';
+      final bool pessoaTemHora = pessoa.horaEntrada != null &&
+          pessoa.horaEntrada!.trim().isNotEmpty &&
+          pessoa.horaEntrada!.trim() != '--:--';
 
       String? horaFinal;
       bool preCadastroFinal;
 
       if (pessoaTemHora && !existenteTemHora) {
-        // CENÁRIO A: O dado novo veio da planilha de check-in real da portaria, 
-        // e o dado antigo veio da planilha unificada quebrada. 
+        // CENÁRIO A: O dado novo veio da planilha de check-in real da portaria,
+        // e o dado antigo veio da planilha unificada quebrada.
         // PRIORIDADE ABSOLUTA PARA O DADO NOVO.
         horaFinal = pessoa.horaEntrada;
-        preCadastroFinal = pessoa.preCadastro; 
-      } 
-      else if (existenteTemHora && !pessoaTemHora) {
-        // CENÁRIO B: O dado que já estava no mapa veio da planilha real, 
+        preCadastroFinal = pessoa.preCadastro;
+      } else if (existenteTemHora && !pessoaTemHora) {
+        // CENÁRIO B: O dado que já estava no mapa veio da planilha real,
         // e o dado novo veio da planilha unificada quebrada.
         // MANTÉM O DADO QUE JÁ ESTAVA NO MAPA.
         horaFinal = existente.horaEntrada;
         preCadastroFinal = existente.preCadastro;
-      } 
-      else if (pessoaTemHora && existenteTemHora) {
+      } else if (pessoaTemHora && existenteTemHora) {
         // CENÁRIO C: Ambos têm horário válido. Mantém o primeiro e confia no pré-cadastro
         horaFinal = existente.horaEntrada;
         preCadastroFinal = existente.preCadastro;
-      } 
-      else {
+      } else {
         // CENÁRIO D: Nenhum dos dois tem horário (ambos são pré-cadastros puros)
         horaFinal = null;
         preCadastroFinal = existente.preCadastro && pessoa.preCadastro;
       }
 
       pessoasUnificadas[chave] = Pessoa(
-        nome: existenteTemHora ? existente.nome : pessoa.nome, // Preserva a grafia de quem tem o dado real
+        nome: existenteTemHora
+            ? existente.nome
+            : pessoa.nome, // Preserva a grafia de quem tem o dado real
         acompanhantes: pessoa.acompanhantes > existente.acompanhantes
             ? pessoa.acompanhantes
             : existente.acompanhantes,

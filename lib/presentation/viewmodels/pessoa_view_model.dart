@@ -4,7 +4,7 @@ import '../../domain/usecases/get_pessoas.dart';
 import '../../domain/usecases/atualizar_acompanhantes.dart';
 import '../../domain/usecases/importar_pessoas.dart';
 import '../../domain/usecases/add_pessoa.dart';
-import '../../domain/usecases/deletar_pessoas.dart'; 
+import '../../domain/usecases/deletar_pessoas.dart';
 
 /// Enum para definir os estados de filtragem por status
 enum FiltroStatus {
@@ -188,10 +188,10 @@ class PessoaViewModel extends ChangeNotifier {
     try {
       // 1. Executa o use case que limpa fisicamente o box do Hive
       await deletarTodasPessoasUseCase.execute();
-      
+
       // 2. Limpa de forma imediata a lista que está em memória
       todasPessoas.clear();
-      
+
       // 3. Atualiza o estado chamando o carregar novamente (opcional, mas garante integridade)
       await carregar();
     } catch (e) {

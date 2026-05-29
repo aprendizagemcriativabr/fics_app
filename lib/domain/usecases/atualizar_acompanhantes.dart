@@ -11,23 +11,19 @@ class AtualizarAcompanhantes {
     String nome,
     int acompanhantes,
   ) async {
-    final pessoa =
-        await repository.findByNome(nome);
+    final pessoa = await repository.findByNome(nome);
 
     if (pessoa == null) return;
 
     final agora = DateTime.now();
 
-    final hora =
-        agora.hour.toString().padLeft(2, '0');
+    final hora = agora.hour.toString().padLeft(2, '0');
 
-    final minuto =
-        agora.minute.toString().padLeft(2, '0');
+    final minuto = agora.minute.toString().padLeft(2, '0');
 
     final horaFormatada = "$hora:$minuto";
 
-    final atualizada =
-        pessoa.copyWith(
+    final atualizada = pessoa.copyWith(
       acompanhantes: acompanhantes,
       confirmado: true,
       horaEntrada: horaFormatada,

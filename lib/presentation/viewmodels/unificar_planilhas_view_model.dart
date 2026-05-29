@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:excel/excel.dart'; 
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,7 +39,8 @@ class UnificarDadosViewModel extends ChangeNotifier {
       for (final path in result.paths) {
         if (path != null) {
           final novoArquivo = File(path);
-          final jaExiste = _selectedFiles.any((f) => f.path == novoArquivo.path);
+          final jaExiste =
+              _selectedFiles.any((f) => f.path == novoArquivo.path);
 
           if (!jaExiste) {
             _selectedFiles.add(novoArquivo);
@@ -66,11 +67,12 @@ class UnificarDadosViewModel extends ChangeNotifier {
     required Function(String) onError,
   }) async {
     if (_selectedFiles.length < 2) {
-      throw Exception("Selecione ao menos duas planilhas para unificar os dados.");
+      throw Exception(
+          "Selecione ao menos duas planilhas para unificar os dados.");
     }
 
     _isProcessing = true;
-    _ultimoArquivoGerado = null; 
+    _ultimoArquivoGerado = null;
     notifyListeners();
 
     try {
@@ -85,11 +87,14 @@ class UnificarDadosViewModel extends ChangeNotifier {
 
       final List<Pessoa> pessoasUnificadas = dadosBrutos.where((p) {
         final nomeLimpo = p.nome.trim().toUpperCase();
-        return nomeLimpo.isNotEmpty && !nomeLimpo.contains('TOTAL GERAL') && nomeLimpo != 'TOTAL';
+        return nomeLimpo.isNotEmpty &&
+            !nomeLimpo.contains('TOTAL GERAL') &&
+            nomeLimpo != 'TOTAL';
       }).toList();
 
       if (pessoasUnificadas.isEmpty) {
-        throw Exception("Nenhum dado válido encontrado nas planilhas selecionadas.");
+        throw Exception(
+            "Nenhum dado válido encontrado nas planilhas selecionadas.");
       }
 
       pessoasUnificadas.sort((a, b) => a.nome.compareTo(b.nome));
@@ -97,10 +102,18 @@ class UnificarDadosViewModel extends ChangeNotifier {
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];
 
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = TextCellValue('Nome');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value = TextCellValue('Qte. Acompanhantes');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value = TextCellValue('Horario CheckIn');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value = TextCellValue('Pré Cadastro');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+          .value = TextCellValue('Nome');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+          .value = TextCellValue('Qte. Acompanhantes');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
+          .value = TextCellValue('Horario CheckIn');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0))
+          .value = TextCellValue('Pré Cadastro');
 
       int totalPessoas = 0;
       for (int i = 0; i < pessoasUnificadas.length; i++) {
@@ -109,17 +122,37 @@ class UnificarDadosViewModel extends ChangeNotifier {
 
         totalPessoas += p.acompanhantes + 1;
 
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value = TextCellValue(p.nome);
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row)).value = IntCellValue(p.acompanhantes);
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row)).value = TextCellValue(p.horaEntrada ?? '--:--');
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row)).value = TextCellValue(p.preCadastro ? 'Sim' : 'Não');
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+            .value = TextCellValue(p.nome);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
+            .value = IntCellValue(p.acompanhantes);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row))
+            .value = TextCellValue(p.horaEntrada ?? '--:--');
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row))
+            .value = TextCellValue(p.preCadastro ? 'Sim' : 'Não');
       }
 
       final linhaTotalRow = pessoasUnificadas.length + 1;
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: linhaTotalRow)).value = TextCellValue('TOTAL GERAL');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: linhaTotalRow)).value = IntCellValue(totalPessoas);
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: linhaTotalRow)).value = TextCellValue('');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: linhaTotalRow)).value = TextCellValue('');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 0, rowIndex: linhaTotalRow))
+          .value = TextCellValue('TOTAL GERAL');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 1, rowIndex: linhaTotalRow))
+          .value = IntCellValue(totalPessoas);
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 2, rowIndex: linhaTotalRow))
+          .value = TextCellValue('');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 3, rowIndex: linhaTotalRow))
+          .value = TextCellValue('');
 
       Directory? directory;
       if (Platform.isAndroid) {
@@ -133,7 +166,8 @@ class UnificarDadosViewModel extends ChangeNotifier {
 
       final dataAtual = DateTime.now().toString().split(' ')[0];
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final path = '${directory.path}/planilha_unificada_checkins_${dataAtual}_$timestamp.xlsx';
+      final path =
+          '${directory.path}/planilha_unificada_checkins_${dataAtual}_$timestamp.xlsx';
 
       debugPrint("CAMINHO SALVAMENTO UNIFICADO: $path");
 
@@ -169,7 +203,7 @@ class UnificarDadosViewModel extends ChangeNotifier {
       await _shareService.compartilharArquivoLocal(
         caminhoArquivoOriginal: _ultimoArquivoGerado!,
       );
-      
+
       _selectedFiles.clear();
       onSuccess();
     } catch (e) {

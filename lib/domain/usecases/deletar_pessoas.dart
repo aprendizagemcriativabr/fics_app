@@ -1,4 +1,4 @@
-import '../repositories/pessoa_repository.dart'; 
+import '../repositories/pessoa_repository.dart';
 
 class DeletarTodasPessoasUseCase {
   final PessoaRepository _repository;

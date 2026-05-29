@@ -22,18 +22,10 @@ class Pessoa {
   }) {
     return Pessoa(
       nome: nome ?? this.nome,
-      acompanhantes:
-          acompanhantes ??
-          this.acompanhantes,
-      confirmado:
-          confirmado ??
-          this.confirmado,
-      horaEntrada:
-          horaEntrada ??
-          this.horaEntrada,
-      preCadastro:
-          preCadastro ??
-          this.preCadastro,
+      acompanhantes: acompanhantes ?? this.acompanhantes,
+      confirmado: confirmado ?? this.confirmado,
+      horaEntrada: horaEntrada ?? this.horaEntrada,
+      preCadastro: preCadastro ?? this.preCadastro,
     );
   }
 }
