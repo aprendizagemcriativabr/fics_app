@@ -112,12 +112,12 @@
       },
       {
         "question": "Qual formato de planilha usar?",
-        "answer": "O sistema aceita exclusivamente ficheiros com a extensão Excel (.xlsx). Certifique-se de que o ficheiro não está corrompido antes de carregar.",
+        "answer": "O sistema aceita ficheiros Excel (.xlsx). Para o app identificar os dados corretamente, a primeira linha deve ser um cabeçalho com colunas contendo palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte').",
         "related_flow_id": "importar_planilha"
       },
       {
         "question": "Como preparar o arquivo Excel?",
-        "answer": "Crie uma planilha simples contendo as colunas de dados necessárias para a importação e salve-a diretamente no formato padrão do Excel (.xlsx).",
+        "answer": "Crie uma planilha com cabeçalho na primeira linha e, no mínimo, as colunas de Nome e Acompanhantes. Colunas extras podem existir (ex.: 'Carimbo de data/hora' do Google Forms), mas elas não contam como check-in: o check-in é feito manualmente no app.",
         "related_flow_id": "importar_planilha"
       }
     ],
@@ -125,7 +125,7 @@
       {
         "icon": "table_chart_rounded",
         "title": "Prepare a planilha",
-        "description": "O arquivo deve estar no formato .xlsx."
+        "description": "O arquivo deve estar no formato .xlsx e ter cabeçalho (primeira linha) com colunas reconhecíveis (ex.: Nome e Acompanhantes/Quantidade)."
       },
       {
         "icon": "touch_app_rounded",
