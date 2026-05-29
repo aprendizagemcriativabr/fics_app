@@ -8,7 +8,9 @@ import 'package:fics_app_new/presentation/viewmodels/unificar_planilhas_view_mod
 
 // Criação das classes de Mock
 class MockUnificarPlanilhas extends Mock implements UnificarPlanilhas {}
+
 class MockShareService extends Mock implements ShareService {}
+
 class MockFile extends Mock implements File {}
 
 void main() {
@@ -36,7 +38,7 @@ void main() {
     test('Deve remover arquivo com sucesso e notificar ouvintes', () {
       final file = MockFile();
       when(() => file.path).thenReturn('caminho/mock_planilha.xlsx');
-      
+
       // Adição manual simulada para o teste de remoção
       viewModel.selectedFiles.add(file);
       expect(viewModel.selectedFiles.length, 1);
@@ -53,7 +55,7 @@ void main() {
     test('Deve limpar todos os estados ao invocar limparTudo', () {
       final file = MockFile();
       viewModel.selectedFiles.add(file);
-      
+
       viewModel.limparTudo();
 
       expect(viewModel.selectedFiles.isEmpty, true);
@@ -62,7 +64,8 @@ void main() {
   });
 
   group('UnificarDadosViewModel - Execução e Exportação', () {
-    test('Deve disparar erro se tentar executar com menos de 2 arquivos', () async {
+    test('Deve disparar erro se tentar executar com menos de 2 arquivos',
+        () async {
       final file1 = MockFile();
       viewModel.selectedFiles.add(file1);
 
@@ -75,17 +78,20 @@ void main() {
       );
     });
 
-    test('Deve falhar e invocar o callback onError se a unificação retornar vazia', () async {
+    test(
+        'Deve falhar e invocar o callback onError se a unificação retornar vazia',
+        () async {
       final file1 = MockFile();
       final file2 = MockFile();
       when(() => file1.path).thenReturn('p1.xlsx');
       when(() => file2.path).thenReturn('p2.xlsx');
-      
+
       viewModel.selectedFiles.add(file1);
       viewModel.selectedFiles.add(file2);
 
       // Stub para o caso de uso retornar uma lista vazia de pessoas
-      when(() => mockUnificarPlanilhas(any())).thenAnswer((_) async => <Pessoa>[]);
+      when(() => mockUnificarPlanilhas(any()))
+          .thenAnswer((_) async => <Pessoa>[]);
 
       String? erroRecebido;
       await viewModel.executarUnificacaoEExportar(
