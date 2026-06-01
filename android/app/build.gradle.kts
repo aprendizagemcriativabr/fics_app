@@ -31,13 +31,17 @@ android {
     }
 
     buildTypes {
-    release {
-        signingConfig = signingConfigs.getByName("debug")
-        minifyEnabled true
-        shrinkResources trueO
-        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("debug")
+            
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), 
+                "proguard-rules.pro"
+            )
+        }
     }
-}
 }
 
 flutter {
