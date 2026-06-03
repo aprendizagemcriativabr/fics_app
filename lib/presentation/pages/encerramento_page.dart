@@ -52,7 +52,7 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<PlanilhaViewModel>();
     // Escuta o PessoaViewModel para identificar carregamentos na deleção
-    final pessoaViewModel = context.watch<PessoaViewModel>(); 
+    final pessoaViewModel = context.watch<PessoaViewModel>();
 
     return Scaffold(
       backgroundColor: AppColors.primaryYellow,
@@ -92,12 +92,12 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                       const SizedBox(height: 24),
 
                       /// TOTAL DE CONFIRMADOS
-                      viewModel.isLoading && viewModel.totalConfirmados == 0
+                      viewModel.isLoading && viewModel.totalParticipantes == 0
                           ? const CircularProgressIndicator(
                               color: AppColors.text,
                             )
                           : Text(
-                              '${viewModel.totalConfirmados}',
+                              '${viewModel.totalParticipantes}',
                               style: const TextStyle(
                                 color: AppColors.text,
                                 fontSize: 64,
@@ -117,7 +117,7 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                   children: [
                     /// BAIXAR PLANILHA
                     FicButton(
-                      label: "BAIXAR PLANILHA",
+                      label: "BAIXAR E EXPORTAR",
                       isLoading: viewModel.isLoading,
                       onPressed: () async {
                         await viewModel.exportarPlanilhaParticipantes(
@@ -140,9 +140,9 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    /// MESCLAR PLANILHAS
+                    /// UNIFICAR PLANILHAS
                     FicButton(
-                      label: "MESCLAR PLANILHAS",
+                      label: "UNIFICAR PLANILHAS",
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -157,14 +157,16 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                     /// NOVO BOTAO: FINALIZAR E APAGAR DADOS DO FICS
                     FicButton(
                       label: "FINALIZAR E APAGAR DADOS",
-                      backgroundColor: Colors.red.shade800, // Destaque visual de ação destrutiva/crítica
+                      backgroundColor: Colors.red
+                          .shade800, // Destaque visual de ação destrutiva/crítica
                       isLoading: pessoaViewModel.isLoading,
                       onPressed: () async {
                         // Exibe o componente FicDialog customizado do projeto
                         final confirmar = await FicDialog.show(
                           context: context,
                           title: "ATENÇÃO!",
-                          message: "Esta ação apagará de forma permanente todos os dados cadastrados e check-ins deste dispositivo. Certifique-se de ter exportado tudo.\n\nDeseja continuar?",
+                          message:
+                              "Esta ação apagará de forma permanente todos os dados cadastrados e check-ins deste dispositivo. Certifique-se de ter exportado tudo.\n\nDeseja continuar?",
                           confirmText: "SIM, APAGAR",
                           cancelText: "NÃO",
                         );

@@ -63,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/logo_fic.png',
-                    width: 180, // Tamanho fixo para não distorcer
+                    width: 180,
                     fit: BoxFit.contain,
                   ),
                 ),

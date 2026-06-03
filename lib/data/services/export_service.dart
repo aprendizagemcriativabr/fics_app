@@ -27,9 +27,7 @@ class ExportService {
 
     /// CABEÇALHOS
     aba.appendRow(
-      cabecalhos
-          .map((c) => TextCellValue(c))
-          .toList(),
+      cabecalhos.map((c) => TextCellValue(c)).toList(),
     );
 
     /// ESTILIZA CABEÇALHO
@@ -47,26 +45,19 @@ class ExportService {
     /// DADOS
     for (final linha in linhasDados) {
       aba.appendRow(
-        linha
-            .map(_converterParaCellValue)
-            .toList(),
+        linha.map(_converterParaCellValue).toList(),
       );
     }
 
     /// TOTAL
     if (linhaTotal != null) {
       aba.appendRow(
-        linhaTotal
-            .map(_converterParaCellValue)
-            .toList(),
+        linhaTotal.map(_converterParaCellValue).toList(),
       );
 
-      final int ultimaLinha =
-          aba.maxRows - 1;
+      final int ultimaLinha = aba.maxRows - 1;
 
-      for (int col = 0;
-          col < linhaTotal.length;
-          col++) {
+      for (int col = 0; col < linhaTotal.length; col++) {
         final cell = aba.cell(
           CellIndex.indexByColumnRow(
             columnIndex: col,
@@ -74,20 +65,17 @@ class ExportService {
           ),
         );
 
-        cell.cellStyle =
-            estiloDestaque;
+        cell.cellStyle = estiloDestaque;
       }
     }
 
     /// GERA BYTES
-    final Uint8List fileBytes =
-        Uint8List.fromList(
+    final Uint8List fileBytes = Uint8List.fromList(
       excel.save()!,
     );
 
     /// SAVE FILE
-    final String? caminhoSelecionado =
-        await FilePicker.platform.saveFile(
+    final String? caminhoSelecionado = await FilePicker.platform.saveFile(
       dialogTitle: 'Salvar Planilha',
       fileName: nomeArquivoPadrao,
 
@@ -104,8 +92,7 @@ class ExportService {
     }
 
     /// SALVA NO DISCO
-    final arquivoFinal =
-        File(caminhoSelecionado);
+    final arquivoFinal = File(caminhoSelecionado);
 
     await arquivoFinal.writeAsBytes(
       fileBytes,

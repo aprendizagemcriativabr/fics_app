@@ -15,7 +15,8 @@ class ShareService {
     }
 
     final dirTemporario = await getTemporaryDirectory();
-    final nomeArquivo = caminhoArquivoOriginal.split(Platform.pathSeparator).last;
+    final nomeArquivo =
+        caminhoArquivoOriginal.split(Platform.pathSeparator).last;
     final caminhoTemporario = '${dirTemporario.path}/$nomeArquivo';
     final arquivoTemporario = File(caminhoTemporario);
 

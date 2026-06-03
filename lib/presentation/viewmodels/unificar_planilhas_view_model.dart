@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:excel/excel.dart'; 
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,13 +23,11 @@ class UnificarDadosViewModel extends ChangeNotifier {
   })  : _unificarPlanilhas = unificarPlanilhas,
         _shareService = shareService;
 
-  // --- GETTERS ---
   List<File> get selectedFiles => _selectedFiles;
   bool get isProcessing => _isProcessing;
   String? get ultimoArquivoGerado => _ultimoArquivoGerado;
-  bool get canSubmit => _selectedFiles.isNotEmpty && !_isProcessing;
+  bool get canSubmit => _selectedFiles.length > 1 && !_isProcessing;
 
-  /// SELECIONA PLANILHAS
   Future<void> pickMultipleFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -41,7 +39,8 @@ class UnificarDadosViewModel extends ChangeNotifier {
       for (final path in result.paths) {
         if (path != null) {
           final novoArquivo = File(path);
-          final jaExiste = _selectedFiles.any((f) => f.path == novoArquivo.path);
+          final jaExiste =
+              _selectedFiles.any((f) => f.path == novoArquivo.path);
 
           if (!jaExiste) {
             _selectedFiles.add(novoArquivo);
@@ -52,32 +51,31 @@ class UnificarDadosViewModel extends ChangeNotifier {
     }
   }
 
-  /// REMOVE ARQUIVO
   void removerArquivo(File arquivo) {
     _selectedFiles.remove(arquivo);
     notifyListeners();
   }
 
-  /// LIMPA LISTA
   void limparTudo() {
     _selectedFiles.clear();
     _ultimoArquivoGerado = null;
     notifyListeners();
   }
 
-  /// EXECUTA UNIFICAÇÃO E COMPARTILHA AUTOMATICAMENTE
   Future<void> executarUnificacaoEExportar({
     required VoidCallback onSuccess,
     required Function(String) onError,
   }) async {
-    if (_selectedFiles.isEmpty) return;
+    if (_selectedFiles.length < 2) {
+      throw Exception(
+          "Selecione ao menos duas planilhas para unificar os dados.");
+    }
 
     _isProcessing = true;
-    _ultimoArquivoGerado = null; 
+    _ultimoArquivoGerado = null;
     notifyListeners();
 
     try {
-      /// PERMISSÕES
       if (Platform.isAndroid) {
         final status = await Permission.manageExternalStorage.request();
         if (!status.isGranted) {
@@ -85,27 +83,38 @@ class UnificarDadosViewModel extends ChangeNotifier {
         }
       }
 
-      /// UNIFICA TODAS AS PLANILHAS VIA USECASE
-      final List<Pessoa> pessoasUnificadas = await _unificarPlanilhas(_selectedFiles);
+      final List<Pessoa> dadosBrutos = await _unificarPlanilhas(_selectedFiles);
+
+      final List<Pessoa> pessoasUnificadas = dadosBrutos.where((p) {
+        final nomeLimpo = p.nome.trim().toUpperCase();
+        return nomeLimpo.isNotEmpty &&
+            !nomeLimpo.contains('TOTAL GERAL') &&
+            nomeLimpo != 'TOTAL';
+      }).toList();
 
       if (pessoasUnificadas.isEmpty) {
-        throw Exception("Nenhum dado encontrado nas planilhas selecionadas.");
+        throw Exception(
+            "Nenhum dado válido encontrado nas planilhas selecionadas.");
       }
 
-      /// ORDENA
       pessoasUnificadas.sort((a, b) => a.nome.compareTo(b.nome));
 
-      /// CRIA EXCEL NATIVO
       final excel = Excel.createExcel();
       final sheet = excel['Sheet1'];
 
-      /// CABEÇALHO
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = TextCellValue('Nome');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value = TextCellValue('Qte. Acompanhantes');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value = TextCellValue('Horario CheckIn');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value = TextCellValue('Pré Cadastro');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+          .value = TextCellValue('Nome');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
+          .value = TextCellValue('Qte. Acompanhantes');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
+          .value = TextCellValue('Horario CheckIn');
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0))
+          .value = TextCellValue('Pré Cadastro');
 
-      /// INSERE DADOS DAS PESSOAS UNIFICADAS
       int totalPessoas = 0;
       for (int i = 0; i < pessoasUnificadas.length; i++) {
         final p = pessoasUnificadas[i];
@@ -113,20 +122,38 @@ class UnificarDadosViewModel extends ChangeNotifier {
 
         totalPessoas += p.acompanhantes + 1;
 
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row)).value = TextCellValue(p.nome);
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row)).value = IntCellValue(p.acompanhantes);
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row)).value = TextCellValue(p.horaEntrada ?? '--:--');
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row)).value = TextCellValue(p.preCadastro ? 'Sim' : 'Não');
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
+            .value = TextCellValue(p.nome);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
+            .value = IntCellValue(p.acompanhantes);
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row))
+            .value = TextCellValue(p.horaEntrada ?? '--:--');
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row))
+            .value = TextCellValue(p.preCadastro ? 'Sim' : 'Não');
       }
 
-      /// LINHA TOTAL GERAL NO FINAL
       final linhaTotalRow = pessoasUnificadas.length + 1;
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: linhaTotalRow)).value = TextCellValue('TOTAL GERAL');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: linhaTotalRow)).value = IntCellValue(totalPessoas);
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: linhaTotalRow)).value = TextCellValue('');
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: linhaTotalRow)).value = TextCellValue('');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 0, rowIndex: linhaTotalRow))
+          .value = TextCellValue('TOTAL GERAL');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 1, rowIndex: linhaTotalRow))
+          .value = IntCellValue(totalPessoas);
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 2, rowIndex: linhaTotalRow))
+          .value = TextCellValue('');
+      sheet
+          .cell(CellIndex.indexByColumnRow(
+              columnIndex: 3, rowIndex: linhaTotalRow))
+          .value = TextCellValue('');
 
-      /// DIRETÓRIO PARA SALVAMENTO
       Directory? directory;
       if (Platform.isAndroid) {
         directory = Directory('/storage/emulated/0/Download');
@@ -137,14 +164,13 @@ class UnificarDadosViewModel extends ChangeNotifier {
         directory = await getApplicationDocumentsDirectory();
       }
 
-      /// NOME DO ARQUIVO
       final dataAtual = DateTime.now().toString().split(' ')[0];
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final path = '${directory.path}/planilha_unificada_checkins_${dataAtual}_$timestamp.xlsx';
+      final path =
+          '${directory.path}/planilha_unificada_checkins_${dataAtual}_$timestamp.xlsx';
 
       debugPrint("CAMINHO SALVAMENTO UNIFICADO: $path");
 
-      /// GERA E SALVA OS BYTES NO DISCO
       final fileBytes = excel.save();
       if (fileBytes == null) {
         throw Exception("Erro ao gerar a estrutura do Excel.");
@@ -154,7 +180,6 @@ class UnificarDadosViewModel extends ChangeNotifier {
       await file.create(recursive: true);
       await file.writeAsBytes(fileBytes, flush: true);
 
-      /// FORÇA O ANDROID A INDEXAR O ARQUIVO
       if (Platform.isAndroid) {
         try {
           await Process.run(
@@ -175,12 +200,10 @@ class UnificarDadosViewModel extends ChangeNotifier {
       _ultimoArquivoGerado = file.path;
       debugPrint("PLANILHA UNIFICADA SALVA COM SUCESSO: ${file.path}");
 
-      /// ABRE A DIÁLOGO DE COMPARTILHAMENTO DO SISTEMA OPERACIONAL
       await _shareService.compartilharArquivoLocal(
         caminhoArquivoOriginal: _ultimoArquivoGerado!,
       );
-      
-      // Limpa os arquivos da lista apenas se o fluxo acima concluir com sucesso
+
       _selectedFiles.clear();
       onSuccess();
     } catch (e) {
@@ -192,7 +215,6 @@ class UnificarDadosViewModel extends ChangeNotifier {
     }
   }
 
-  /// COMPARTILHA VIA SERVIÇO UNIFICADO (MANUAL VIA ICONBUTTON)
   Future<void> compartilharPlanilha({
     required VoidCallback onAvisoGerarPrimeiro,
     required Function(String) onError,

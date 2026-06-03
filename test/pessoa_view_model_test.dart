@@ -5,13 +5,22 @@ import 'package:fics_app_new/domain/usecases/get_pessoas.dart';
 import 'package:fics_app_new/domain/usecases/atualizar_acompanhantes.dart';
 import 'package:fics_app_new/domain/usecases/importar_pessoas.dart';
 import 'package:fics_app_new/domain/usecases/add_pessoa.dart';
+import 'package:fics_app_new/domain/usecases/deletar_pessoas.dart';
 import 'package:fics_app_new/presentation/viewmodels/pessoa_view_model.dart';
 
-// Mocks 
+// Mocks
 class MockGetPessoas extends Mock implements GetPessoas {}
-class MockAtualizarAcompanhantes extends Mock implements AtualizarAcompanhantes {}
+
+class MockAtualizarAcompanhantes extends Mock
+    implements AtualizarAcompanhantes {}
+
 class MockImportarPessoas extends Mock implements ImportarPessoas {}
+
 class MockAddPessoa extends Mock implements AddPessoa {}
+
+class MockDeletarTodasPessoasUseCase extends Mock
+    implements DeletarTodasPessoasUseCase {}
+
 class FakePessoa extends Fake implements Pessoa {}
 
 void main() {
@@ -20,6 +29,7 @@ void main() {
   late MockAtualizarAcompanhantes mockAtualizar;
   late MockImportarPessoas mockImportar;
   late MockAddPessoa mockAdd;
+  late MockDeletarTodasPessoasUseCase mockDeletar;
 
   final tPessoaPreCadastro = Pessoa(
     nome: 'Izabella',
@@ -27,7 +37,7 @@ void main() {
     preCadastro: true, // vindo de planilha
     confirmado: false,
   );
-  
+
   final tPessoaLocal = Pessoa(
     nome: 'Carlos',
     acompanhantes: 2,
@@ -46,17 +56,25 @@ void main() {
     mockAtualizar = MockAtualizarAcompanhantes();
     mockImportar = MockImportarPessoas();
     mockAdd = MockAddPessoa();
-    viewModel = PessoaViewModel(mockGet, mockAtualizar, mockImportar, mockAdd);
+    mockDeletar = MockDeletarTodasPessoasUseCase();
+    viewModel = PessoaViewModel(
+      mockGet,
+      mockAtualizar,
+      mockImportar,
+      mockAdd,
+      mockDeletar,
+    );
   });
 
   group('PessoaViewModel -', () {
     test('deve iniciar com estado vazio e sem carregamento', () {
       expect(viewModel.todasPessoas, isEmpty);
       expect(viewModel.isLoading, false);
-      expect(viewModel.possuiPreCadastro, false); 
+      expect(viewModel.possuiPreCadastro, false);
     });
 
-    test('carregar: deve buscar pessoas e atualizar o estado da lista', () async {
+    test('carregar: deve buscar pessoas e atualizar o estado da lista',
+        () async {
       when(() => mockGet.call()).thenAnswer((_) async => tLista);
 
       final future = viewModel.carregar();
@@ -70,17 +88,21 @@ void main() {
       verify(() => mockGet.call()).called(1);
     });
 
-    test('possuiPreCadastro: deve identificar corretamente se há dados de planilha', () async {
+    test(
+        'possuiPreCadastro: deve identificar corretamente se há dados de planilha',
+        () async {
       when(() => mockGet.call()).thenAnswer((_) async => [tPessoaLocal]);
       await viewModel.carregar();
-      expect(viewModel.possuiPreCadastro, false); // Local não conta como pré-cadastro
+      expect(viewModel.possuiPreCadastro,
+          false); // Local não conta como pré-cadastro
 
       when(() => mockGet.call()).thenAnswer((_) async => tLista);
       await viewModel.carregar();
       expect(viewModel.possuiPreCadastro, true); // Identificou o pré-cadastro
     });
 
-    test('importarNovasPessoas: deve chamar o usecase e recarregar a lista', () async {
+    test('importarNovasPessoas: deve chamar o usecase e recarregar a lista',
+        () async {
       // Arrange
       when(() => mockImportar.call(any())).thenAnswer((_) async => {});
       when(() => mockGet.call()).thenAnswer((_) async => tLista);

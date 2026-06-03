@@ -60,7 +60,8 @@ class ReceberDadosPage extends StatelessWidget {
                                   final confirmar = await FicDialog.show(
                                     context: context,
                                     title: "Substituir Dados?",
-                                    message: "Já existem participantes registados. Se prosseguir, os dados atuais serão substituídos.",
+                                    message:
+                                        "Já existem participantes registados. Se prosseguir, os dados atuais serão substituídos.",
                                     confirmText: "SIM",
                                     cancelText: "NÃO",
                                   );
@@ -71,11 +72,8 @@ class ReceberDadosPage extends StatelessWidget {
                                 vm.executarImportacao(
                                   listaVM: pessoaVM,
                                   onSuccess: () {
-                                    FicFeedback.show(
-                                      context,
-                                      message: "Dados recebidos com sucesso!",
-                                      type: FeedbackType.success,
-                                    );
+                                    if (!context.mounted) return;
+                                    Navigator.pop(context, true);
                                   },
                                   onError: (msg) {
                                     FicFeedback.show(

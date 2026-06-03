@@ -24,8 +24,7 @@ class PessoaDataSource {
     await box.addAll(models);
   }
 
-  Future<PessoaModel?>
-      findByNome(String nome) async {
+  Future<PessoaModel?> findByNome(String nome) async {
     try {
       return box.values.firstWhere(
         (p) => p.nome == nome,

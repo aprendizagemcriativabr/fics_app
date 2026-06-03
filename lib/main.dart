@@ -16,7 +16,7 @@ import 'domain/usecases/get_pessoas.dart';
 import 'domain/usecases/atualizar_acompanhantes.dart';
 import 'domain/usecases/importar_pessoas.dart';
 import 'domain/usecases/add_pessoa.dart';
-import 'domain/usecases/deletar_pessoas.dart'; 
+import 'domain/usecases/deletar_pessoas.dart';
 
 // PRESENTATION
 import 'presentation/viewmodels/pessoa_view_model.dart';
@@ -65,7 +65,8 @@ Future<void> main() async {
 
   final addPessoa = AddPessoa(repository);
 
-  final deletarTodasPessoasUseCase = DeletarTodasPessoasUseCase(repository); // <--- ADICIONADO
+  final deletarTodasPessoasUseCase =
+      DeletarTodasPessoasUseCase(repository); // <--- ADICIONADO
 
   runApp(
     MyApp(
@@ -84,7 +85,8 @@ class MyApp extends StatelessWidget {
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
-  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase; // <--- ADICIONADO
+  final DeletarTodasPessoasUseCase
+      deletarTodasPessoasUseCase; // <--- ADICIONADO
   final ShareService shareService; // <--- Declarado aqui
 
   const MyApp({

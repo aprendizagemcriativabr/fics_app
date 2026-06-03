@@ -6,34 +6,46 @@ import 'package:fics_app_new/domain/entities/pessoa.dart';
 class ImportCsvService {
   Future<List<Pessoa>> lerPlanilha(File file) async {
     try {
-      final conteudoTexto = await file.readAsString(encoding: utf8);
- 
+      var conteudoTexto = await file.readAsString(encoding: utf8);
+
+      // Normaliza quebras de linha para evitar CSVs (Windows/macOS) sendo lidos como uma única linha.
+      conteudoTexto =
+          conteudoTexto.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+
       String separador = ';';
       if (!conteudoTexto.contains(';') && conteudoTexto.contains(',')) {
         separador = ',';
       }
 
-      List<List<dynamic>> linhas = CsvToListConverter(fieldDelimiter: separador).convert(conteudoTexto);
-      
+      List<List<dynamic>> linhas = CsvToListConverter(
+        fieldDelimiter: separador,
+        eol: '\n',
+      ).convert(conteudoTexto);
+
       List<Pessoa> novosCadastros = [];
       if (linhas.isEmpty) return novosCadastros;
 
       // 1. MAPEIA DINAMICAMENTE OS ÍNDICES ATRAVÉS DO CABEÇALHO (Linha 0)
-      final cabecalho = linhas[0].map((c) => c.toString().toLowerCase().trim()).toList();
-      
-      final int idxNome = cabecalho.indexWhere((c) => c == 'nome');
-      
-      final int idxAcompanhantes = cabecalho.indexWhere(
-        (c) => c == 'acompanhantes' || c == 'qte. acompanhantes'
-      );
-      
-      final int idxHora = cabecalho.indexWhere(
-        (c) => c == 'hora entrada' || c == 'horario checkin' || c == 'horário checkin'
-      );
-      
-      final int idxPre = cabecalho.indexWhere(
-        (c) => c == 'pré cadastro' || c == 'pre cadastro'
-      );
+      final cabecalho = linhas[0]
+          .map(
+              (c) => c.toString().toLowerCase().replaceAll('\ufeff', '').trim())
+          .toList();
+
+      final int idxNome =
+          cabecalho.indexWhere((c) => c == 'nome' || c.contains('nome'));
+
+      final int idxAcompanhantes = cabecalho.indexWhere((c) =>
+          c.contains('acompanhante') ||
+          c.contains('qte') ||
+          c.contains('qtd') ||
+          c.contains('quantidade'));
+
+      final int idxHora = cabecalho.indexWhere((c) =>
+          (c.contains('entrada') || c.contains('check')) &&
+          !c.contains('carimbo'));
+
+      final int idxPre = cabecalho
+          .indexWhere((c) => c == 'pré cadastro' || c == 'pre cadastro');
 
       // Se não achar a coluna principal (Nome), não dá para continuar
       if (idxNome == -1) return novosCadastros;
@@ -41,26 +53,26 @@ class ImportCsvService {
       // 2. CONSOME OS DADOS (Começa em i = 1 para pular o cabeçalho)
       for (int i = 1; i < linhas.length; i++) {
         var row = linhas[i];
-        
+
         if (row.isNotEmpty && row.length > idxNome && row[idxNome] != null) {
           final nome = row[idxNome].toString().trim();
-          
+
           // Ignora linhas vazias ou a linha de TOTAL GERAL da planilha unificada
           if (nome.isEmpty || nome.toUpperCase() == 'TOTAL GERAL') continue;
 
           // Captura Acompanhantes
           int acompanhantes = 0;
-          if (idxAcompanhantes != -1 && idxAcompanhantes < row.length && row[idxAcompanhantes] != null) {
-            acompanhantes = int.tryParse(row[idxAcompanhantes].toString().trim()) ?? 0;
+          if (idxAcompanhantes != -1 &&
+              idxAcompanhantes < row.length &&
+              row[idxAcompanhantes] != null) {
+            acompanhantes =
+                int.tryParse(row[idxAcompanhantes].toString().trim()) ?? 0;
           }
 
           // Captura Hora de Entrada
           String? horaEntrada;
           if (idxHora != -1 && idxHora < row.length && row[idxHora] != null) {
-            final valorHora = row[idxHora].toString().trim();
-            if (valorHora.isNotEmpty && valorHora != '--:--') {
-              horaEntrada = valorHora;
-            }
+            horaEntrada = _parseHoraEntrada(row[idxHora].toString());
           }
 
           // Captura Pré-Cadastro de forma correta (Tratando o "Sim"/"Não")
@@ -75,7 +87,8 @@ class ImportCsvService {
           novosCadastros.add(Pessoa(
             nome: nome,
             acompanhantes: acompanhantes,
-            confirmado: horaEntrada != null, // Se tem horário válido, está confirmado
+            confirmado:
+                horaEntrada != null, // Se tem horário válido, está confirmado
             horaEntrada: horaEntrada,
             preCadastro: preCadastro,
           ));
@@ -86,4 +99,20 @@ class ImportCsvService {
       throw Exception("Erro ao ler o arquivo CSV: $e");
     }
   }
+}
+
+String? _parseHoraEntrada(String raw) {
+  final value = raw.trim();
+  if (value.isEmpty || value == '--:--') return null;
+
+  // Aceita somente horários (HH:mm ou HH:mm:ss). Ex.: "16:24" / "16:24:03".
+  final match = RegExp(r'^(\d{1,2}):(\d{2})(?::(\d{2}))?$').firstMatch(value);
+  if (match == null) return null;
+
+  final hh = int.tryParse(match.group(1)!) ?? -1;
+  final mm = int.tryParse(match.group(2)!) ?? -1;
+  if (hh < 0 || hh > 23 || mm < 0 || mm > 59) return null;
+
+  // Padroniza para HH:mm (descarta segundos se vierem).
+  return '${hh.toString().padLeft(2, '0')}:${mm.toString().padLeft(2, '0')}';
 }

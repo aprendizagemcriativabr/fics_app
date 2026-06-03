@@ -7,12 +7,12 @@
     "faqs": [
       {
         "question": "Como validar ou fazer check-in um participante?",
-        "answer": "Encontre o participante desejado na lista através da rolagem ou da barra de pesquisa e toque no ícone de check verde posicionado ao lado do nome.",
+        "answer": "Encontre o participante na lista (rolando ou pesquisando) e toque no nome. Na tela de confirmação, ajuste a quantidade de acompanhantes (se necessário) e toque em 'Confirmar Check-in'.",
         "related_flow_id": "pre_cadastro"
       },
       {
         "question": "Como marcar presença?",
-        "answer": "A presença é confirmada instantaneamente ao clicar no botão de checkin do participante dentro do fluxo correspondente (pré-cadastro ou cadastro local).",
+        "answer": "No pré-cadastro, a presença é confirmada ao abrir o participante e tocar em 'Confirmar Check-in'. No cadastro no local, o participante já é cadastrado como confirmado (com hora de entrada).",
         "related_flow_id": "pre_cadastro"
       },
       {
@@ -40,7 +40,7 @@
       {
         "icon": "filter_alt_rounded",
         "title": "Use os filtros (opcional)",
-        "description": "Toque no ícone de funil no canto superior direito para filtrar por status: todos, validados ou pendentes. Além disso, é possível ordernar a lista em A-Z ou Z-A."
+        "description": "Toque no ícone de filtro no canto superior direito para filtrar por status: todos, validados ou pendentes. Além disso, é possível ordenar a lista em A-Z ou Z-A."
       },
       {
         "icon": "check_circle_rounded",
@@ -57,7 +57,7 @@
     "faqs": [
       {
         "question": "Como cadastrar alguém no evento?",
-        "answer": "Vá até à opção 'Cadastro no Local' na tela inicial, introduza o nome completo do novo participante, defina os acompanhantes se existirem e clique em salvar.",
+        "answer": "Na tela inicial, toque em 'Cadastro no Local', digite o nome completo, defina a quantidade de acompanhantes e toque em 'Cadastrar'.",
         "related_flow_id": "cadastro_local"
       },
       {
@@ -67,15 +67,15 @@
       },
       {
         "question": "Pessoa não está na lista, e agora?",
-        "answer": "Não há problema! Se o participante não veio na planilha de pré-cadastro, utilize o fluxo de 'Cadastro no Local' para registá-lo na hora.",
+        "answer": "Sem problema! Se o participante não veio na planilha de pré-cadastro, use 'Cadastro no Local' para cadastrar na hora.",
         "related_flow_id": "cadastro_local"
       }
     ],
     "steps": [
       {
         "icon": "touch_app_rounded",
-        "title": "Acesse \"cadastro no Local\"",
-        "description": "Na tela inicial, toque no botão \"CADASTRO NO LOCAL\" para ver o formulário de cadastro."
+        "title": "Acesse \"Cadastro no Local\"",
+        "description": "Na tela inicial, toque no botão 'Cadastro no Local' para abrir o formulário de cadastro."
       },
       {
         "icon": "person_rounded",
@@ -90,12 +90,12 @@
       {
         "icon": "save_rounded",
         "title": "Salve o cadastro",
-        "description": "Toque no botão \"CADASTRAR\" para salvar."
+        "description": "Toque no botão 'Cadastrar'. O participante já entra como confirmado e com hora de entrada."
       },
       {
-        "icon": "save_rounded",
-        "title": "Verifique o Check-in",
-        "description": "Volte na tela inicial, toque no botão \"VISUALIZAR CHECK-INS\" para ver todas as pessoas que realizaram check-in durante o evento."
+        "icon": "check_circle_rounded",
+        "title": "Veja na lista de check-ins (opcional)",
+        "description": "Se quiser conferir, volte na tela inicial e toque em 'Visualizar Check-ins'."
       }
     ]
   },
@@ -107,17 +107,17 @@
     "faqs": [
       {
         "question": "Como importar os dados?",
-        "answer": "Clique no ícone de upload na tela inicial, selecione o arquivo Excel (.xlsx) guardado no seu dispositivo e confirme a operação clicando em 'RECEBER'.",
+        "answer": "Na tela inicial, toque em 'Importar Planilha', selecione o arquivo (.xlsx ou .csv) e toque em 'Importar dados'.",
         "related_flow_id": "importar_planilha"
       },
       {
         "question": "Qual formato de planilha usar?",
-        "answer": "O sistema aceita exclusivamente ficheiros com a extensão Excel (.xlsx). Certifique-se de que o ficheiro não está corrompido antes de carregar.",
+        "answer": "O sistema aceita ficheiros Excel (.xlsx) e também CSV (.csv). Para o app identificar os dados corretamente, a primeira linha deve ser um cabeçalho com colunas contendo palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte').",
         "related_flow_id": "importar_planilha"
       },
       {
         "question": "Como preparar o arquivo Excel?",
-        "answer": "Crie uma planilha simples contendo as colunas de dados necessárias para a importação e salve-a diretamente no formato padrão do Excel (.xlsx).",
+        "answer": "Crie uma planilha (Excel ou CSV) com cabeçalho na primeira linha e, no mínimo, as colunas de Nome e Acompanhantes. Colunas extras podem existir (ex.: 'Carimbo de data/hora' do Google Forms), mas elas não contam como check-in: o check-in é feito manualmente no app.",
         "related_flow_id": "importar_planilha"
       }
     ],
@@ -125,22 +125,54 @@
       {
         "icon": "table_chart_rounded",
         "title": "Prepare a planilha",
-        "description": "O arquivo deve estar no formato .xlsx."
+        "description": "O arquivo deve estar no formato .xlsx ou .csv e ter cabeçalho (primeira linha) com colunas reconhecíveis (ex.: Nome e Acompanhantes/Quantidade)."
       },
       {
         "icon": "touch_app_rounded",
         "title": "Acesse \"Importar Planilha\"",
-        "description": "Na tela inicial, toque no ícone de upload (seta para cima)."
+        "description": "Na tela inicial, toque no botão 'Importar Planilha'."
       },
       {
         "icon": "upload_rounded",
         "title": "Selecione o arquivo",
-        "description": "Escolha o arquivo .xlsx."
+        "description": "Toque no campo para escolher um arquivo .xlsx ou .csv do seu dispositivo."
       },
       {
         "icon": "download_done_rounded",
         "title": "Confirme a importação",
-        "description": "Toque em \"RECEBER\"."
+        "description": "Toque em 'Importar dados'. Se já existirem participantes no app, confirme se deseja substituir os dados."
+      }
+    ]
+  },
+  {
+    "id": "google_forms",
+    "title": "GOOGLE FORMS",
+    "subtitle": "Crie um formulário e exporte sua planilha",
+    "icon": "table_chart_rounded",
+    "faqs": [
+      {
+        "question": "O que este tutorial ensina?",
+        "answer": "Este é um molde para você editar. A ideia é padronizar o Google Forms para que a planilha exportada possa ser importada no app.",
+        "related_flow_id": "google_forms"
+      },
+      {
+        "question": "Quais colunas o app precisa reconhecer?",
+        "answer": "A planilha deve ter cabeçalho na primeira linha e colunas identificáveis de Nome e Acompanhantes/Quantidade. A coluna de 'Carimbo de data/hora' do Forms não conta como check-in.",
+        "related_flow_id": "google_forms"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "touch_app_rounded",
+        "title": "Criar perguntas no Forms",
+      "description": "1. Clique nesse botão para criar mais um campo de pergunta.\n2. Edite aqui o título com o nome e detalhes sobre o evento.\n3. Adicione a pergunta como: Nome/Participante/Convidado.\n4. Adicione outra pergunta: Acompanhantes/Quantidade/Qtd/Qte.",
+        "image": "assets/images/tutorial-forms-1.png"
+      },
+      {
+        "icon": "download_done_rounded",
+        "title": "Exportar a planilha",
+        "description": "1. XLSX (recomendado): No Google Forms, abra as respostas em uma planilha do Google (Sheets). No Sheets, vá em Arquivo → Fazer download → Microsoft Excel (.xlsx).\n2. CSV: No Forms, vá na aba Respostas e use o menu (⋮) para baixar as respostas em .csv (quando disponível).",
+        "image": "assets/images/tutorial-forms-2.png"
       }
     ]
   },
@@ -152,12 +184,12 @@
     "faqs": [
       {
         "question": "Como encerrar o evento?",
-        "answer": "Clique no botão 'Encerrar FICS' na tela de início, revise atentamente a lista de checagem final e confirme a ação de bloqueio definitivo das atividades.",
+        "answer": "Na tela inicial, toque em 'Encerrar FICS'. Lá você consegue baixar/exportar a planilha, unificar planilhas e (se necessário) finalizar apagando os dados do dispositivo.",
         "related_flow_id": "encerrar"
       },
       {
         "question": "Como exportar os dados ao final?",
-        "answer": "Ao efetuar o encerramento completo do evento através do botão de cadeado, o sistema compilará as informações recolhidas automaticamente.",
+        "answer": "Na tela de Encerramento, toque em 'BAIXAR E EXPORTAR' para gerar a planilha. Para compartilhar, use o ícone de compartilhar no topo. Também existe a opção 'UNIFICAR PLANILHAS' para juntar arquivos.",
         "related_flow_id": "encerrar"
       }
     ],
@@ -165,17 +197,17 @@
       {
         "icon": "checklist_rounded",
         "title": "Confirme que tudo está pronto",
-        "description": "Verifique os participantes antes de encerrar."
+        "description": "Antes de finalizar, confira se os check-ins estão corretos e se você já importou/cadastrou todo mundo."
       },
       {
         "icon": "lock_rounded",
         "title": "Toque em \"Encerrar FICS\"",
-        "description": "Na tela inicial, toque no botão."
+        "description": "Na tela inicial, toque no botão para abrir a tela de Encerramento."
       },
       {
         "icon": "check_circle_outline_rounded",
-        "title": "Confirme o encerramento",
-        "description": "Leia o aviso e confirme."
+        "title": "Exporte e finalize",
+        "description": "Use 'BAIXAR E EXPORTAR' para gerar a planilha. Se precisar, use 'UNIFICAR PLANILHAS'. Só use 'FINALIZAR E APAGAR DADOS' depois de exportar tudo (é irreversível)."
       }
     ]
   }

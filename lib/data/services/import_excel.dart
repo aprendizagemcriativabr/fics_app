@@ -12,56 +12,65 @@ class ImportExcelService {
       final sheet = excel.tables[table];
       if (sheet == null) continue;
 
-      if (sheet.maxRows <= 1) continue; 
+      if (sheet.maxRows <= 1) continue;
 
-      // 1. TENTA MAPEAR DINAMICAMENTE (Super Flexível)
       final linhaCabecalho = sheet.rows[0];
-      final cabecalho = linhaCabecalho.map((c) => c?.value?.toString().toLowerCase().trim() ?? '').toList();
+      final cabecalho = linhaCabecalho
+          .map((c) => c?.value?.toString().toLowerCase().trim() ?? '')
+          .toList();
 
-      // Procura por pedaços de palavras em vez do texto exato
-      int idxNome = cabecalho.indexWhere((c) => c.contains('nome') || c.contains('convidado') || c.contains('participante'));
-      int idxAcompanhantes = cabecalho.indexWhere((c) => c.contains('acompanhante') || c.contains('qte') || c.contains('qtd') || c.contains('quantidade'));
-      int idxHora = cabecalho.indexWhere((c) => c.contains('hora') || c.contains('check'));
-      int idxPre = cabecalho.indexWhere((c) => c.contains('pre') || c.contains('pré'));
+      int idxNome = cabecalho.indexWhere((c) =>
+          c.contains('nome') ||
+          c.contains('convidado') ||
+          c.contains('participante'));
 
-      // PLANO B (Fallback): Se não achou NENHUM cabeçalho claro, usamos a regra básica antiga.
-      // Assumimos que Coluna 0 = Nome, Coluna 1 = Acompanhantes.
-      if (idxNome == -1) {
-        idxNome = 0;
-        idxAcompanhantes = 1;
-        idxHora = 2; // Pode nem existir na planilha inicial, o código abaixo protege contra erros
-        idxPre = 3;  // Pode nem existir
-      }
+      int idxAcompanhantes = cabecalho.indexWhere((c) =>
+          c.contains('acompanhante') ||
+          c.contains('qte') ||
+          c.contains('qtd') ||
+          c.contains('quantidade'));
 
-      // 2. LÊ OS DADOS DE FATO
+      int idxHora = cabecalho.indexWhere((c) =>
+          (c.contains('hora') ||
+              c.contains('entrada') ||
+              c.contains('check')) &&
+          !c.contains('carimbo'));
+
+      int idxPre =
+          cabecalho.indexWhere((c) => c.contains('pre') || c.contains('pré'));
+
+      if (idxNome == -1) idxNome = 0;
+      if (idxAcompanhantes == -1) idxAcompanhantes = 1;
+      if (idxHora == -1) idxHora = 2;
+      if (idxPre == -1) idxPre = 3;
+
       for (int i = 1; i < sheet.maxRows; i++) {
         final row = sheet.rows[i];
 
-        // Proteção: Se a linha for vazia ou menor que a coluna de nome, pula.
-        if (row.isEmpty || idxNome >= row.length || row[idxNome]?.value == null) {
+        if (row.isEmpty ||
+            idxNome >= row.length ||
+            row[idxNome]?.value == null) {
           continue;
         }
 
         final nome = row[idxNome]!.value.toString().trim();
         if (nome.isEmpty || nome.toUpperCase() == 'TOTAL GERAL') continue;
 
-        // Captura Acompanhantes (se a coluna existir nesta linha)
         int acompanhantes = 0;
-        if (idxAcompanhantes != -1 && idxAcompanhantes < row.length && row[idxAcompanhantes]?.value != null) {
-          acompanhantes = int.tryParse(row[idxAcompanhantes]!.value.toString().trim()) ?? 0;
+        if (idxAcompanhantes != -1 &&
+            idxAcompanhantes < row.length &&
+            row[idxAcompanhantes]?.value != null) {
+          acompanhantes =
+              int.tryParse(row[idxAcompanhantes]!.value.toString().trim()) ?? 0;
         }
 
-        // Captura Hora de Entrada (se a coluna existir nesta linha)
         String? horaEntrada;
-        if (idxHora != -1 && idxHora < row.length && row[idxHora]?.value != null) {
-          final valorHora = row[idxHora]!.value.toString().trim();
-          if (valorHora.isNotEmpty && valorHora != '--:--') {
-            horaEntrada = valorHora;
-          }
+        if (idxHora != -1 &&
+            idxHora < row.length &&
+            row[idxHora]?.value != null) {
+          horaEntrada = _parseHoraEntrada(row[idxHora]!.value.toString());
         }
 
-        // Captura Pré-Cadastro 
-        // Se a coluna não existir (ex: planilha inicial), o padrão é TRUE, pois é uma lista pré-cadastrada.
         bool preCadastro = true;
         if (idxPre != -1 && idxPre < row.length && row[idxPre]?.value != null) {
           final valorPre = row[idxPre]!.value.toString().toLowerCase().trim();
@@ -74,7 +83,7 @@ class ImportExcelService {
           Pessoa(
             nome: nome,
             acompanhantes: acompanhantes,
-            confirmado: horaEntrada != null, // Se tem horário válido, já está confirmado na portaria
+            confirmado: horaEntrada != null,
             horaEntrada: horaEntrada,
             preCadastro: preCadastro,
           ),
@@ -84,4 +93,18 @@ class ImportExcelService {
 
     return novosCadastros;
   }
+}
+
+String? _parseHoraEntrada(String raw) {
+  final value = raw.trim();
+  if (value.isEmpty || value == '--:--') return null;
+
+  final match = RegExp(r'(\d{1,2}):(\d{2})').firstMatch(value);
+  if (match == null) return null;
+
+  final hh = int.tryParse(match.group(1)!) ?? -1;
+  final mm = int.tryParse(match.group(2)!) ?? -1;
+  if (hh < 0 || hh > 23 || mm < 0 || mm > 59) return null;
+
+  return '${hh.toString().padLeft(2, '0')}:${mm.toString().padLeft(2, '0')}';
 }
