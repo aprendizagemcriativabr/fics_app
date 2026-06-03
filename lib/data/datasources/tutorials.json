@@ -147,7 +147,7 @@
     "faqs": [
       {
         "question": "Quais nomes de colunas precisam estar na planilha?",
-        "answer": "A planilha deve ter cabeçalho na primeira linha e colunas identificáveis de Nome e Acompanhantes/Quantidade. A coluna de 'Carimbo de data/hora' do Forms não conta como check-in.",
+        "answer": "A planilha deve ter cabeçalho na primeira linha e colunas identificáveis de Nome e Acompanhantes/Quantidade. Para o app reconhecer, use palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte').",
         "related_flow_id": "google_forms"
       }
     ],
