@@ -114,18 +114,13 @@
         "question": "Qual formato de planilha usar?",
         "answer": "O sistema aceita ficheiros Excel (.xlsx) e também CSV (.csv). Para o app identificar os dados corretamente, a primeira linha deve ser um cabeçalho com colunas contendo palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte').",
         "related_flow_id": "importar_planilha"
-      },
-      {
-        "question": "Como preparar o arquivo Excel?",
-        "answer": "Crie uma planilha (Excel ou CSV) com cabeçalho na primeira linha e, no mínimo, as colunas de Nome e Acompanhantes. Colunas extras podem existir (ex.: 'Carimbo de data/hora' do Google Forms), mas elas não contam como check-in: o check-in é feito manualmente no app.",
-        "related_flow_id": "importar_planilha"
       }
     ],
     "steps": [
       {
         "icon": "table_chart_rounded",
         "title": "Prepare a planilha",
-        "description": "O arquivo deve estar no formato .xlsx ou .csv e ter cabeçalho (primeira linha) com colunas reconhecíveis (ex.: Nome e Acompanhantes/Quantidade)."
+        "description": "O arquivo deve estar no formato .xlsx ou .csv. Para o app identificar os dados corretamente, a primeira linha deve ser um cabeçalho com colunas contendo palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte')."
       },
       {
         "icon": "touch_app_rounded",
@@ -151,12 +146,7 @@
     "icon": "table_chart_rounded",
     "faqs": [
       {
-        "question": "O que este tutorial ensina?",
-        "answer": "Este é um molde para você editar. A ideia é padronizar o Google Forms para que a planilha exportada possa ser importada no app.",
-        "related_flow_id": "google_forms"
-      },
-      {
-        "question": "Quais colunas o app precisa reconhecer?",
+        "question": "Quais nomes de colunas precisam estar na planilha?",
         "answer": "A planilha deve ter cabeçalho na primeira linha e colunas identificáveis de Nome e Acompanhantes/Quantidade. A coluna de 'Carimbo de data/hora' do Forms não conta como check-in.",
         "related_flow_id": "google_forms"
       }
@@ -165,7 +155,7 @@
       {
         "icon": "touch_app_rounded",
         "title": "Criar perguntas no Forms",
-      "description": "1. Clique nesse botão para criar mais um campo de pergunta.\n2. Edite aqui o título com o nome e detalhes sobre o evento.\n3. Adicione a pergunta como: Nome/Participante/Convidado.\n4. Adicione outra pergunta: Acompanhantes/Quantidade/Qtd/Qte.",
+      "description": "1. Clique nesse botão para criar mais um campo de pergunta.\n2. Edite aqui o título com o nome e detalhes sobre o evento.\n3. Adicione a pergunta como: nome ou participante ou convidado.\n4. Adicione outra pergunta: acompanhantes ou quantidade ou qtd ou qte.",
         "image": "assets/images/tutorial-forms-1.png"
       },
       {
