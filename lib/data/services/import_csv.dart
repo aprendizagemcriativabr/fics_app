@@ -8,7 +8,6 @@ class ImportCsvService {
     try {
       var conteudoTexto = await file.readAsString(encoding: utf8);
 
-      // Normaliza quebras de linha para evitar CSVs (Windows/macOS) sendo lidos como uma única linha.
       conteudoTexto =
           conteudoTexto.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
 
@@ -25,7 +24,6 @@ class ImportCsvService {
       List<Pessoa> novosCadastros = [];
       if (linhas.isEmpty) return novosCadastros;
 
-      // 1. MAPEIA DINAMICAMENTE OS ÍNDICES ATRAVÉS DO CABEÇALHO (Linha 0)
       final cabecalho = linhas[0]
           .map(
               (c) => c.toString().toLowerCase().replaceAll('\ufeff', '').trim())
@@ -47,17 +45,14 @@ class ImportCsvService {
       final int idxPre = cabecalho
           .indexWhere((c) => c == 'pré cadastro' || c == 'pre cadastro');
 
-      // Se não achar a coluna principal (Nome), não dá para continuar
       if (idxNome == -1) return novosCadastros;
 
-      // 2. CONSOME OS DADOS (Começa em i = 1 para pular o cabeçalho)
       for (int i = 1; i < linhas.length; i++) {
         var row = linhas[i];
 
         if (row.isNotEmpty && row.length > idxNome && row[idxNome] != null) {
           final nome = row[idxNome].toString().trim();
 
-          // Ignora linhas vazias ou a linha de TOTAL GERAL da planilha unificada
           if (nome.isEmpty || nome.toUpperCase() == 'TOTAL GERAL') continue;
 
           // Captura Acompanhantes
@@ -75,7 +70,7 @@ class ImportCsvService {
             horaEntrada = _parseHoraEntrada(row[idxHora].toString());
           }
 
-          // Captura Pré-Cadastro de forma correta (Tratando o "Sim"/"Não")
+          // Captura Pré-Cadastro de forma correta
           bool preCadastro = false;
           if (idxPre != -1 && idxPre < row.length && row[idxPre] != null) {
             final valorPre = row[idxPre].toString().toLowerCase().trim();
@@ -88,7 +83,7 @@ class ImportCsvService {
             nome: nome,
             acompanhantes: acompanhantes,
             confirmado:
-                horaEntrada != null, // Se tem horário válido, está confirmado
+                horaEntrada != null, 
             horaEntrada: horaEntrada,
             preCadastro: preCadastro,
           ));

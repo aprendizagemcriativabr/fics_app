@@ -1,6 +1,6 @@
 import 'package:fics_app_new/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // <--- ADICIONADO para controlar a rotação
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -28,7 +28,6 @@ import 'package:fics_app_new/presentation/utility/color.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // <--- ADICIONADO: Bloqueia a rotação e força o app a ficar sempre em pé
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -54,7 +53,7 @@ Future<void> main() async {
   );
 
   /// SERVICES
-  final shareService = ShareService(); // <--- Instanciado aqui
+  final shareService = ShareService(); 
 
   /// USECASES
   final getPessoas = GetPessoas(repository);
@@ -66,7 +65,7 @@ Future<void> main() async {
   final addPessoa = AddPessoa(repository);
 
   final deletarTodasPessoasUseCase =
-      DeletarTodasPessoasUseCase(repository); // <--- ADICIONADO
+      DeletarTodasPessoasUseCase(repository); 
 
   runApp(
     MyApp(
@@ -74,8 +73,8 @@ Future<void> main() async {
       atualizar: atualizar,
       importar: importar,
       addPessoa: addPessoa,
-      deletarTodasPessoasUseCase: deletarTodasPessoasUseCase, // <--- ADICIONADO
-      shareService: shareService, // <--- Repassado para o MyApp
+      deletarTodasPessoasUseCase: deletarTodasPessoasUseCase,
+      shareService: shareService, 
     ),
   );
 }
@@ -86,8 +85,8 @@ class MyApp extends StatelessWidget {
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
   final DeletarTodasPessoasUseCase
-      deletarTodasPessoasUseCase; // <--- ADICIONADO
-  final ShareService shareService; // <--- Declarado aqui
+      deletarTodasPessoasUseCase; 
+  final ShareService shareService; 
 
   const MyApp({
     super.key,
@@ -95,8 +94,8 @@ class MyApp extends StatelessWidget {
     required this.atualizar,
     required this.importar,
     required this.addPessoa,
-    required this.deletarTodasPessoasUseCase, // <--- ADICIONADO
-    required this.shareService, // <--- Adicionado ao construtor
+    required this.deletarTodasPessoasUseCase,
+    required this.shareService,
   });
 
   @override
@@ -110,7 +109,7 @@ class MyApp extends StatelessWidget {
             atualizar,
             importar,
             addPessoa,
-            deletarTodasPessoasUseCase, // <--- INJETADO COM SUCESSO AQUI
+            deletarTodasPessoasUseCase, 
           )..carregar(),
         ),
 
@@ -118,7 +117,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => PlanilhaViewModel(
             getPessoas,
-            shareService, // <--- Resolvido! Injetado com sucesso no construtor atualizado
+            shareService, 
           ),
         ),
       ],

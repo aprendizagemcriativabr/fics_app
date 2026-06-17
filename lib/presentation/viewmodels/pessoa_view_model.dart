@@ -18,14 +18,14 @@ class PessoaViewModel extends ChangeNotifier {
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
-  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase; // ADICIONADO
+  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase; 
 
   PessoaViewModel(
     this.getPessoas,
     this.atualizar,
     this.importar,
     this.addPessoa,
-    this.deletarTodasPessoasUseCase, // ADICIONADO
+    this.deletarTodasPessoasUseCase,
   );
 
   // --- ESTADO PRIVADO ---
@@ -186,13 +186,8 @@ class PessoaViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // 1. Executa o use case que limpa fisicamente o box do Hive
       await deletarTodasPessoasUseCase.execute();
-
-      // 2. Limpa de forma imediata a lista que está em memória
       todasPessoas.clear();
-
-      // 3. Atualiza o estado chamando o carregar novamente (opcional, mas garante integridade)
       await carregar();
     } catch (e) {
       debugPrint("Erro ao apagar dados do FICS: $e");

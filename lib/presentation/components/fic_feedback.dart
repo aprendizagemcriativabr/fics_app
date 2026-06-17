@@ -23,7 +23,7 @@ class FicFeedback {
     };
 
     ScaffoldMessenger.of(context)
-        .clearSnackBars(); // Remove o anterior antes de mostrar novo
+        .clearSnackBars(); 
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

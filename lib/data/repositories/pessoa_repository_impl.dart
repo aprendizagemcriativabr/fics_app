@@ -41,11 +41,8 @@ class PessoaRepositoryImpl implements PessoaRepository {
     if (model == null) return;
 
     model.acompanhantes = pessoa.acompanhantes;
-
     model.confirmado = pessoa.confirmado;
-
     model.horaEntrada = pessoa.horaEntrada;
-
     model.preCadastro = pessoa.preCadastro;
 
     await datasource.update(model);

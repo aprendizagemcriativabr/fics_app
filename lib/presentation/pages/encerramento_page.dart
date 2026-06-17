@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
-import '../components/fic_feedback.dart'; // Importado para manter o padrão visual de erros
-import '../components/fic_dialog.dart'; // IMPORTADO O COMPONENTE DE ALERTA
+import '../components/fic_feedback.dart'; 
+import '../components/fic_dialog.dart'; 
 import '../utility/color.dart';
 import '../viewmodels/planilha_view_model.dart';
-import '../viewmodels/pessoa_view_model.dart'; // IMPORTADO PARA ACESSAR A LIMPEZA DE DADOS
+import '../viewmodels/pessoa_view_model.dart'; 
 import 'planilha_final_page.dart';
 
 class EncerramentoPage extends StatefulWidget {
@@ -28,7 +28,6 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
     });
   }
 
-  /// Aciona o compartilhamento direto via ViewModel encapsulada
   void _dispararCompartilhamento(PlanilhaViewModel viewModel) {
     viewModel.compartilharPlanilha(
       onAvisoGerarPrimeiro: () {
@@ -51,7 +50,6 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<PlanilhaViewModel>();
-    // Escuta o PessoaViewModel para identificar carregamentos na deleção
     final pessoaViewModel = context.watch<PessoaViewModel>();
 
     return Scaffold(
@@ -154,14 +152,12 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    /// NOVO BOTAO: FINALIZAR E APAGAR DADOS DO FICS
                     FicButton(
                       label: "FINALIZAR E APAGAR DADOS",
                       backgroundColor: Colors.red
-                          .shade800, // Destaque visual de ação destrutiva/crítica
+                          .shade800, 
                       isLoading: pessoaViewModel.isLoading,
                       onPressed: () async {
-                        // Exibe o componente FicDialog customizado do projeto
                         final confirmar = await FicDialog.show(
                           context: context,
                           title: "ATENÇÃO!",
@@ -174,7 +170,6 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                         if (confirmar == true) {
                           try {
                             await pessoaViewModel.apagarTodosOsDados();
-                            // Atualiza a contagem da tela atual também
                             await viewModel.inicializarTela();
 
                             if (!context.mounted) return;

@@ -3,16 +3,16 @@ import '../utility/color.dart';
 
 class FicButton extends StatelessWidget {
   final String label;
-  final VoidCallback? onPressed; // Permitir null para desabilitar
+  final VoidCallback? onPressed; 
   final Color backgroundColor;
-  final bool isLoading; // Nova propriedade
+  final bool isLoading; 
 
   const FicButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.backgroundColor = AppColors.button,
-    this.isLoading = false, // Padrão é falso
+    this.isLoading = false, 
   });
 
   @override
@@ -30,7 +30,6 @@ class FicButton extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,
         ),
-        // Se estiver carregando, desabilitamos o clique
         onPressed: isLoading ? null : onPressed,
         child: isLoading
             ? const SizedBox(

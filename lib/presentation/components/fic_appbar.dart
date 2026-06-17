@@ -4,14 +4,8 @@ import '../utility/color.dart';
 class FicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onFilterPressed;
-
-  /// botão de filtro
   final List<Widget>? actions;
-
-  /// actions extras
   final VoidCallback? onBack;
-
-  /// substitui o comportamento padrão do botão voltar
 
   const FicAppBar({
     super.key,
