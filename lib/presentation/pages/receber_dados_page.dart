@@ -20,9 +20,7 @@ class ReceberDadosPage extends StatelessWidget {
       child: Consumer<ReceberDadosViewModel>(
         builder: (context, vm, child) {
           return Scaffold(
-            appBar: const FicAppBar(
-              title: "Receber dados",
-            ),
+            appBar: const FicAppBar(title: "Receber dados"),
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -56,12 +54,12 @@ class ReceberDadosPage extends StatelessWidget {
                         isLoading: vm.isProcessing,
                         onPressed: vm.selectedFile != null
                             ? () async {
-                                if (pessoaVM.todasPessoas.isNotEmpty) {
+                                if (pessoaVM.possuiPreCadastro) {
                                   final confirmar = await FicDialog.show(
                                     context: context,
                                     title: "Substituir Dados?",
                                     message:
-                                        "Já existem participantes registados. Se prosseguir, os dados atuais serão substituídos.",
+                                        "Já existem participantes importados de uma lista anterior. Se prosseguir, os dados de pré-cadastro atuais serão substituídos.",
                                     confirmText: "SIM",
                                     cancelText: "NÃO",
                                   );

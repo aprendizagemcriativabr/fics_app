@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../components/fic_appbar.dart';
 import '../components/fic_button.dart';
-import '../components/fic_feedback.dart'; 
-import '../components/fic_dialog.dart'; 
+import '../components/fic_feedback.dart';
+import '../components/fic_dialog.dart';
 import '../utility/color.dart';
 import '../viewmodels/planilha_view_model.dart';
-import '../viewmodels/pessoa_view_model.dart'; 
+import '../viewmodels/pessoa_view_model.dart';
 import 'planilha_final_page.dart';
 
 class EncerramentoPage extends StatefulWidget {
@@ -154,8 +154,7 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
 
                     FicButton(
                       label: "FINALIZAR E APAGAR DADOS",
-                      backgroundColor: Colors.red
-                          .shade800, 
+                      backgroundColor: Colors.red.shade800,
                       isLoading: pessoaViewModel.isLoading,
                       onPressed: () async {
                         final confirmar = await FicDialog.show(

@@ -6,19 +6,14 @@ import '../../domain/usecases/importar_pessoas.dart';
 import '../../domain/usecases/add_pessoa.dart';
 import '../../domain/usecases/deletar_pessoas.dart';
 
-/// Enum para definir os estados de filtragem por status
-enum FiltroStatus {
-  todos,
-  pendentes,
-  validados,
-}
+enum FiltroStatus { todos, pendentes, validados }
 
 class PessoaViewModel extends ChangeNotifier {
   final GetPessoas getPessoas;
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
-  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase; 
+  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase;
 
   PessoaViewModel(
     this.getPessoas,
@@ -28,35 +23,29 @@ class PessoaViewModel extends ChangeNotifier {
     this.deletarTodasPessoasUseCase,
   );
 
-  // --- ESTADO PRIVADO ---
   List<Pessoa> todasPessoas = [];
   bool isLoading = false;
 
-  // Estados dos Filtros e Ordenação
   String _filtroNome = "";
   FiltroStatus _filtroStatus = FiltroStatus.todos;
   bool _ordemAz = true;
 
   // --- GETTERS ---
 
-  /// Lista filtrada para a UI
   List<Pessoa> get pessoasFiltradas {
     List<Pessoa> lista = todasPessoas.where((p) {
-      // MOSTRA APENAS PESSOAS DO PRÉ-CADASTRO
       if (!p.preCadastro) return false;
-      final bateNome = p.nome.toLowerCase().contains(_filtroNome.toLowerCase());
 
+      final bateNome = p.nome.toLowerCase().contains(_filtroNome.toLowerCase());
       bool bateStatus;
 
       switch (_filtroStatus) {
         case FiltroStatus.pendentes:
           bateStatus = p.confirmado == false;
           break;
-
         case FiltroStatus.validados:
           bateStatus = p.confirmado == true;
           break;
-
         default:
           bateStatus = true;
       }
@@ -73,15 +62,15 @@ class PessoaViewModel extends ChangeNotifier {
 
   List<Pessoa> get pessoasComCheckin =>
       todasPessoas.where((p) => p.confirmado == true).toList();
+
   FiltroStatus get filtroStatus => _filtroStatus;
   bool get ordemAz => _ordemAz;
   String get filtroNome => _filtroNome;
   bool get possuiDados => todasPessoas.isNotEmpty;
-
-  /// NOVO: Retorna verdadeiro apenas se houver registros vindos de planilha (pré-cadastro)
   bool get possuiPreCadastro => todasPessoas.any((p) => p.preCadastro == true);
 
   // --- FILTROS ---
+
   void atualizarBuscaNome(String nome) {
     _filtroNome = nome;
     notifyListeners();
@@ -103,7 +92,8 @@ class PessoaViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // --- DADOS ---
+  // --- OPERAÇÕES DE DADOS ---
+
   Future<void> carregar() async {
     isLoading = true;
     notifyListeners();
@@ -135,18 +125,13 @@ class PessoaViewModel extends ChangeNotifier {
     await carregar();
   }
 
-  Future<void> adicionarPessoa(
-    String nome,
-    int acompanhantes,
-  ) async {
+  Future<void> adicionarPessoa(String nome, int acompanhantes) async {
     final nomeLimpo = nome.trim();
 
-    /// VALIDAÇÃO
     if (nomeLimpo.isEmpty) {
       throw Exception("Digite o nome do responsável.");
     }
 
-    /// EVITA DUPLICADOS
     final jaExiste = todasPessoas.any(
       (p) => p.nome.toLowerCase() == nomeLimpo.toLowerCase(),
     );
@@ -180,7 +165,6 @@ class PessoaViewModel extends ChangeNotifier {
     }
   }
 
-  // --- LIMPAR TODOS OS DADOS DO FICS ---
   Future<void> apagarTodosOsDados() async {
     isLoading = true;
     notifyListeners();
@@ -190,7 +174,7 @@ class PessoaViewModel extends ChangeNotifier {
       todasPessoas.clear();
       await carregar();
     } catch (e) {
-      debugPrint("Erro ao apagar dados do FICS: $e");
+      debugPrint("Erro ao apagar dados: $e");
       rethrow;
     } finally {
       isLoading = false;

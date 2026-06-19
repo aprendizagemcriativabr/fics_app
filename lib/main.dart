@@ -53,7 +53,7 @@ Future<void> main() async {
   );
 
   /// SERVICES
-  final shareService = ShareService(); 
+  final shareService = ShareService();
 
   /// USECASES
   final getPessoas = GetPessoas(repository);
@@ -64,8 +64,7 @@ Future<void> main() async {
 
   final addPessoa = AddPessoa(repository);
 
-  final deletarTodasPessoasUseCase =
-      DeletarTodasPessoasUseCase(repository); 
+  final deletarTodasPessoasUseCase = DeletarTodasPessoasUseCase(repository);
 
   runApp(
     MyApp(
@@ -74,7 +73,7 @@ Future<void> main() async {
       importar: importar,
       addPessoa: addPessoa,
       deletarTodasPessoasUseCase: deletarTodasPessoasUseCase,
-      shareService: shareService, 
+      shareService: shareService,
     ),
   );
 }
@@ -84,9 +83,8 @@ class MyApp extends StatelessWidget {
   final AtualizarAcompanhantes atualizar;
   final ImportarPessoas importar;
   final AddPessoa addPessoa;
-  final DeletarTodasPessoasUseCase
-      deletarTodasPessoasUseCase; 
-  final ShareService shareService; 
+  final DeletarTodasPessoasUseCase deletarTodasPessoasUseCase;
+  final ShareService shareService;
 
   const MyApp({
     super.key,
@@ -109,7 +107,7 @@ class MyApp extends StatelessWidget {
             atualizar,
             importar,
             addPessoa,
-            deletarTodasPessoasUseCase, 
+            deletarTodasPessoasUseCase,
           )..carregar(),
         ),
 
@@ -117,7 +115,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => PlanilhaViewModel(
             getPessoas,
-            shareService, 
+            shareService,
           ),
         ),
       ],

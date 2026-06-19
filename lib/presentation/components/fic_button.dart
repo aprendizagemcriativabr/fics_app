@@ -3,16 +3,16 @@ import '../utility/color.dart';
 
 class FicButton extends StatelessWidget {
   final String label;
-  final VoidCallback? onPressed; 
+  final VoidCallback? onPressed;
   final Color backgroundColor;
-  final bool isLoading; 
+  final bool isLoading;
 
   const FicButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.backgroundColor = AppColors.button,
-    this.isLoading = false, 
+    this.isLoading = false,
   });
 
   @override

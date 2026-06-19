@@ -82,8 +82,7 @@ class ImportCsvService {
           novosCadastros.add(Pessoa(
             nome: nome,
             acompanhantes: acompanhantes,
-            confirmado:
-                horaEntrada != null, 
+            confirmado: horaEntrada != null,
             horaEntrada: horaEntrada,
             preCadastro: preCadastro,
           ));

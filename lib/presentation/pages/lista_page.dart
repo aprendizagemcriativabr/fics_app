@@ -84,7 +84,7 @@ class _ListaPageState extends State<ListaPage> {
                       ),
                     )
                   : listaExibida.isEmpty
-                      ? const FicEmptyState() 
+                      ? const FicEmptyState()
                       : ListView.separated(
                           itemCount: listaExibida.length,
                           separatorBuilder: (context, index) =>

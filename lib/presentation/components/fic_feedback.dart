@@ -22,8 +22,7 @@ class FicFeedback {
       FeedbackType.info: Icons.info_outline,
     };
 
-    ScaffoldMessenger.of(context)
-        .clearSnackBars(); 
+    ScaffoldMessenger.of(context).clearSnackBars();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
