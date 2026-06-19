@@ -6,23 +6,23 @@
     "icon": "how_to_reg_rounded",
     "faqs": [
       {
-        "question": "Como validar ou fazer check-in um participante?",
-        "answer": "Encontre o participante na lista (rolando ou pesquisando) e toque no nome. Na tela de confirmação, ajuste a quantidade de acompanhantes (se necessário) e toque em 'Confirmar Check-in'.",
+        "question": "Como validar a presença ou fazer check-in de um participante?",
+        "answer": "Encontre o participante na lista (rolando ou pesquisando) e toque no nome dele. Na tela de confirmação, ajuste a quantidade de acompanhantes (se necessário) e toque em 'Confirmar Check-in'.",
         "related_flow_id": "pre_cadastro"
       },
       {
-        "question": "Como marcar presença?",
-        "answer": "No pré-cadastro, a presença é confirmada ao abrir o participante e tocar em 'Confirmar Check-in'. No cadastro no local, o participante já é cadastrado como confirmado (com hora de entrada).",
-        "related_flow_id": "pre_cadastro"
+        "question": "Como funciona a presença para quem se cadastrar na hora?",
+        "answer": "Diferente do pré-cadastro, onde você precisa confirmar o check-in manualmente, os participantes cadastrados na hora já entram no sistema com o status de confirmado e com o horário de entrada registrado automaticamente.",
+        "related_flow_id": "cadastro_local"
       },
       {
-        "question": "Como pesquisar um nome?",
+        "question": "Como pesquisar um nome rápido?",
         "answer": "Utilize o campo de busca localizado no topo da tela de Pré-Cadastrados. Digite o nome ou parte dele e a listagem filtrará os resultados em tempo real.",
         "related_flow_id": "pre_cadastro"
       },
       {
-        "question": "Como filtrar a lista?",
-        "answer": "Toque no ícone de funil no canto superior direito. Um menu surgirá permitindo filtrar os participantes por status (todos, validados ou pendentes).",
+        "question": "Como filtrar ou ordenar a lista?",
+        "answer": "Toque no ícone de funil localizado no canto superior direito da tela. Um menu surgirá permitindo filtrar por status (todos, validados ou pendentes) ou ordenar de A-Z e Z-A.",
         "related_flow_id": "pre_cadastro"
       }
     ],
@@ -30,22 +30,22 @@
       {
         "icon": "touch_app_rounded",
         "title": "Acesse \"pré-cadastrados\"",
-        "description": "Na tela inicial, toque no botão \"PRÉ-CADASTRADOS\" para ver a lista de pessoas que foram importadas via planilha."
+        "description": "Na tela inicial do aplicativo, toque no botão \"PRÉ-CADASTRADOS\" para gerenciar a lista de pessoas que foram importadas via planilha."
       },
       {
         "icon": "search_rounded",
         "title": "Pesquise pelo nome (opcional)",
-        "description": "Use o campo de busca no topo para encontrar rapidamente um participante pelo nome. A busca filtra em tempo real."
+        "description": "Use o campo de busca no topo para encontrar rapidamente um participante pelo nome. A busca filtra os resultados em tempo real."
       },
       {
         "icon": "filter_alt_rounded",
         "title": "Use os filtros (opcional)",
-        "description": "Toque no ícone de filtro no canto superior direito para filtrar por status: todos, validados ou pendentes. Além disso, é possível ordenar a lista em A-Z ou Z-A."
+        "description": "Toque no ícone de filtro no canto superior direito para filtrar por status (todos, validados ou pendentes) ou para ordenar a lista em A-Z / Z-A."
       },
       {
         "icon": "check_circle_rounded",
         "title": "Confirme a presença",
-        "description": "Encontrou o participante? Toque no nome dele. Valide se o número de acompanhantes está correto e confirme o check-in."
+        "description": "Ao encontrar o participante na lista, toque no nome dele. Verifique se o número de acompanhantes está correto e confirme o check-in para registrar a presença."
       }
     ]
   },
@@ -66,8 +66,8 @@
         "related_flow_id": "cadastro_local"
       },
       {
-        "question": "Pessoa não está na lista, e agora?",
-        "answer": "Sem problema! Se o participante não veio na planilha de pré-cadastro, use 'Cadastro no Local' para cadastrar na hora.",
+        "question": "O que fazer se a pessoa não estiver na lista?",
+        "answer": "Sem problemas! Se o participante não constar na planilha de pré-cadastro, use a opção 'Cadastro no Local' para registrá-lo na hora.",
         "related_flow_id": "cadastro_local"
       }
     ],
@@ -75,27 +75,27 @@
       {
         "icon": "touch_app_rounded",
         "title": "Acesse \"Cadastro no Local\"",
-        "description": "Na tela inicial, toque no botão 'Cadastro no Local' para abrir o formulário de cadastro."
+        "description": "Na tela inicial, toque no botão 'Cadastro no Local' para abrir o formulário de inscrição rápida."
       },
       {
         "icon": "person_rounded",
         "title": "Informe o nome",
-        "description": "Digite o nome completo do participante."
+        "description": "Digite o nome completo do participante que está na sua frente."
       },
       {
         "icon": "group_rounded",
         "title": "Informe os acompanhantes",
-        "description": "Use o contador para indicar a quantidade de acompanhantes. É possível deixar como zero caso não haja acompanhantes."
+        "description": "Use o contador (+) e (-) para indicar a quantidade de acompanhantes. Você pode deixar o valor como zero caso a pessoa esteja sozinha."
       },
       {
         "icon": "save_rounded",
         "title": "Salve o cadastro",
-        "description": "Toque no botão 'Cadastrar'. O participante já entra como confirmado e com hora de entrada."
+        "description": "Toque no botão 'Cadastrar'. O participante será inserido na lista diretamente como confirmado e com o horário de entrada registrado."
       },
       {
         "icon": "check_circle_rounded",
         "title": "Veja na lista de check-ins (opcional)",
-        "description": "Se quiser conferir, volte na tela inicial e toque em 'Visualizar Check-ins'."
+        "description": "Se quiser conferir o registro depois, volte para a tela inicial e toque no botão 'Visualizar Check-ins'."
       }
     ]
   },
@@ -107,12 +107,12 @@
     "faqs": [
       {
         "question": "Como importar os dados?",
-        "answer": "Na tela inicial, toque em 'Importar Planilha', selecione o arquivo (.xlsx ou .csv) e toque em 'Importar dados'.",
+        "answer": "Na tela inicial, toque em 'Importar Planilha', selecione o arquivo (.xlsx ou .csv) do seu aparelho e confirme tocando em 'Importar dados'.",
         "related_flow_id": "importar_planilha"
       },
       {
         "question": "Qual formato de planilha usar?",
-        "answer": "O sistema aceita ficheiros Excel (.xlsx) e também CSV (.csv). Para o app identificar os dados corretamente, a primeira linha deve ser um cabeçalho com colunas contendo palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte').",
+        "answer": "O sistema aceita arquivos Excel (.xlsx) e CSV (.csv). Para o app identificar os dados corretamente, a primeira linha deve conter os cabeçalhos. Use palavras-chave como: Nome (ex.: 'nome', 'participante') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd').",
         "related_flow_id": "importar_planilha"
       }
     ],
@@ -120,22 +120,22 @@
       {
         "icon": "table_chart_rounded",
         "title": "Prepare a planilha",
-        "description": "O arquivo deve estar no formato .xlsx ou .csv. Para o app identificar os dados corretamente, a primeira linha deve ser um cabeçalho com colunas contendo palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte')."
+        "description": "O arquivo deve ser .xlsx ou .csv. Garanta que a primeira linha seja o cabeçalho com colunas identificáveis de Nome (ex: 'nome', 'participante') e Acompanhantes (ex: 'acompanhantes', 'quantidade', 'qtd')."
       },
       {
         "icon": "touch_app_rounded",
         "title": "Acesse \"Importar Planilha\"",
-        "description": "Na tela inicial, toque no botão 'Importar Planilha'."
+        "description": "Na tela inicial, toque no botão 'Importar Planilha' para iniciar o processo."
       },
       {
         "icon": "upload_rounded",
         "title": "Selecione o arquivo",
-        "description": "Toque no campo para escolher um arquivo .xlsx ou .csv do seu dispositivo."
+        "description": "Toque na área indicada da tela para escolher o arquivo .xlsx ou .csv armazenado no seu dispositivo."
       },
       {
         "icon": "download_done_rounded",
         "title": "Confirme a importação",
-        "description": "Toque em 'Importar dados'. Se já existirem participantes no app, confirme se deseja substituir os dados."
+        "description": "Toque em 'Importar dados'. Se já houver uma lista ativa no aplicativo, confirme se deseja substituir os dados antigos pelos novos."
       }
     ]
   },
@@ -146,23 +146,41 @@
     "icon": "table_chart_rounded",
     "faqs": [
       {
-        "question": "Quais nomes de colunas precisam estar na planilha?",
-        "answer": "A planilha deve ter cabeçalho na primeira linha e colunas identificáveis de Nome e Acompanhantes/Quantidade. Para o app reconhecer, use palavras-chave como: Nome (ex.: 'nome', 'participante', 'convidado') e Acompanhantes (ex.: 'acompanhantes', 'quantidade', 'qtd', 'qte').",
+        "question": "Quais nomes de colunas precisam estar na planilha do Forms?",
+        "answer": "A planilha gerada deve conter cabeçalhos claros na primeira linha. Para o app reconhecer as colunas automaticamente, configure perguntas no formulário usando palavras como 'Nome' ou 'Participante' e 'Acompanhantes' ou 'Quantidade'.",
         "related_flow_id": "google_forms"
       }
     ],
     "steps": [
       {
-        "icon": "touch_app_rounded",
-        "title": "Criar perguntas no Forms",
-      "description": "1. Clique nesse botão para criar mais um campo de pergunta.\n2. Edite aqui o título com o nome e detalhes sobre o evento.\n3. Adicione a pergunta como: nome ou participante ou convidado.\n4. Adicione outra pergunta: acompanhantes ou quantidade ou qtd ou qte.",
-        "image": "assets/images/tutorial-forms-1.png"
+        "icon": "add_circle_outline_rounded",
+        "title": "1. Crie o formulário",
+        "description": "Acesse o Google Forms e crie um novo formulário para o seu evento. Defina o título e adicione uma descrição curta, se desejar."
       },
       {
-        "icon": "download_done_rounded",
-        "title": "Exportar a planilha",
-        "description": "1. XLSX (recomendado): No Google Forms, abra as respostas em uma planilha do Google (Sheets). No Sheets, vá em Arquivo → Fazer download → Microsoft Excel (.xlsx).\n2. CSV: No Forms, vá na aba Respostas e use o menu (⋮) para baixar as respostas em .csv (quando disponível).",
-        "image": "assets/images/tutorial-forms-2.png"
+        "icon": "short_text_rounded",
+        "title": "2. Pergunta do Nome",
+        "description": "Adicione uma pergunta do tipo 'Resposta curta' para coletar a identificação do convidado. Use palavras-chave simples no título da pergunta, como: 'Nome' ou 'Participante'."
+      },
+      {
+        "icon": "tag_rounded",
+        "title": "3. Pergunta de Acompanhantes",
+        "description": "Adicione outra pergunta do tipo 'Resposta curta' ou 'Múltipla escolha' para o total de acompanhantes. No título, use palavras que o app reconheça, como: 'Acompanhantes' ou 'Quantidade'."
+      },
+      {
+        "icon": "download_rounded",
+        "title": "4. Baixe direto (.csv)",
+        "description": "Forma mais rápida: na aba 'Respostas' do Forms, clique no menu de três pontos (⋮) no canto superior direito e selecione 'Baixar respostas (.csv)'."
+      },
+      {
+        "icon": "description_rounded",
+        "title": "5. Vincule ao Google Sheets",
+        "description": "Ao coletar as respostas, vá na aba 'Respostas' do formulário e toque no ícone verde do Google Planilhas. Crie uma nova planilha para consolidar os dados das inscrições."
+      },
+      {
+        "icon": "table_view_rounded",
+        "title": "6. Baixe via Sheets (opcional)",
+        "description": "Alternativa: toque no ícone verde para abrir as respostas no Google Planilhas. Lá, vá no menu superior em Arquivo → Fazer download → Microsoft Excel (.xlsx)."
       }
     ]
   },
@@ -174,12 +192,12 @@
     "faqs": [
       {
         "question": "Como encerrar o evento?",
-        "answer": "Na tela inicial, toque em 'Encerrar FICS'. Lá você consegue baixar/exportar a planilha, unificar planilhas e (se necessário) finalizar apagando os dados do dispositivo.",
+        "answer": "Na tela inicial, toque em 'Encerrar FICS'. Nessa área você poderá baixar/exportar o relatório final consolidado, unificar planilhas de múltiplos dispositivos e limpar a memória local do app.",
         "related_flow_id": "encerrar"
       },
       {
-        "question": "Como exportar os dados ao final?",
-        "answer": "Na tela de Encerramento, toque em 'BAIXAR E EXPORTAR' para gerar a planilha. Para compartilhar, use o ícone de compartilhar no topo. Também existe a opção 'UNIFICAR PLANILHAS' para juntar arquivos.",
+        "question": "Como exportar e salvar os dados no final?",
+        "answer": "Na tela de Encerramento, toque em 'BAIXAR E EXPORTAR' para gerar a planilha atualizada com os horários de entrada. Se você operou com vários celulares, use 'UNIFICAR PLANILHAS' para juntar todos os arquivos antes do fechamento.",
         "related_flow_id": "encerrar"
       }
     ],
@@ -187,17 +205,17 @@
       {
         "icon": "checklist_rounded",
         "title": "Confirme que tudo está pronto",
-        "description": "Antes de finalizar, confira se os check-ins estão corretos e se você já importou/cadastrou todo mundo."
+        "description": "Antes de encerrar as atividades, certifique-se de que todas as pessoas da fila realizaram o check-in e que nenhum registro ficou pendente."
       },
       {
         "icon": "lock_rounded",
         "title": "Toque em \"Encerrar FICS\"",
-        "description": "Na tela inicial, toque no botão para abrir a tela de Encerramento."
+        "description": "Na tela inicial, localize e toque no botão de encerramento para acessar as opções de finalização do evento."
       },
       {
         "icon": "check_circle_outline_rounded",
         "title": "Exporte e finalize",
-        "description": "Use 'BAIXAR E EXPORTAR' para gerar a planilha. Se precisar, use 'UNIFICAR PLANILHAS'. Só use 'FINALIZAR E APAGAR DADOS' depois de exportar tudo (é irreversível)."
+        "description": "Use 'BAIXAR E EXPORTAR' para salvar sua lista atualizada. Atenção: use 'FINALIZAR E APAGAR DADOS' apenas após salvar os arquivos, pois esta ação é irreversível e limpa o dispositivo."
       }
     ]
   }

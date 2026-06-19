@@ -109,12 +109,12 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Icon(Icons.copyright, size: 14, color: Colors.black87),
+                        const Icon(Icons.copyright, size: 14, color: AppColors.button),
                         const SizedBox(width: 4),
                         Text(
                           "UNICAMP",
                           style: TextStyle(
-                            color: AppColors.text,
+                            color: AppColors.button,
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.1,
@@ -130,7 +130,7 @@ class HomePage extends StatelessWidget {
                         icon: const Icon(
                           Icons.help_outline,
                           size: 42,
-                          color: Colors.black,
+                          color: AppColors.button,
                         ),
                         onPressed: () => Navigator.push(
                           context,

@@ -156,7 +156,9 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                       label: "FINALIZAR E APAGAR DADOS",
                       backgroundColor: Colors.red.shade800,
                       isLoading: pessoaViewModel.isLoading,
-                      onPressed: () async {
+                      onPressed: !pessoaViewModel.possuiDados 
+                        ? null 
+                        : () async {
                         final confirmar = await FicDialog.show(
                           context: context,
                           title: "ATENÇÃO!",

@@ -23,6 +23,12 @@ class TutorialRepository {
     'lock_rounded': Icons.lock_rounded,
     'checklist_rounded': Icons.checklist_rounded,
     'check_circle_outline_rounded': Icons.check_circle_outline_rounded,
+    'add_circle_outline_rounded': Icons.add_circle_outline_rounded,
+    'short_text_rounded': Icons.short_text_rounded,
+    'tag_rounded': Icons.tag_rounded,
+    'description_rounded': Icons.description_rounded,
+    'download_rounded': Icons.download_rounded,
+    'table_view_rounded': Icons.table_view_rounded,
   };
 
   static IconData _getIcon(String? name) {
@@ -40,13 +46,15 @@ class TutorialRepository {
 
         final stepsList = (map['steps'] as List? ?? []).map((stepMap) {
           final s = stepMap as Map<String, dynamic>;
-          return TutorialStep.fromMap(s, _getIcon(s['icon']));
+          final stepIconStr = s['icon'] as String?;
+          
+          return TutorialStep.fromMap(s, _getIcon(stepIconStr));
         }).toList();
 
-        return TutorialFlow.fromMap(map, _getIcon(map['icon']), stepsList);
+        final flowIconStr = map['icon'] as String?;
+        return TutorialFlow.fromMap(map, _getIcon(flowIconStr), stepsList);
       }).toList();
     } catch (e) {
-      debugPrint('Erro ao carregar ficheiro de tutoriais: $e');
       return [];
     }
   }
