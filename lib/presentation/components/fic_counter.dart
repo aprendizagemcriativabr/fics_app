@@ -9,32 +9,54 @@ class FicCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDecrementDisabled = value <= 0;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildStepButton(Icons.remove, () => onChanged(value - 1)),
+        _buildStepButton(
+          icon: Icons.remove,
+          onTap: isDecrementDisabled ? null : () => onChanged(value - 1),
+          isDisabled: isDecrementDisabled,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
             value.toString().padLeft(2, '0'),
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 40, 
+              fontWeight: FontWeight.bold,
+              color: AppColors.text,
+            ),
           ),
         ),
-        _buildStepButton(Icons.add, () => onChanged(value + 1)),
+        _buildStepButton(
+          icon: Icons.add,
+          onTap: () => onChanged(value + 1),
+          isDisabled: false,
+        ),
       ],
     );
   }
 
-  Widget _buildStepButton(IconData icon, VoidCallback onTap) {
+  Widget _buildStepButton({
+    required IconData icon, 
+    required VoidCallback? onTap, 
+    required bool isDisabled,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          color: AppColors.button,
+        decoration: BoxDecoration(
+          color: isDisabled ? AppColors.disabledButton : AppColors.button,
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: Colors.white, size: 30),
+        child: Icon(
+          icon, 
+          color: isDisabled ? AppColors.disabledButtonText : AppColors.white, 
+          size: 30,
+        ),
       ),
     );
   }
