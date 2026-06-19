@@ -126,6 +126,7 @@ class _CadastroPageState extends State<CadastroPage> {
                         },
                 ),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

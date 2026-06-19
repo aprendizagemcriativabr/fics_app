@@ -115,6 +115,7 @@ class _ValidacaoPageState extends State<ValidacaoPage> {
                   },
                 ),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

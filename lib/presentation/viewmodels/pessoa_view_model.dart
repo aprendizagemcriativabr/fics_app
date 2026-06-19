@@ -30,8 +30,6 @@ class PessoaViewModel extends ChangeNotifier {
   FiltroStatus _filtroStatus = FiltroStatus.todos;
   bool _ordemAz = true;
 
-  // --- GETTERS ---
-
   List<Pessoa> get pessoasFiltradas {
     List<Pessoa> lista = todasPessoas.where((p) {
       if (!p.preCadastro) return false;
@@ -69,8 +67,6 @@ class PessoaViewModel extends ChangeNotifier {
   bool get possuiDados => todasPessoas.isNotEmpty;
   bool get possuiPreCadastro => todasPessoas.any((p) => p.preCadastro == true);
 
-  // --- FILTROS ---
-
   void atualizarBuscaNome(String nome) {
     _filtroNome = nome;
     notifyListeners();
@@ -91,8 +87,6 @@ class PessoaViewModel extends ChangeNotifier {
     _ordemAz = true;
     notifyListeners();
   }
-
-  // --- OPERAÇÕES DE DADOS ---
 
   Future<void> carregar() async {
     isLoading = true;
@@ -121,8 +115,16 @@ class PessoaViewModel extends ChangeNotifier {
   }
 
   Future<void> atualizarQtd(String nome, int qtd) async {
-    await atualizar(nome, qtd);
-    await carregar();
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      await atualizar(nome, qtd);
+      await carregar();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> adicionarPessoa(String nome, int acompanhantes) async {

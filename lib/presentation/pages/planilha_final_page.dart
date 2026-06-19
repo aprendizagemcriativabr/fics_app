@@ -42,7 +42,7 @@ class UnificarDadosPage extends StatelessWidget {
                               FicFeedback.show(
                                 context,
                                 message:
-                                    "Gere e exporte a planilha unificada primeiro.",
+                                    "Baixe a planilha antes de compartilhar.",
                                 type: FeedbackType.error,
                               );
                             },
@@ -130,6 +130,7 @@ class UnificarDadosPage extends StatelessWidget {
                             : null,
                       ),
                     ),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

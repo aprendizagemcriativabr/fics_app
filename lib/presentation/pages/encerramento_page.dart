@@ -33,7 +33,7 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
       onAvisoGerarPrimeiro: () {
         FicFeedback.show(
           context,
-          message: 'Baixe a planilha primeiro antes de compartilhar.',
+          message: 'Baixe a planilha antes de compartilhar.',
           type: FeedbackType.error,
         );
       },
@@ -191,6 +191,7 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                   ],
                 ),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

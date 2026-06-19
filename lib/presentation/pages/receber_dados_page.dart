@@ -85,6 +85,7 @@ class ReceberDadosPage extends StatelessWidget {
                             : null,
                       ),
                     ),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

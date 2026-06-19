@@ -55,14 +55,11 @@ class ReceberDadosViewModel extends ChangeNotifier {
 
       await listaVM.importarNovasPessoas(novasPessoas);
 
-      _isProcessing = false;
-      notifyListeners();
-      await Future.sync(onSuccess); // Dispara o callback de sucesso
+      await Future.sync(onSuccess);
     } catch (e) {
       _isProcessing = false;
       notifyListeners();
-      await Future.sync(
-          () => onError(e.toString())); // Dispara o callback de erro
+      await Future.sync(() => onError(e.toString()));
     }
   }
 }

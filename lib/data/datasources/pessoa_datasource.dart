@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-
 import '../models/pessoa_model.dart';
 
 class PessoaDataSource {
   final Box<PessoaModel> box = Hive.box<PessoaModel>('pessoas');
+
   Future<List<PessoaModel>> getAll() async {
     return box.values.toList();
   }
@@ -12,15 +12,11 @@ class PessoaDataSource {
     await box.clear();
   }
 
-  Future<void> save(
-    PessoaModel model,
-  ) async {
+  Future<void> save(PessoaModel model) async {
     await box.add(model);
   }
 
-  Future<void> saveAll(
-    List<PessoaModel> models,
-  ) async {
+  Future<void> saveAll(List<PessoaModel> models) async {
     await box.addAll(models);
   }
 
@@ -34,10 +30,15 @@ class PessoaDataSource {
     }
   }
 
-  Future<void> update(
-    PessoaModel model,
-  ) async {
-    await model.save();
+  Future<void> update(PessoaModel model) async {
+    try {
+      final key = box.keys.firstWhere(
+        (k) => box.get(k)?.nome == model.nome,
+      );
+      await box.put(key, model);
+    } catch (_) {
+      await model.save();
+    }
   }
 
   Future<void> removerPreCadastros() async {
@@ -51,6 +52,8 @@ class PessoaDataSource {
       }
     }
 
-    await box.deleteAll(keysParaRemover);
+    if (keysParaRemover.isNotEmpty) {
+      await box.deleteAll(keysParaRemover);
+    }
   }
 }

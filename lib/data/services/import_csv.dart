@@ -55,7 +55,6 @@ class ImportCsvService {
 
           if (nome.isEmpty || nome.toUpperCase() == 'TOTAL GERAL') continue;
 
-          // Captura Acompanhantes
           int acompanhantes = 0;
           if (idxAcompanhantes != -1 &&
               idxAcompanhantes < row.length &&
@@ -64,19 +63,21 @@ class ImportCsvService {
                 int.tryParse(row[idxAcompanhantes].toString().trim()) ?? 0;
           }
 
-          // Captura Hora de Entrada
           String? horaEntrada;
           if (idxHora != -1 && idxHora < row.length && row[idxHora] != null) {
             horaEntrada = _parseHoraEntrada(row[idxHora].toString());
           }
 
-          // Captura Pré-Cadastro de forma correta
           bool preCadastro = false;
-          if (idxPre != -1 && idxPre < row.length && row[idxPre] != null) {
-            final valorPre = row[idxPre].toString().toLowerCase().trim();
-            if (valorPre == 'sim' || valorPre == 'true') {
-              preCadastro = true;
+          if (idxPre != -1) {
+            if (idxPre < row.length && row[idxPre] != null) {
+              final valorPre = row[idxPre].toString().toLowerCase().trim();
+              if (valorPre == 'sim' || valorPre == 'true') {
+                preCadastro = true;
+              }
             }
+          } else {
+            preCadastro = true;
           }
 
           novosCadastros.add(Pessoa(
@@ -99,7 +100,6 @@ String? _parseHoraEntrada(String raw) {
   final value = raw.trim();
   if (value.isEmpty || value == '--:--') return null;
 
-  // Aceita somente horários (HH:mm ou HH:mm:ss). Ex.: "16:24" / "16:24:03".
   final match = RegExp(r'^(\d{1,2}):(\d{2})(?::(\d{2}))?$').firstMatch(value);
   if (match == null) return null;
 
@@ -107,6 +107,5 @@ String? _parseHoraEntrada(String raw) {
   final mm = int.tryParse(match.group(2)!) ?? -1;
   if (hh < 0 || hh > 23 || mm < 0 || mm > 59) return null;
 
-  // Padroniza para HH:mm (descarta segundos se vierem).
   return '${hh.toString().padLeft(2, '0')}:${mm.toString().padLeft(2, '0')}';
 }
