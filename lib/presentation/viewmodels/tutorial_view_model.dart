@@ -5,11 +5,11 @@ import '../../data/repositories/tutorial_repository.dart';
 
 class TutorialViewModel extends ChangeNotifier {
   final String? initialFlowId;
-  
+
   List<TutorialFlow> tutorials = [];
   TutorialFlow? selectedFlow;
   String filterText = '';
-  
+
   final TextEditingController searchController = TextEditingController();
   final ScrollController homeScrollController = ScrollController();
 

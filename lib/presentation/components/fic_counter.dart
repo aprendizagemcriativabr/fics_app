@@ -24,7 +24,7 @@ class FicCounter extends StatelessWidget {
           child: Text(
             value.toString().padLeft(2, '0'),
             style: const TextStyle(
-              fontSize: 40, 
+              fontSize: 40,
               fontWeight: FontWeight.bold,
               color: AppColors.text,
             ),
@@ -40,8 +40,8 @@ class FicCounter extends StatelessWidget {
   }
 
   Widget _buildStepButton({
-    required IconData icon, 
-    required VoidCallback? onTap, 
+    required IconData icon,
+    required VoidCallback? onTap,
     required bool isDisabled,
   }) {
     return GestureDetector(
@@ -53,8 +53,8 @@ class FicCounter extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: Icon(
-          icon, 
-          color: isDisabled ? AppColors.disabledButtonText : AppColors.white, 
+          icon,
+          color: isDisabled ? AppColors.disabledButtonText : AppColors.white,
           size: 30,
         ),
       ),

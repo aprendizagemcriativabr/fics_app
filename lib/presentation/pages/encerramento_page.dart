@@ -156,39 +156,40 @@ class _EncerramentoPageState extends State<EncerramentoPage> {
                       label: "FINALIZAR E APAGAR DADOS",
                       backgroundColor: Colors.red.shade800,
                       isLoading: pessoaViewModel.isLoading,
-                      onPressed: !pessoaViewModel.possuiDados 
-                        ? null 
-                        : () async {
-                        final confirmar = await FicDialog.show(
-                          context: context,
-                          title: "ATENÇÃO!",
-                          message:
-                              "Esta ação apagará de forma permanente todos os dados cadastrados e check-ins deste dispositivo. Certifique-se de ter exportado tudo.\n\nDeseja continuar?",
-                          confirmText: "SIM, APAGAR",
-                          cancelText: "NÃO",
-                        );
+                      onPressed: !pessoaViewModel.possuiDados
+                          ? null
+                          : () async {
+                              final confirmar = await FicDialog.show(
+                                context: context,
+                                title: "ATENÇÃO!",
+                                message:
+                                    "Esta ação apagará de forma permanente todos os dados cadastrados e check-ins deste dispositivo. Certifique-se de ter exportado tudo.\n\nDeseja continuar?",
+                                confirmText: "SIM, APAGAR",
+                                cancelText: "NÃO",
+                              );
 
-                        if (confirmar == true) {
-                          try {
-                            await pessoaViewModel.apagarTodosOsDados();
-                            await viewModel.inicializarTela();
+                              if (confirmar == true) {
+                                try {
+                                  await pessoaViewModel.apagarTodosOsDados();
+                                  await viewModel.inicializarTela();
 
-                            if (!context.mounted) return;
-                            FicFeedback.show(
-                              context,
-                              message: "Dados do FICS apagados com sucesso!",
-                              type: FeedbackType.success,
-                            );
-                          } catch (e) {
-                            if (!context.mounted) return;
-                            FicFeedback.show(
-                              context,
-                              message: "Erro ao apagar dados: $e",
-                              type: FeedbackType.error,
-                            );
-                          }
-                        }
-                      },
+                                  if (!context.mounted) return;
+                                  FicFeedback.show(
+                                    context,
+                                    message:
+                                        "Dados do FICS apagados com sucesso!",
+                                    type: FeedbackType.success,
+                                  );
+                                } catch (e) {
+                                  if (!context.mounted) return;
+                                  FicFeedback.show(
+                                    context,
+                                    message: "Erro ao apagar dados: $e",
+                                    type: FeedbackType.error,
+                                  );
+                                }
+                              }
+                            },
                     ),
                   ],
                 ),

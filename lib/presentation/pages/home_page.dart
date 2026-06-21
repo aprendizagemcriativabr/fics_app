@@ -48,7 +48,8 @@ class HomePage extends StatelessWidget {
                         label: "Cadastro no Local",
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const CadastroPage()),
+                          MaterialPageRoute(
+                              builder: (_) => const CadastroPage()),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -56,7 +57,8 @@ class HomePage extends StatelessWidget {
                         label: "Visualizar Check-ins",
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const CheckinsPage()),
+                          MaterialPageRoute(
+                              builder: (_) => const CheckinsPage()),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -109,7 +111,8 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Icon(Icons.copyright, size: 14, color: AppColors.button),
+                        const Icon(Icons.copyright,
+                            size: 14, color: AppColors.button),
                         const SizedBox(width: 4),
                         Text(
                           "UNICAMP",
@@ -134,7 +137,8 @@ class HomePage extends StatelessWidget {
                         ),
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const TutorialPage()),
+                          MaterialPageRoute(
+                              builder: (_) => const TutorialPage()),
                         ),
                       ),
                     ),

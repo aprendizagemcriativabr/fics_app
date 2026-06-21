@@ -84,7 +84,9 @@ class _TutorialPageState extends State<TutorialPage> {
       child: Scaffold(
         backgroundColor: AppColors.primaryYellow,
         appBar: FicAppBar(
-          title: _viewModel.selectedFlow == null ? 'TUTORIAL' : _viewModel.selectedFlow!.title,
+          title: _viewModel.selectedFlow == null
+              ? 'TUTORIAL'
+              : _viewModel.selectedFlow!.title,
           onBack: () => _viewModel.handleBack(Navigator.of(context)),
         ),
         body: AnimatedSwitcher(

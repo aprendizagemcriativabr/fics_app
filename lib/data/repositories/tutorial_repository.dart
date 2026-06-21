@@ -47,7 +47,7 @@ class TutorialRepository {
         final stepsList = (map['steps'] as List? ?? []).map((stepMap) {
           final s = stepMap as Map<String, dynamic>;
           final stepIconStr = s['icon'] as String?;
-          
+
           return TutorialStep.fromMap(s, _getIcon(stepIconStr));
         }).toList();
 
