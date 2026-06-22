@@ -40,110 +40,105 @@ class _FiltroModalState extends State<FiltroModal> {
         horizontal: 24,
         vertical: 32,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "STATUS",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              letterSpacing: 1.2,
+      child: SafeArea(
+        bottom: true,
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "STATUS",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                letterSpacing: 1.2,
+              ),
             ),
-          ),
-
-          const SizedBox(height: 16),
-
-          /// NOVO RadioGroup
-          RadioGroup<FiltroStatus>(
-            groupValue: statusSelecionado,
-            onChanged: (FiltroStatus? value) {
-              setState(() {
-                statusSelecionado = value!;
-              });
-            },
-            child: Column(
+            const SizedBox(height: 16),
+            RadioGroup<FiltroStatus>(
+              groupValue: statusSelecionado,
+              onChanged: (FiltroStatus? value) {
+                setState(() {
+                  statusSelecionado = value!;
+                });
+              },
+              child: Column(
+                children: [
+                  _buildRadio("TODOS", FiltroStatus.todos),
+                  _buildRadio("PENDENTES", FiltroStatus.pendentes),
+                  _buildRadio("VALIDADOS", FiltroStatus.validados),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            const Text(
+              "ORDENAR",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                letterSpacing: 1.2,
+              ),
+            ),
+            const SizedBox(height: 8),
+            InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                setState(() {
+                  ordemAz = !ordemAz;
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey.shade100,
+                ),
+                child: Text(
+                  ordemAz ? "A → Z" : "Z → A",
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            Row(
               children: [
-                _buildRadio("TODOS", FiltroStatus.todos),
-                _buildRadio("PENDENTES", FiltroStatus.pendentes),
-                _buildRadio("VALIDADOS", FiltroStatus.validados),
+                Expanded(
+                  child: _buildButton(
+                    "LIMPAR",
+                    () {
+                      Navigator.pop(context, {
+                        'status': FiltroStatus.todos,
+                        'ordem': true,
+                      });
+                    },
+                    isPrimary: false,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildButton(
+                    "APLICAR",
+                    () {
+                      Navigator.pop(context, {
+                        'status': statusSelecionado,
+                        'ordem': ordemAz,
+                      });
+                    },
+                    isPrimary: true,
+                  ),
+                ),
               ],
             ),
-          ),
-
-          const SizedBox(height: 32),
-
-          const Text(
-            "ORDENAR",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              letterSpacing: 1.2,
-            ),
-          ),
-
-          const SizedBox(height: 8),
-
-          InkWell(
-            borderRadius: BorderRadius.circular(8),
-            onTap: () {
-              setState(() {
-                ordemAz = !ordemAz;
-              });
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black12),
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.shade100,
-              ),
-              child: Text(
-                ordemAz ? "A → Z" : "Z → A",
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 40),
-
-          Row(
-            children: [
-              Expanded(
-                child: _buildButton(
-                  "LIMPAR",
-                  () {
-                    Navigator.pop(context, {
-                      'status': FiltroStatus.todos,
-                      'ordem': true,
-                    });
-                  },
-                  isPrimary: false,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildButton(
-                  "APLICAR",
-                  () {
-                    Navigator.pop(context, {
-                      'status': statusSelecionado,
-                      'ordem': ordemAz,
-                    });
-                  },
-                  isPrimary: true,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -187,7 +182,7 @@ class _FiltroModalState extends State<FiltroModal> {
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 13,
-        ),
+         ),
       ),
     );
   }

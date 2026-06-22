@@ -30,53 +30,57 @@ class _FicTutorialDetailState extends State<FicTutorialDetail> {
     final step = widget.flow.steps[_currentStep];
     final total = widget.flow.steps.length;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: FicStepIndicator(
-            totalSteps: total,
-            currentStep: _currentStep,
-          ),
-        ),
-        Expanded(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: FicStepcard(
-              key: ValueKey(_currentStep),
-              step: step,
-              stepNumber: _currentStep + 1,
-              total: total,
+    return SafeArea(
+      bottom: true,
+      top: false,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: FicStepIndicator(
+              totalSteps: total,
+              currentStep: _currentStep,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-          child: Row(
-            children: [
-              if (!_isFirst) ...[
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: FicStepcard(
+                key: ValueKey(_currentStep),
+                step: step,
+                stepNumber: _currentStep + 1,
+                total: total,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+            child: Row(
+              children: [
+                if (!_isFirst) ...[
+                  Expanded(
+                    child: FicSecondaryNavbutton(
+                      label: 'ANTERIOR',
+                      onTap: () => setState(() => _currentStep--),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                ],
                 Expanded(
-                  child: FicSecondaryNavbutton(
-                    label: 'ANTERIOR',
-                    onTap: () => setState(() => _currentStep--),
+                  flex: 2,
+                  child: FicButton(
+                    label: _isLast ? 'CONCLUIR ✓' : 'PRÓXIMO',
+                    isLoading: false,
+                    onPressed: _isLast
+                        ? widget.onComplete
+                        : () => setState(() => _currentStep++),
                   ),
                 ),
-                const SizedBox(width: 12),
               ],
-              Expanded(
-                flex: 2,
-                child: FicButton(
-                  label: _isLast ? 'CONCLUIR ✓' : 'PRÓXIMO',
-                  isLoading: false,
-                  onPressed: _isLast
-                      ? widget.onComplete
-                      : () => setState(() => _currentStep++),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -69,8 +69,12 @@ class _TutorialPageState extends State<TutorialPage> {
           title: 'TUTORIAL',
           onBack: () => Navigator.pop(context),
         ),
-        body: const FicEmptyState(
-          text: 'Nenhum tutorial encontrado.',
+        body: const SafeArea(
+          bottom: true,
+          top: false,
+          child: FicEmptyState(
+            text: 'Nenhum tutorial encontrado.',
+          ),
         ),
       );
     }
@@ -89,25 +93,29 @@ class _TutorialPageState extends State<TutorialPage> {
               : _viewModel.selectedFlow!.title,
           onBack: () => _viewModel.handleBack(Navigator.of(context)),
         ),
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 280),
-          transitionBuilder: (child, animation) => FadeTransition(
-            opacity: animation,
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0.04, 0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
+        body: SafeArea(
+          bottom: true,
+          top: false,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 280),
+            transitionBuilder: (child, animation) => FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0.04, 0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
             ),
+            child: _viewModel.selectedFlow == null
+                ? _buildHome()
+                : FicTutorialDetail(
+                    key: ValueKey(_viewModel.selectedFlow!.id),
+                    flow: _viewModel.selectedFlow!,
+                    onComplete: () => _viewModel.selectFlow(null),
+                  ),
           ),
-          child: _viewModel.selectedFlow == null
-              ? _buildHome()
-              : FicTutorialDetail(
-                  key: ValueKey(_viewModel.selectedFlow!.id),
-                  flow: _viewModel.selectedFlow!,
-                  onComplete: () => _viewModel.selectFlow(null),
-                ),
         ),
       ),
     );
