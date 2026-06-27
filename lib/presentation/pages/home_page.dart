@@ -6,6 +6,7 @@ import 'checkins_page.dart';
 import 'tutorial_page.dart';
 import 'encerramento_page.dart';
 import 'receber_dados_page.dart';
+import 'creditos_page.dart';
 import '../components/fic_button.dart';
 import '../components/fic_feedback.dart';
 
@@ -48,8 +49,7 @@ class HomePage extends StatelessWidget {
                         label: "Cadastro no Local",
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (_) => const CadastroPage()),
+                          MaterialPageRoute(builder: (_) => const CadastroPage()),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -57,8 +57,7 @@ class HomePage extends StatelessWidget {
                         label: "Visualizar Check-ins",
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (_) => const CheckinsPage()),
+                          MaterialPageRoute(builder: (_) => const CheckinsPage()),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -67,8 +66,7 @@ class HomePage extends StatelessWidget {
                         onPressed: () async {
                           final result = await Navigator.push<bool>(
                             context,
-                            MaterialPageRoute(
-                                builder: (_) => const ReceberDadosPage()),
+                            MaterialPageRoute(builder: (_) => const ReceberDadosPage()),
                           );
 
                           if (result == true && context.mounted) {
@@ -106,24 +104,33 @@ class HomePage extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.copyright,
-                            size: 14, color: AppColors.button),
-                        const SizedBox(width: 4),
-                        Text(
-                          "UNICAMP",
-                          style: TextStyle(
-                            color: AppColors.button,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.1,
-                          ),
+                    InkWell(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CreditosPage()),
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.copyright, size: 14, color: AppColors.button),
+                            SizedBox(width: 4),
+                            Text(
+                              "UNICAMP",
+                              style: TextStyle(
+                                color: AppColors.button,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.1,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                     Positioned(
                       right: 0,
@@ -137,8 +144,7 @@ class HomePage extends StatelessWidget {
                         ),
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (_) => const TutorialPage()),
+                          MaterialPageRoute(builder: (_) => const TutorialPage()),
                         ),
                       ),
                     ),
