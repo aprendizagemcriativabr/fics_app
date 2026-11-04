@@ -6,97 +6,156 @@ import 'package:fics_app_new/domain/entities/pessoa.dart';
 class ImportCsvService {
   Future<List<Pessoa>> lerPlanilha(File file) async {
     try {
-      var conteudoTexto = await file.readAsString(encoding: utf8);
+      final bytes = await file.readAsBytes();
 
-      conteudoTexto =
-          conteudoTexto.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
-
-      String separador = ';';
-      if (!conteudoTexto.contains(';') && conteudoTexto.contains(',')) {
-        separador = ',';
+      // Try UTF-8 first; fall back to Latin-1 (CSVs saved by older Excel).
+      String content;
+      try {
+        content = utf8.decode(bytes);
+      } on FormatException {
+        content = latin1.decode(bytes);
       }
 
-      List<List<dynamic>> linhas = CsvToListConverter(
-        fieldDelimiter: separador,
+      content = content
+          .replaceAll('\ufeff', '')
+          .replaceAll('\r\n', '\n')
+          .replaceAll('\r', '\n');
+
+      // Detect the delimiter from the header line only, ignoring quoted text.
+      // (Looking at the whole file breaks Google Forms exports, because answers
+      // like "Turno da Manhã;Turno da Tarde" contain ';' inside quoted fields.)
+      final delimiter = _detectDelimiter(content);
+
+      final rows = CsvToListConverter(
+        fieldDelimiter: delimiter,
         eol: '\n',
-      ).convert(conteudoTexto);
+        shouldParseNumbers: false,
+      ).convert(content);
 
-      List<Pessoa> novosCadastros = [];
-      if (linhas.isEmpty) return novosCadastros;
+      final result = <Pessoa>[];
+      if (rows.isEmpty) return result;
 
-      final cabecalho = linhas[0]
-          .map(
-              (c) => c.toString().toLowerCase().replaceAll('\ufeff', '').trim())
+      final header = rows[0]
+          .map((c) => c.toString().toLowerCase().replaceAll('\ufeff', '').trim())
           .toList();
 
-      final int idxNome =
-          cabecalho.indexWhere((c) => c == 'nome' || c.contains('nome'));
+      final int nameIdx = header.indexWhere((c) =>
+          c.contains('nome') ||
+          c.contains('convidado') ||
+          c.contains('participante'));
 
-      final int idxAcompanhantes = cabecalho.indexWhere((c) =>
+      final int companionsIdx = header.indexWhere((c) =>
           c.contains('acompanhante') ||
           c.contains('qte') ||
           c.contains('qtd') ||
           c.contains('quantidade'));
 
-      final int idxHora = cabecalho.indexWhere((c) =>
+      final int timeIdx = header.indexWhere((c) =>
           (c.contains('entrada') || c.contains('check')) &&
           !c.contains('carimbo'));
 
-      final int idxPre = cabecalho
+      final int preRegIdx = header
           .indexWhere((c) => c == 'pré cadastro' || c == 'pre cadastro');
 
-      if (idxNome == -1) return novosCadastros;
+      // School / institution column (Google Forms export). Skips the
+      // "localidade da instituição" column, which also contains the word.
+      final int schoolIdx = header.indexWhere((c) =>
+          (c.contains('instituição') || c.contains('instituicao')) &&
+          !c.contains('localidade'));
 
-      for (int i = 1; i < linhas.length; i++) {
-        var row = linhas[i];
+      if (nameIdx == -1) return result;
 
-        if (row.isNotEmpty && row.length > idxNome && row[idxNome] != null) {
-          final nome = row[idxNome].toString().trim();
+      for (int i = 1; i < rows.length; i++) {
+        final row = rows[i];
 
-          if (nome.isEmpty || nome.toUpperCase() == 'TOTAL GERAL') continue;
+        if (row.length <= nameIdx) continue;
 
-          int acompanhantes = 0;
-          if (idxAcompanhantes != -1 &&
-              idxAcompanhantes < row.length &&
-              row[idxAcompanhantes] != null) {
-            acompanhantes =
-                int.tryParse(row[idxAcompanhantes].toString().trim()) ?? 0;
+        var name = _clean(row[nameIdx].toString());
+        if (name.isEmpty || name.toUpperCase() == 'TOTAL GERAL') continue;
+
+        // Append the school as "Name (School)" unless the name already has one.
+        if (schoolIdx != -1 && schoolIdx < row.length) {
+          final school = _clean(row[schoolIdx].toString());
+          if (school.isNotEmpty && !name.contains('(')) {
+            name = '$name ($school)';
           }
-
-          String? horaEntrada;
-          if (idxHora != -1 && idxHora < row.length && row[idxHora] != null) {
-            horaEntrada = _parseHoraEntrada(row[idxHora].toString());
-          }
-
-          bool preCadastro = false;
-          if (idxPre != -1) {
-            if (idxPre < row.length && row[idxPre] != null) {
-              final valorPre = row[idxPre].toString().toLowerCase().trim();
-              if (valorPre == 'sim' || valorPre == 'true') {
-                preCadastro = true;
-              }
-            }
-          } else {
-            preCadastro = true;
-          }
-
-          novosCadastros.add(Pessoa(
-            nome: nome,
-            acompanhantes: acompanhantes,
-            confirmado: horaEntrada != null,
-            horaEntrada: horaEntrada,
-            preCadastro: preCadastro,
-          ));
         }
+
+        int companions = 0;
+        if (companionsIdx != -1 && companionsIdx < row.length) {
+          companions = _parseCompanions(row[companionsIdx].toString());
+        }
+
+        String? entryTime;
+        if (timeIdx != -1 && timeIdx < row.length) {
+          entryTime = _parseEntryTime(row[timeIdx].toString());
+        }
+
+        bool preRegistered = false;
+        if (preRegIdx != -1) {
+          if (preRegIdx < row.length) {
+            final value = row[preRegIdx].toString().toLowerCase().trim();
+            preRegistered = value == 'sim' || value == 'true';
+          }
+        } else {
+          preRegistered = true;
+        }
+
+        result.add(Pessoa(
+          nome: name,
+          acompanhantes: companions,
+          confirmado: entryTime != null,
+          horaEntrada: entryTime,
+          preCadastro: preRegistered,
+        ));
       }
-      return novosCadastros;
+
+      return result;
     } catch (e) {
       throw Exception("Erro ao ler o arquivo CSV: $e");
     }
   }
 }
 
-String? _parseHoraEntrada(String raw) {
+/// Trims and collapses repeated whitespace ("Florisbal  Aires " -> "Florisbal Aires").
+String _clean(String raw) => raw.replaceAll(RegExp(r'\s+'), ' ').trim();
+
+/// Picks the delimiter that appears most in the header line (outside quotes).
+String _detectDelimiter(String content) {
+  const candidates = [',', ';', '\t'];
+  final counts = {for (final c in candidates) c: 0};
+  var inQuotes = false;
+
+  for (var i = 0; i < content.length; i++) {
+    final ch = content[i];
+    if (ch == '"') {
+      inQuotes = !inQuotes;
+      continue;
+    }
+    if (inQuotes) continue;
+    if (ch == '\n') break;
+    if (counts.containsKey(ch)) counts[ch] = counts[ch]! + 1;
+  }
+
+  var best = ',';
+  var bestCount = 0;
+  counts.forEach((delimiter, count) {
+    if (count > bestCount) {
+      best = delimiter;
+      bestCount = count;
+    }
+  });
+  return best;
+}
+
+/// Free-text answers ("Sim. 14 pessoas", "25", "Não", "-") -> first number, or 0.
+int _parseCompanions(String raw) {
+  final match = RegExp(r'\d+').firstMatch(raw);
+  if (match == null) return 0;
+  return int.tryParse(match.group(0)!) ?? 0;
+}
+
+String? _parseEntryTime(String raw) {
   final value = raw.trim();
   if (value.isEmpty || value == '--:--') return null;
 
